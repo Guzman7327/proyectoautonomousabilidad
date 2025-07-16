@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Administrador</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main id="main-content" role="main">
+    <div class="modal-content registro-modal" style="max-width:400px;margin:2rem auto;box-shadow:0 0 10px #0002;">
+      <h2 id="modal-admin-titulo">Registrar Administrador</h2>
+      <form action="/registro_admin" method="POST" id="form-registro-admin" role="form" aria-describedby="admin-descripcion">
+        <p id="admin-descripcion" class="sr-only">Formulario para crear una nueva cuenta de administrador</p>
+        <div class="form-group">
+          <label for="admin-usuario">Usuario:</label>
+          <input type="text" id="admin-usuario" name="usuario" placeholder="Nombre de usuario" required />
+        </div>
+        <div class="form-group">
+          <label for="admin-clave">Contraseña:</label>
+          <input type="password" id="admin-clave" name="clave" placeholder="Contraseña" required />
+        </div>
+        <div class="form-group">
+          <label for="admin-email">Email:</label>
+          <input type="email" id="admin-email" name="email" placeholder="Correo electrónico" required />
+        </div>
+        <button type="submit" aria-label="Registrar administrador">Registrar Admin</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html> 

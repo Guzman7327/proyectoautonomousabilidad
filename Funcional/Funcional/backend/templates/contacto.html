@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contacto</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main id="main-content" role="main">
+    <div class="modal-content registro-modal" style="max-width:600px;margin:2rem auto;box-shadow:0 0 10px #0002;">
+      <h2>Contacto</h2>
+      <p>Por favor, completa el siguiente formulario para contactarnos. Todos los campos marcados con * son obligatorios.</p>
+      <form id="form-contacto" role="form" aria-describedby="contacto-descripcion" autocomplete="on">
+        <p id="contacto-descripcion" class="sr-only">Formulario de contacto para consultas y sugerencias</p>
+        <div class="form-group">
+          <label for="nombre">Nombre *</label>
+          <input type="text" id="nombre" name="nombre" required autocomplete="name" aria-describedby="nombre-error" />
+          <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo electrónico *</label>
+          <input type="email" id="email" name="email" required autocomplete="email" aria-describedby="email-error" />
+          <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="form-group">
+          <label for="asunto">Asunto *</label>
+          <input type="text" id="asunto" name="asunto" required aria-describedby="asunto-error" />
+          <div id="asunto-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje *</label>
+          <textarea id="mensaje" name="mensaje" rows="5" required aria-describedby="mensaje-error" style="resize:vertical;width:100%"></textarea>
+          <div id="mensaje-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="form-group">
+          <label for="captcha">¿Cuánto es <span id="captcha-num1"></span> + <span id="captcha-num2"></span>? *</label>
+          <input type="number" id="captcha" name="captcha" required aria-describedby="captcha-error" />
+          <div id="captcha-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" aria-label="Enviar">Enviar</button>
+          <button type="button" onclick="window.location.href='/'" aria-label="Cancelar">Cancelar</button>
+        </div>
+        <div id="contacto-exito" class="registro-exito" role="status" aria-live="polite" style="display:none; color:green; font-weight:bold; margin-top:1em;">¡Mensaje enviado exitosamente!</div>
+        <div id="contacto-tarda" class="registro-exito" role="status" aria-live="polite" style="display:none; color:orange; font-weight:bold; margin-top:1em;">El envío está tardando más de lo normal...</div>
+      </form>
+    </div>
+  </main>
+<script>
+// Captcha simple
+let num1 = Math.floor(Math.random()*10)+1;
+let num2 = Math.floor(Math.random()*10)+1;
+document.getElementById('captcha-num1').textContent = num1;
+document.getElementById('captcha-num2').textContent = num2;
+
+// Validación en tiempo real
+function validarCampo(id, validador, mensaje) {
+  const input = document.getElementById(id);
+  const error = document.getElementById(id + '-error');
+  if (!validador(input.value)) {
+    error.textContent = mensaje;
+    input.style.borderColor = 'red';
+    return false;
+  } else {
+    error.textContent = '';
+    input.style.borderColor = 'green';
+    return true;
+  }
+}
+
+const form = document.getElementById('form-contacto');
+form.addEventListener('input', function(e) {
+  if (e.target.id === 'nombre') validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
+  if (e.target.id === 'email') validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
+  if (e.target.id === 'asunto') validarCampo('asunto', v => v.length > 2, 'Asunto requerido');
+  if (e.target.id === 'mensaje') validarCampo('mensaje', v => v.length > 5, 'Mensaje muy corto');
+  if (e.target.id === 'captcha') validarCampo('captcha', v => parseInt(v) === num1+num2, 'Captcha incorrecto');
+});
+
+form.addEventListener('submit', function(e) {
+  let valido = true;
+  valido &= validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
+  valido &= validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
+  valido &= validarCampo('asunto', v => v.length > 2, 'Asunto requerido');
+  valido &= validarCampo('mensaje', v => v.length > 5, 'Mensaje muy corto');
+  valido &= validarCampo('captcha', v => parseInt(document.getElementById('captcha').value) === num1+num2, 'Captcha incorrecto');
+  if (!valido) {
+    e.preventDefault();
+    return false;
+  }
+  // Mensaje si tarda más de 5 segundos
+  const tarda = setTimeout(() => {
+    document.getElementById('contacto-tarda').style.display = 'block';
+  }, 5000);
+  // Simulación de envío (reemplaza por AJAX si lo deseas)
+  setTimeout(() => {
+    clearTimeout(tarda);
+    document.getElementById('contacto-tarda').style.display = 'none';
+    document.getElementById('contacto-exito').style.display = 'block';
+    form.reset();
+    num1 = Math.floor(Math.random()*10)+1;
+    num2 = Math.floor(Math.random()*10)+1;
+    document.getElementById('captcha-num1').textContent = num1;
+    document.getElementById('captcha-num2').textContent = num2;
+    setTimeout(() => {
+      document.getElementById('contacto-exito').style.display = 'none';
+    }, 3000);
+  }, 1200); // Simula envío rápido
+  e.preventDefault();
+});
+</script>
+</body>
+</html> 

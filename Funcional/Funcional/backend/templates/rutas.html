@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Rutas Turísticas</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='img/fondo_rutas.png') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #00796b;
+      color: white;
+      padding: 1rem 2rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin-left: 2rem;
+    }
+
+    .contenedor {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background-color: white;
+      color: black;
+      border-radius: 8px;
+      padding: 1rem;
+      width: 300px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    .card h2 {
+      color: #00796b;
+      margin-top: 0.5rem;
+    }
+
+    .volver {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .volver a {
+      color: #4dd0e1;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-container">
+      <img src="/static/img/logo-ecuador.png" alt="Logo">
+      <h2>Portal Turístico EC</h2>
+    </div>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/rutas.html">Rutas</a>
+      <a href="/accesibilidad.html">Accesibilidad</a>
+      <a href="/contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <h1>Rutas Turísticas del Ecuador</h1>
+
+  <div class="contenedor">
+    <div class="card">
+      <img src="/static/img/cuenca2.jpg" alt="Cuenca">
+      <h2>Cuenca</h2>
+      <p>Ciudad colonial declarada Patrimonio de la Humanidad por la UNESCO. Ideal para caminar y disfrutar de arquitectura antigua.</p>
+    </div>
+    <div class="card">
+      <img src="/static/img/baños.jpg" alt="Baños">
+      <h2>Baños</h2>
+      <p>Destino de aventura y naturaleza. Famoso por sus cascadas, aguas termales y deportes extremos.</p>
+    </div>
+    <div class="card">
+      <img src="/static/img/salinas.jpg" alt="Salinas">
+      <h2>Salinas</h2>
+      <p>Una de las playas más visitadas del Ecuador, con excelente infraestructura turística y vida nocturna.</p>
+    </div>
+    <div class="card">
+      <img src="/static/img/quito.jpg" alt="Quito">
+      <h2>Quito</h2>
+      <p>Capital del Ecuador, con el centro histórico mejor conservado de América Latina. Llena de iglesias, museos y cultura.</p>
+    </div>
+  </div>
+
+  <div class="volver">
+    <a href="/">Volver al inicio</a>
+  </div>
+
+</body>
+</html>

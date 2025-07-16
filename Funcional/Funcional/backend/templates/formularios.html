@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Todos los Formularios</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .form-block {background:#222; color:#fff; margin:2rem auto; padding:2rem; border-radius:8px; max-width:600px; box-shadow:0 0 10px #0002;}
+    .form-block h2 {margin-top:0;}
+    .alert {color: white; background: #d9534f; padding: 10px; margin-bottom: 1rem; border-radius: 5px;}
+    .success {background: #5cb85c;}
+    form {margin-bottom:2rem;}
+  </style>
+</head>
+<body>
+  <main id="main-content" role="main">
+    <!-- REGISTRO USUARIO -->
+    <div class="form-block">
+      <h2>Registro de Usuario</h2>
+      {% if tipo == 'registro' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="registro">
+        <input type="text" name="nombre" placeholder="Nombre completo" required><br>
+        <input type="text" name="cedula" placeholder="Cédula" required><br>
+        <input type="email" name="email" placeholder="Correo electrónico" required><br>
+        <input type="tel" name="telefono" placeholder="Teléfono"><br>
+        <input type="text" name="usuario" placeholder="Usuario" required><br>
+        <input type="password" name="clave" placeholder="Contraseña" required><br>
+        <input type="password" name="confirmar_clave" placeholder="Confirmar contraseña" required><br>
+        <label><input type="checkbox" name="aceptar_terminos" required> Acepto términos</label><br>
+        <label><input type="checkbox" name="recibir_notificaciones"> Recibir notificaciones</label><br>
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+    <!-- LOGIN -->
+    <div class="form-block">
+      <h2>Login</h2>
+      {% if tipo == 'login' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="login">
+        <input type="text" name="usuario" placeholder="Usuario" required><br>
+        <input type="password" name="clave" placeholder="Contraseña" required><br>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+    </div>
+    <!-- CONTACTO -->
+    <div class="form-block">
+      <h2>Contacto</h2>
+      {% if tipo == 'contacto' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="contacto">
+        <input type="text" name="nombre" placeholder="Nombre completo" required><br>
+        <input type="email" name="email" placeholder="Correo electrónico" required><br>
+        <select name="asunto" required>
+          <option value="">Asunto</option>
+          <option value="informacion-destinos">Información sobre destinos</option>
+          <option value="reservas-hoteles">Reservas de hoteles</option>
+          <option value="paquetes-turisticos">Paquetes turísticos</option>
+          <option value="transporte">Información de transporte</option>
+          <option value="actividades">Actividades y excursiones</option>
+          <option value="documentacion">Documentación y visas</option>
+          <option value="clima">Información del clima</option>
+          <option value="seguridad">Seguridad y recomendaciones</option>
+          <option value="accesibilidad">Información de accesibilidad</option>
+          <option value="otro">Otro</option>
+        </select><br>
+        <textarea name="mensaje" placeholder="Mensaje" required></textarea><br>
+        <input type="text" name="captcha" placeholder="¿Cuál es la capital de Ecuador?" required><br>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+    <!-- REGISTRO ADMIN -->
+    <div class="form-block">
+      <h2>Registro de Administrador</h2>
+      {% if tipo == 'registro_admin' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="registro_admin">
+        <input type="text" name="usuario" placeholder="Usuario" required><br>
+        <input type="password" name="clave" placeholder="Contraseña" required><br>
+        <input type="email" name="email" placeholder="Correo electrónico" required><br>
+        <button type="submit">Registrar Admin</button>
+      </form>
+    </div>
+    <!-- RECUPERAR CONTRASEÑA -->
+    <div class="form-block">
+      <h2>Recuperar Contraseña</h2>
+      {% if tipo == 'recuperar' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="recuperar">
+        <input type="email" name="email" placeholder="Correo electrónico" required><br>
+        <button type="submit">Recuperar</button>
+      </form>
+    </div>
+    <!-- GUARDAR DESTINO -->
+    <div class="form-block">
+      <h2>Guardar Destino Turístico</h2>
+      {% if tipo == 'guardar_registro' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="guardar_registro">
+        <input type="text" name="nombre" placeholder="Nombre del destino" required><br>
+        <input type="text" name="tipo" placeholder="Tipo" required><br>
+        <input type="text" name="provincia" placeholder="Provincia" required><br>
+        <input type="text" name="ciudad" placeholder="Ciudad"><br>
+        <input type="number" step="0.0001" name="latitud" placeholder="Latitud"><br>
+        <input type="number" step="0.0001" name="longitud" placeholder="Longitud"><br>
+        <input type="text" name="direccion" placeholder="Dirección"><br>
+        <button type="submit">Guardar</button>
+      </form>
+    </div>
+    <!-- EDITAR DESTINO -->
+    <div class="form-block">
+      <h2>Editar Destino Turístico</h2>
+      {% if tipo == 'editar_registro' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="editar_registro">
+        <input type="number" name="id" placeholder="ID del destino" required><br>
+        <input type="text" name="nombre" placeholder="Nombre del destino" required><br>
+        <input type="text" name="tipo" placeholder="Tipo" required><br>
+        <input type="text" name="provincia" placeholder="Provincia" required><br>
+        <input type="text" name="ciudad" placeholder="Ciudad"><br>
+        <input type="number" step="0.0001" name="latitud" placeholder="Latitud"><br>
+        <input type="number" step="0.0001" name="longitud" placeholder="Longitud"><br>
+        <input type="text" name="direccion" placeholder="Dirección"><br>
+        <button type="submit">Actualizar</button>
+      </form>
+    </div>
+    <!-- BUSQUEDA AVANZADA -->
+    <div class="form-block">
+      <h2>Búsqueda Avanzada de Destinos</h2>
+      {% if tipo == 'busqueda_avanzada' and mensaje %}<div class="alert">{{ mensaje }}</div>{% endif %}
+      <form action="/formularios" method="POST">
+        <input type="hidden" name="tipo_formulario" value="busqueda_avanzada">
+        <input type="text" name="nombre" placeholder="Nombre del destino"><br>
+        <input type="text" name="tipo" placeholder="Tipo"><br>
+        <input type="text" name="provincia" placeholder="Provincia"><br>
+        <input type="text" name="ciudad" placeholder="Ciudad"><br>
+        <button type="submit">Buscar</button>
+      </form>
+      {% if resultados %}
+      <h3>Resultados encontrados</h3>
+      <table style="width:100%;margin-top:1rem;background:#333;color:#fff;">
+        <thead>
+          <tr>
+            <th>ID</th><th>Nombre</th><th>Tipo</th><th>Provincia</th><th>Ciudad</th><th>Latitud</th><th>Longitud</th><th>Dirección</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in resultados %}
+          <tr>
+            <td>{{ r[0] }}</td><td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[3] }}</td><td>{{ r[4] }}</td><td>{{ r[5] }}</td><td>{{ r[6] }}</td><td>{{ r[7] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% elif resultados is not none %}
+      <p>No se encontraron resultados.</p>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html> 

@@ -1,0 +1,1249 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos de accesibilidad */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.magnifier {
+  position: absolute;
+  pointer-events: none;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  display: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.magnifier img {
+  position: absolute;
+  transform: scale(2); /* Zoom 2x */
+  transform-origin: top left;
+}
+
+
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #00796B;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 10000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Estados de foco mejorados */
+*:focus {
+  outline: 3px solid #FFD700;
+  outline-offset: 2px;
+}
+
+button:focus,
+a:focus {
+  outline: 3px solid #FFD700;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.5);
+}
+
+body {
+  background-image: url('/static/img/fondos_rutas.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+
+  
+}
+
+
+header {
+  background: #00796B;
+  color: white;
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav a:hover,
+.nav a:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #FFD700;
+}
+
+.nav a[aria-current="page"] {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.carrusel {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  margin: 2rem auto;
+  overflow: hidden;
+  border: 4px solid purple;
+  background: #ddd;
+}
+
+.carrusel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.imagenes {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.imagenes img {
+  width: 100%;
+  flex-shrink: 0;
+  height: auto;
+}
+
+.carrusel button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  z-index: 2;
+  transition: background-color 0.3s;
+}
+
+.carrusel button:hover,
+.carrusel button:focus {
+  background: #0097a7;
+}
+
+.anterior {
+  left: 10px;
+}
+
+.siguiente {
+  right: 10px;
+}
+
+.accesibilidad-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.menu-accesibilidad {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  background-color: rgba(0, 79, 102, 0.95);
+  color: white;
+  font-family: sans-serif;
+  border-radius: 6px;
+  z-index: 1000;
+  width: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.menu-toggle {
+  width: 100%;
+  background-color: #e63946;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 6px 6px 0 0;
+  transition: background-color 0.3s;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus {
+  background-color: #d32f2f;
+}
+
+.accesibilidad-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #023047;
+  border-radius: 0 0 6px 6px;
+}
+
+.accesibilidad-lista li {
+  border-top: 1px solid #03506f;
+}
+
+.accesibilidad-lista li button {
+  background: none;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.accesibilidad-lista li button:hover,
+.accesibilidad-lista li button:focus {
+  background-color: #03506f;
+  color: #FFD700;
+}
+
+.oculto {
+  display: none;
+}
+
+/* Modos de accesibilidad */
+.alto-contraste {
+  background-color: #000000 !important;
+  color: #FFFF00 !important;
+}
+
+.alto-contraste header {
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+.alto-contraste .nav a {
+  color: #000000 !important;
+}
+
+.alto-contraste .nav a:hover,
+.alto-contraste .nav a:focus {
+  background-color: #000000 !important;
+  color: #FFFF00 !important;
+}
+
+.texto-grande {
+  font-size: 1.2rem !important;
+}
+
+.texto-grande h1 { font-size: 2.4rem !important; }
+.texto-grande h2 { font-size: 2rem !important; }
+.texto-grande h3 { font-size: 1.6rem !important; }
+
+.texto-pequeno {
+  font-size: 0.9rem !important;
+}
+
+.texto-pequeno h1 { font-size: 1.8rem !important; }
+.texto-pequeno h2 { font-size: 1.5rem !important; }
+.texto-pequeno h3 { font-size: 1.2rem !important; }
+
+.fuente-legible {
+  font-family: Arial, Helvetica, sans-serif !important;
+  line-height: 1.8 !important;
+}
+
+.banner-rotativo {
+  position: relative;
+  width: 95%;
+  max-width: 1400px;
+  height: 550px;
+  margin: 2rem auto;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-rotativo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none; /* Oculta todas por defecto */
+}
+
+.banner-rotativo img.active {
+  display: block; /* Solo se muestra la activa */
+}
+
+
+
+.banner-rotativo img.active {
+  opacity: 1;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+}
+
+/* Estilos para destinos destacados */
+.destinos-destacados {
+  margin: 3rem 0;
+  padding: 2rem;
+}
+
+.destinos-destacados h2 {
+  color: #00796B;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.destinos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.destino-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.destino-card:hover,
+.destino-card:focus-within {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.destino-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.destino-card h3 {
+  color: #00796B;
+  padding: 1rem 1rem 0.5rem;
+  font-size: 1.3rem;
+}
+
+.destino-card p {
+  padding: 0 1rem 1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.btn-destino {
+  background: #00796B;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  margin: 0 1rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-destino:hover,
+.btn-destino:focus {
+  background: #005a4f;
+}
+
+/* Mejoras en modales */
+.modal {
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.modal:not(.oculto) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal .cerrar {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.modal .cerrar:hover,
+.modal .cerrar:focus {
+  color: #000;
+}
+
+.oculto {
+  display: none !important;
+}
+
+.custom-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 2px solid white;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  background-color: white;
+  color: #00796B;
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.btn-outline:hover,
+.btn-outline:focus {
+  background: white;
+  color: #00796B;
+}
+
+.btn-solid {
+  background: #FFD700;
+  color: #333;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-solid:hover,
+.btn-solid:focus {
+  background: #FFC107;
+}
+
+/* Mejoras en formularios */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+  font-size: 1rem;
+  background: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Estilos específicos para modales de registro y login */
+.registro-modal .form-group label,
+.login-modal .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333 !important;
+  font-size: 1rem;
+  background: white !important;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Estilos para etiquetas de fieldset */
+fieldset .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333 !important;
+  font-size: 1rem;
+  background: white !important;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Asegurar que las etiquetas sean visibles en todos los contextos */
+label {
+  color: #333 !important;
+  background: white !important;
+  display: block;
+  font-weight: bold;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para formularios generales */
+form input,
+form select,
+form textarea,
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  background: white;
+  color: #333;
+  box-sizing: border-box;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus,
+.modal-content input:focus,
+.modal-content select:focus {
+  border-color: #00796B;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+}
+
+/* Estilos para botones de formulario */
+form button,
+.modal-content button {
+  background: #00796B;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+form button:hover,
+form button:focus,
+.modal-content button:hover,
+.modal-content button:focus {
+  background: #005a4f;
+}
+
+/* Estilos específicos para el modal de registro */
+.registro-modal {
+  background: white;
+  color: #333;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.registro-modal h2 {
+  color: #00796B;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.registro-subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Estilos para fieldsets */
+fieldset {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+fieldset legend {
+  background: #00796B;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Estilos para checkboxes */
+input[type="checkbox"] {
+  width: auto !important;
+  margin-right: 0.5rem;
+  transform: scale(1.2);
+}
+
+.form-group input[type="checkbox"] + label {
+  display: inline;
+  margin-left: 0.5rem;
+  font-weight: normal;
+  background: white !important;
+  color: #333 !important;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+/* Estilos específicos para checkbox wrapper */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.checkbox-text {
+  color: #333 !important;
+  background: white !important;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-weight: normal;
+}
+
+/* Estilos para form-options */
+.form-options {
+  margin: 1rem 0;
+}
+
+.form-options label {
+  display: flex;
+  align-items: center;
+  color: #333 !important;
+  background: white !important;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Estilos para acciones de formulario */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.form-actions button {
+  min-width: 120px;
+}
+
+.form-actions button[type="button"] {
+  background: #666;
+}
+
+.form-actions button[type="button"]:hover,
+.form-actions button[type="button"]:focus {
+  background: #555;
+}
+
+/* Footer del registro */
+.registro-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.link-secondary {
+  color: #00796B;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.link-secondary:hover,
+.link-secondary:focus {
+  text-decoration: underline;
+}
+
+/* Alertas */
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.alert.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  min-height: 1.2rem;
+}
+
+/* Footer */
+footer {
+  background: #333;
+  color: white;
+  padding: 2rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-content nav {
+  margin-top: 1rem;
+}
+
+.footer-content a {
+  color: #FFD700;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.3s;
+}
+
+.footer-content a:hover,
+.footer-content a:focus {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Responsive design mejorado */
+@media (max-width: 768px) {
+  header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .custom-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .destinos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .menu-accesibilidad {
+    position: static;
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 1rem;
+  }
+  
+  .banner-rotativo {
+    height: 300px;
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+}
+
+/* Estilos para notificaciones */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 10001;
+  max-width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: slideInRight 0.3s ease-out;
+}
+
+.notification.info {
+  background-color: #2196F3;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+}
+
+.notification.error {
+  background-color: #f44336;
+}
+
+.notification.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Controles de banner */
+.banner-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  z-index: 10;
+}
+
+.banner-controls button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s;
+}
+
+.banner-controls button:hover,
+.banner-controls button:focus {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.banner-counter {
+  color: white;
+  font-weight: bold;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Panel de administrador */
+.admin-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  z-index: 10002;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+}
+
+.admin-header {
+  background: #00796B;
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.admin-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.admin-header button:hover,
+.admin-header button:focus {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.admin-content {
+  padding: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.admin-content h3 {
+  color: #00796B;
+  margin-bottom: 1rem;
+}
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background: #f5f5f5;
+  border-radius: 6px;
+  border-left: 4px solid #00796B;
+}
+
+.user-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.user-id {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Estilos para el mapa */
+.map-popup {
+  text-align: center;
+  min-width: 200px;
+}
+
+.map-popup h3 {
+  color: #00796B;
+  margin-bottom: 0.5rem;
+}
+
+.map-popup p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.map-popup .btn-destino {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* Modal de destino */
+.destination-modal {
+  max-width: 500px;
+}
+
+.destination-modal h2 {
+  color: #00796B;
+  margin-bottom: 1rem;
+}
+
+.destination-modal h3 {
+  color: #00796B;
+  margin: 1rem 0 0.5rem;
+}
+
+.destination-modal ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.destination-modal li {
+  margin-bottom: 0.3rem;
+}
+
+/* Navegación por teclado */
+.keyboard-navigation *:focus {
+  outline: 3px solid #FFD700 !important;
+  outline-offset: 2px !important;
+}
+
+/* Mejoras en el banner rotativo */
+.banner-rotativo {
+  position: relative;
+  width: 99%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.banner-rotativo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.banner-rotativo img.active {
+  opacity: 1;
+}
+
+/* Mejoras en accesibilidad visual */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Estilos para modo oscuro (si el usuario lo prefiere) */
+@media (prefers-color-scheme: dark) {
+  body:not(.alto-contraste) {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  body:not(.alto-contraste) .destino-card {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+  
+  body:not(.alto-contraste) .destino-card p {
+    color: #cccccc;
+  }
+  
+  body:not(.alto-contraste) .modal-content {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+  
+  body:not(.alto-contraste) .admin-panel {
+    background: #2d2d2d;
+    color: #ffffff;
+  }
+  
+  body:not(.alto-contraste) .user-item {
+    background: #3d3d3d;
+    color: #ffffff;
+  }
+}
+
+/* Mejoras en el contraste para mejor accesibilidad */
+.btn-solid {
+  background: #FFD700;
+  color: #000000;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-solid:hover,
+.btn-solid:focus {
+  background: #FFC107;
+  color: #000000;
+}
+
+/* Indicadores de estado para formularios */
+.form-group input:valid {
+  border-color: #4CAF50;
+}
+
+.form-group input:invalid:not(:placeholder-shown) {
+  border-color: #f44336;
+}
+
+/* Mejoras en el footer */
+footer {
+  background: #333;
+  color: white;
+  padding: 2rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-content nav {
+  margin-top: 1rem;
+}
+
+.footer-content a {
+  color: #FFD700;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.3s;
+}
+
+.footer-content a:hover,
+.footer-content a:focus {
+  color: white;
+  text-decoration: underline;
+}
+
+.monocromatico {
+  filter: grayscale(1) !important;
+}
+
+.alerta-visual {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #FFD700;
+  color: #222;
+  padding: 1em 2em;
+  border-radius: 8px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 2px 8px #0003;
+}
