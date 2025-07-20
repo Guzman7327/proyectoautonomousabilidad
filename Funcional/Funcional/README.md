@@ -175,3 +175,53 @@ Para soporte técnico o consultas sobre el diseño:
 ---
 
 **© 2024 Portal Turístico Ecuador** - Diseño moderno y accesible para todos los usuarios. 
+
+# ✅ Checklist de Usabilidad y Accesibilidad
+
+---
+
+## 1. ACCESIBILIDAD Y USABILIDAD DEL SISTEMA
+
+| Buenas Prácticas | Cumplido (S/N) | Comentario |
+|------------------|:-------------:|:-----------|
+| Modo alto contraste | ✅ | Implementado |
+| Modo monocromático/inversión de color | ✅ | Implementado |
+| Aumentar/disminuir tamaño de texto | ✅ | Implementado |
+| Ajustar espaciado (línea, palabra, carácter) | ✅ | Implementado |
+| Tipografía dislexia-friendly | ✅ | Implementado |
+| Zoom de página / lupa puntual | ✅ | Implementado |
+| Resaltar foco y enlaces | ✅ | Implementado |
+| Navegación por teclado y skiplinks | ✅ | Implementado |
+| Pausar/ocultar animaciones | ✅ | Implementado |
+| Lector de pantalla integrado (texto a voz) | ✅ | Implementado |
+| Descripción de audio | ✅ | Implementado |
+| Menú consistente y jerárquico | ✅ | Implementado |
+| Iconos y texto en menú | ✅ | Implementado |
+| Responsive y compatible con lectores de pantalla | ✅ | Implementado |
+| Feedback visual (hover, foco, animaciones) | ✅ | Implementado |
+| Soporte multilingüe | ✅ | Español/Inglés |
+
+---
+
+## 2. FORMULARIOS Y FLUJOS PRINCIPALES
+
+| Buenas Prácticas | Cumplido (S/N) | Comentario |
+|------------------|:-------------:|:-----------|
+| Etiquetas claras y visibles en todos los campos | ✅ | Implementado |
+| Validación en tiempo real y mensajes de error específicos | ✅ | Implementado |
+| Botones claros y comprensibles (“Enviar”, “Cancelar”, etc.) | ✅ | Implementado |
+| Feedback visual al guardar/enviar (mensajes, animaciones) | ✅ | Implementado |
+| Confirmación previa en acciones críticas (editar email, etc.) | ✅ | Implementado |
+| Prevención de intentos múltiples (captcha/alerta) | ✅ | Implementado |
+| Autofocus en campos clave | ✅ | Implementado |
+| Autocompletado y sugerencias | ✅ | Implementado |
+| Agrupación lógica con fieldset/legend | ✅ | Implementado |
+| Mensaje visible si no hay resultados | ✅ | Implementado |
+| Diseño responsive y accesible | ✅ | Implementado |
+| Captcha o verificación antispam en contacto/login | ✅ | Implementado |
+| Mensaje de “procesando” en formularios | ✅ | Implementado |
+| No pedir más datos de los necesarios | ✅ | Implementado |
+
+---
+
+**Este checklist demuestra el cumplimiento de las mejores prácticas de usabilidad y accesibilidad, alineado con ISO 9241-11 e ISO 25010:2011, y es ideal para auditorías, presentaciones y documentación de calidad del proyecto.** 

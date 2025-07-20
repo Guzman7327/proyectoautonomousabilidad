@@ -85,8 +85,8 @@
 
       <nav class="nav" role="navigation" aria-label="Navegación principal">
         <ul>
-          <li><a href="/" aria-current="page">{{ textos[lang]['inicio'] }}</a></li>
-          <li><a href="/rutas">{{ textos[lang]['rutas'] }}</a></li>
+          <li><a href="/">{{ textos[lang]['inicio'] }}</a></li>
+          <li><a href="/rutas/nueva">{{ textos[lang]['rutas'] }}</a></li>
           <li><a href="#alojamientos">Alojamientos</a></li>
           <li><a href="#accesibilidad">{{ textos[lang]['accesibilidad'] }}</a></li>
           <li><a href="/contacto">{{ textos[lang]['contacto'] }}</a></li>
@@ -184,6 +184,49 @@
       </div>
     </section>
   </main>
+  <section class="checklist-main" style="max-width:900px;margin:3rem auto 2rem auto;padding:2rem;background:#f9fafb;border-radius:1.5rem;box-shadow:0 2px 16px rgba(37,99,235,0.07);">
+    <h1 style="text-align:center;margin-bottom:2rem;">Checklist de Usabilidad y Accesibilidad</h1>
+    <section class="checklist-bloque" style="margin-bottom:2.5rem;">
+      <h2 style="color:#2563eb;">1. Accesibilidad y Usabilidad del Sistema</h2>
+      <ul class="checklist-lista" style="margin-top:1rem;line-height:2;font-size:1.1em;">
+        <li>✅ Modo alto contraste</li>
+        <li>✅ Modo monocromático/inversión de color</li>
+        <li>✅ Aumentar/disminuir tamaño de texto</li>
+        <li>✅ Ajustar espaciado (línea, palabra, carácter)</li>
+        <li>✅ Tipografía dislexia-friendly</li>
+        <li>✅ Zoom de página / lupa puntual</li>
+        <li>✅ Resaltar foco y enlaces</li>
+        <li>✅ Navegación por teclado y skiplinks</li>
+        <li>✅ Pausar/ocultar animaciones</li>
+        <li>✅ Lector de pantalla integrado (texto a voz)</li>
+        <li>✅ Descripción de audio</li>
+        <li>✅ Menú consistente y jerárquico</li>
+        <li>✅ Iconos y texto en menú</li>
+        <li>✅ Responsive y compatible con lectores de pantalla</li>
+        <li>✅ Feedback visual (hover, foco, animaciones)</li>
+        <li>✅ Soporte multilingüe</li>
+      </ul>
+    </section>
+    <section class="checklist-bloque">
+      <h2 style="color:#10b981;">2. Formularios y Flujos Principales</h2>
+      <ul class="checklist-lista" style="margin-top:1rem;line-height:2;font-size:1.1em;">
+        <li>✅ Etiquetas claras y visibles en todos los campos</li>
+        <li>✅ Validación en tiempo real y mensajes de error específicos</li>
+        <li>✅ Botones claros y comprensibles (“Enviar”, “Cancelar”, etc.)</li>
+        <li>✅ Feedback visual al guardar/enviar (mensajes, animaciones)</li>
+        <li>✅ Confirmación previa en acciones críticas (editar email, etc.)</li>
+        <li>✅ Prevención de intentos múltiples (captcha/alerta)</li>
+        <li>✅ Autofocus en campos clave</li>
+        <li>✅ Autocompletado y sugerencias</li>
+        <li>✅ Agrupación lógica con fieldset/legend</li>
+        <li>✅ Mensaje visible si no hay resultados</li>
+        <li>✅ Diseño responsive y accesible</li>
+        <li>✅ Captcha o verificación antispam en contacto/login</li>
+        <li>✅ Mensaje de “procesando” en formularios</li>
+        <li>✅ No pedir más datos de los necesarios</li>
+      </ul>
+    </section>
+  </section>
 
   <!-- Modal de Registro de Usuario -->
   <div id="modal-auth" class="modal oculto" role="dialog" aria-labelledby="modal-registro-titulo" aria-hidden="true">

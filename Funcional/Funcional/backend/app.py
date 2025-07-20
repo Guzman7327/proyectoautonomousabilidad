@@ -34,6 +34,40 @@ def get_conn():
 def rutas():
     return render_template('rutas.html')
 
+@app.route("/rutas/nueva", methods=["GET", "POST"])
+def nueva_ruta():
+    mensaje = None
+    if request.method == "POST":
+        nombre = request.form.get("nombre")
+        descripcion = request.form.get("descripcion")
+        provincia = request.form.get("provincia")
+        ciudad = request.form.get("ciudad")
+        tipo = request.form.get("tipo")
+        dificultad = request.form.get("dificultad")
+        distancia_km = request.form.get("distancia_km")
+        duracion_horas = request.form.get("duracion_horas")
+        accesible = bool(request.form.get("accesible"))
+        imagen_url = request.form.get("imagen_url")
+
+        if not nombre:
+            mensaje = "El nombre de la ruta es obligatorio."
+        else:
+            try:
+                conn = get_conn()
+                cur = conn.cursor()
+                cur.execute("""
+                    INSERT INTO rutas (nombre, descripcion, provincia, ciudad, tipo, dificultad, distancia_km, duracion_horas, accesible, imagen_url)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (nombre, descripcion, provincia, ciudad, tipo, dificultad, distancia_km, duracion_horas, accesible, imagen_url))
+                conn.commit()
+                cur.close()
+                conn.close()
+                mensaje = "Ruta guardada exitosamente."
+            except Exception as e:
+                mensaje = f"Error al guardar la ruta: {e}"
+
+    return render_template("nueva_ruta.html", mensaje=mensaje)
+
 # --- AUTENTICACIÓN CON JWT (API) ---
 def token_requerido(f):
     @wraps(f)

@@ -83,10 +83,84 @@ function toggleZoom() {
     }
 }
 
-// Lupa puntual (requiere implementación avanzada)
+// Mostrar/ocultar menú de accesibilidad con animación moderna
+function toggleAccMenu() {
+    const menu = document.getElementById('accesibilidad-lista');
+    if (menu) {
+        const expanded = menu.classList.contains('oculto');
+        menu.classList.toggle('oculto');
+        // Animación moderna
+        if (!menu.classList.contains('oculto')) {
+            menu.style.opacity = '0';
+            menu.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                menu.style.opacity = '1';
+                menu.style.transform = 'translateY(0)';
+            }, 10);
+        } else {
+            menu.style.opacity = '';
+            menu.style.transform = '';
+        }
+        // Accesibilidad ARIA
+        const btn = document.querySelector('.menu-toggle');
+        if (btn) btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+}
+
+// Lupa puntual real y moderna
+let lupaActiva = false;
+let lupaDiv = null;
+
 function activarLupaPuntual() {
-    alert('Función de lupa puntual en desarrollo');
-    registrarLog('Lupa puntual activada');
+    if (!lupaActiva) {
+        lupaDiv = document.getElementById('magnifier');
+        if (!lupaDiv) {
+            lupaDiv = document.createElement('div');
+            lupaDiv.id = 'magnifier';
+            lupaDiv.className = 'magnifier';
+            document.body.appendChild(lupaDiv);
+        }
+        lupaDiv.style.display = 'block';
+        lupaDiv.style.border = '3px solid var(--primary-color)';
+        lupaDiv.style.boxShadow = '0 0 16px 4px rgba(37,99,235,0.15)';
+        lupaDiv.style.transition = 'box-shadow 0.3s, border 0.3s';
+        document.addEventListener('mousemove', moverLupa);
+        lupaActiva = true;
+        registrarLog('Lupa puntual activada');
+    } else {
+        if (lupaDiv) lupaDiv.style.display = 'none';
+        document.removeEventListener('mousemove', moverLupa);
+        lupaActiva = false;
+        registrarLog('Lupa puntual desactivada');
+    }
+}
+
+function moverLupa(e) {
+    if (!lupaDiv) return;
+    const size = 150;
+    lupaDiv.style.left = (e.pageX - size/2) + 'px';
+    lupaDiv.style.top = (e.pageY - size/2) + 'px';
+    lupaDiv.style.background = 'rgba(255,255,255,0.7)';
+    lupaDiv.style.backdropFilter = 'blur(2px)';
+    // Captura la zona bajo el cursor
+    html2canvas(document.body, {
+        x: e.pageX - size/2,
+        y: e.pageY - size/2,
+        width: size,
+        height: size,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+        scale: 2
+    }).then(canvas => {
+        lupaDiv.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = canvas.toDataURL();
+        img.style.width = size + 'px';
+        img.style.height = size + 'px';
+        img.style.borderRadius = '50%';
+        img.style.boxShadow = '0 0 12px 2px rgba(37,99,235,0.10)';
+        lupaDiv.appendChild(img);
+    });
 }
 
 // Resaltado de foco/enlaces
@@ -129,10 +203,26 @@ function resetAccessibility() {
 
 // ...puedes agregar más funciones según el menú de accesibilidad... 
 
+// Mejor feedback visual para alerta visual
 function mostrarAlertaVisual(mensaje) {
     const alerta = document.createElement('div');
-    alerta.className = 'alerta-visual';
+    alerta.className = 'alerta-visual fade-in';
     alerta.innerText = mensaje;
+    alerta.style.position = 'fixed';
+    alerta.style.top = '30px';
+    alerta.style.right = '30px';
+    alerta.style.background = 'linear-gradient(90deg, #2563eb 60%, #10b981 100%)';
+    alerta.style.color = '#fff';
+    alerta.style.padding = '1rem 2rem';
+    alerta.style.borderRadius = '1rem';
+    alerta.style.fontWeight = 'bold';
+    alerta.style.fontSize = '1.1rem';
+    alerta.style.boxShadow = '0 4px 24px rgba(37,99,235,0.15)';
+    alerta.style.zIndex = '99999';
+    alerta.style.transition = 'opacity 0.5s';
     document.body.appendChild(alerta);
-    setTimeout(() => alerta.remove(), 4000);
+    setTimeout(() => {
+        alerta.style.opacity = '0';
+        setTimeout(() => alerta.remove(), 500);
+    }, 4000);
 } 

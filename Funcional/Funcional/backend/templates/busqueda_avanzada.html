@@ -11,9 +11,8 @@
       <h2>Búsqueda Avanzada de Destinos</h2>
       <form id="form-busqueda-filtros" action="/busqueda_avanzada" method="POST" role="form" aria-describedby="busqueda-descripcion" autocomplete="on">
         <p id="busqueda-descripcion" class="sr-only">Formulario de búsqueda avanzada con múltiples filtros</p>
-        <!-- Filtros Básicos -->
-        <div class="form-section" aria-labelledby="filtros-basicos-titulo">
-          <h3 id="filtros-basicos-titulo" class="section-title">🎯 Filtros Básicos</h3>
+        <fieldset>
+          <legend>Filtros Básicos</legend>
           <div class="form-row">
             <div class="form-group">
               <label for="busqueda-nombre" class="form-label">🏷️ Nombre del Destino</label>
@@ -60,10 +59,9 @@
               <input type="text" id="busqueda-ciudad" name="ciudad" placeholder="Buscar por ciudad..." autocomplete="off" class="form-input" />
             </div>
           </div>
-        </div>
-        <!-- Filtros de Características -->
-        <div class="form-section" aria-labelledby="filtros-caracteristicas-titulo">
-          <h3 id="filtros-caracteristicas-titulo" class="section-title">🏷️ Características Especiales</h3>
+        </fieldset>
+        <fieldset>
+          <legend>Características Especiales</legend>
           <div class="checkbox-group">
             <label class="checkbox-wrapper">
               <input type="checkbox" name="caracteristicas" value="accesible" />
@@ -96,10 +94,9 @@
               <span class="checkbox-text">Turismo gastronómico</span>
             </label>
           </div>
-        </div>
-        <!-- Filtros de Precio -->
-        <div class="form-section" aria-labelledby="filtros-precio-titulo">
-          <h3 id="filtros-precio-titulo" class="section-title">💰 Rango de Precio</h3>
+        </fieldset>
+        <fieldset>
+          <legend>Rango de Precio</legend>
           <div class="form-row">
             <div class="form-group">
               <label for="busqueda-precio-min" class="form-label">📉 Precio Mínimo</label>
@@ -125,10 +122,9 @@
               </label>
             </div>
           </div>
-        </div>
-        <!-- Filtros de Ordenamiento -->
-        <div class="form-section" aria-labelledby="filtros-orden-titulo">
-          <h3 id="filtros-orden-titulo" class="section-title">📊 Ordenar Por</h3>
+        </fieldset>
+        <fieldset>
+          <legend>Ordenar Por</legend>
           <div class="form-row">
             <div class="form-group">
               <label for="busqueda-orden" class="form-label">🔄 Orden</label>
@@ -141,8 +137,7 @@
               </select>
             </div>
           </div>
-        </div>
-        <!-- Botón de envío -->
+        </fieldset>
         <div class="form-actions">
           <button type="submit" class="btn-registro-submit">🔍 Buscar</button>
           <button type="button" onclick="limpiarFiltros()" class="btn-registro-cancel">Limpiar filtros</button>
@@ -151,6 +146,7 @@
           <span class="loader"></span> Buscando...
         </div>
         <div id="busqueda-status" class="registro-status" role="status" aria-live="polite">{{ mensaje }}</div>
+        <div id="busqueda-feedback" style="display:none; margin-top:1em; text-align:center; font-weight:bold; color:#2563eb;"></div>
       </form>
       <div id="resultados-busqueda">
         <!-- Aquí se mostrarán los resultados dinámicamente -->
@@ -185,8 +181,14 @@
           </tbody>
         </table>
         {% elif resultados is not none %}
-        <p style="margin-top:2rem;">No se encontraron resultados.</p>
-        {% endif %}
+<div style="margin-top:2rem; text-align:center;">
+  <div style="display:inline-block; background:#fffbe6; color:#b45309; border-radius:1em; padding:1.2em 2em; font-size:1.2em; font-weight:bold; box-shadow:0 2px 8px rgba(245,158,11,0.08);">
+    <span style="font-size:2em; vertical-align:middle;">🔎</span><br>
+    No se encontraron resultados para tu búsqueda.<br>
+    <span style="font-size:0.95em; font-weight:normal;">Prueba con otros filtros o revisa la ortografía.</span>
+  </div>
+</div>
+{% endif %}
       </div>
     </div>
   </main>
@@ -235,6 +237,24 @@
         document.getElementById('resultados-busqueda').innerHTML = '<p style="margin-top:2rem;">No se encontraron resultados.</p>';
       }
     });
+  });
+
+  document.getElementById('limpiar-filtros').addEventListener('click', function() {
+    const form = document.getElementById('form-busqueda-filtros');
+    form.reset();
+    document.getElementById('busqueda-feedback').textContent = 'Filtros limpiados';
+    document.getElementById('busqueda-feedback').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('busqueda-feedback').style.display = 'none';
+    }, 1500);
+  });
+
+  document.getElementById('form-busqueda-filtros').addEventListener('submit', function(e) {
+    document.getElementById('busqueda-feedback').textContent = 'Buscando...';
+    document.getElementById('busqueda-feedback').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('busqueda-feedback').style.display = 'none';
+    }, 1200);
   });
   </script>
 </body>
