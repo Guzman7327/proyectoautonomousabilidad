@@ -1,0 +1,45 @@
+# =====================================================
+# REQUISITOS - PORTAL TURÍSTICO ECUADOR
+# =====================================================
+
+# Framework web
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Base de datos
+psycopg2-binary==2.9.7
+
+# Seguridad y autenticación
+bcrypt==4.0.1
+PyJWT==2.8.0
+
+# Utilidades
+python-dotenv==1.0.0
+Werkzeug==2.3.7
+
+# Desarrollo (opcional)
+# Flask-DebugToolbar==0.13.1
+# pytest==7.4.2
+# pytest-flask==1.2.0
+
+# =====================================================
+# INSTRUCCIONES DE INSTALACIÓN
+# =====================================================
+#
+# 1. Crear entorno virtual:
+#    python -m venv venv
+#
+# 2. Activar entorno virtual:
+#    Windows: venv\Scripts\activate
+#    Linux/Mac: source venv/bin/activate
+#
+# 3. Instalar dependencias:
+#    pip install -r requirements.txt
+#
+# 4. Configurar base de datos:
+#    python setup_database.py
+#
+# 5. Ejecutar aplicación:
+#    python backend/app.py
+#
+# ===================================================== 

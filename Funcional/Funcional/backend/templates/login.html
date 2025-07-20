@@ -2,90 +2,82 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Iniciar Sesión</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Portal Turístico Ecuador</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  
+  <header role="banner">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
+        <span class="logo-text">PORTAL TURÍSTICO EC</span>
+      </a>
+      
+      <nav class="nav" role="navigation" aria-label="Navegación principal">
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/rutas">Rutas</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
   <main id="main-content" role="main">
-    <div class="modal-content login-modal" style="max-width:400px;margin:2rem auto;box-shadow:0 0 10px #0002;">
-      <h2 id="modal-login-titulo">Iniciar Sesión</h2>
-      <p class="login-subtitle">Accede a tu cuenta del Portal Turístico Ecuador</p>
-      <form method="POST" id="form-login" role="form" aria-describedby="login-descripcion" autocomplete="on">
-        <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal</p>
+    <div class="form-container fade-in">
+      <h1 class="form-title">Iniciar Sesión</h1>
+      
+      {% if mensaje %}
+        <div class="notification {% if 'error' in mensaje.lower() %}error{% else %}success{% endif %} mb-3">
+          <p>{{ mensaje }}</p>
+        </div>
+      {% endif %}
+      
+      <form method="POST" role="form" aria-describedby="login-descripcion">
+        <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal turístico</p>
+        
         <div class="form-group">
-          <label for="login-usuario">Usuario:</label>
-          <input type="text" id="login-usuario" name="usuario" placeholder="Ingrese su nombre de usuario" required 
-                 aria-describedby="login-usuario-error" autocomplete="username" autofocus />
-          <div id="login-usuario-error" class="error-message" role="alert" aria-live="polite"></div>
+          <label for="usuario">Usuario:</label>
+          <input type="text" id="usuario" name="usuario" class="form-control" 
+                 placeholder="Ingrese su nombre de usuario" required 
+                 aria-describedby="usuario-error" />
+          <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
+        
         <div class="form-group">
-          <label for="login-clave">Contraseña:</label>
-          <div style="position:relative;">
-            <input type="password" id="login-clave" name="clave" placeholder="Ingrese su contraseña" required 
-                   aria-describedby="login-clave-error" autocomplete="current-password" />
-            <button type="button" onclick="togglePassword()" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">
-              <span id="icon-eye">👁️</span>
-            </button>
-          </div>
-          <div id="login-clave-error" class="error-message" role="alert" aria-live="polite"></div>
+          <label for="clave">Contraseña:</label>
+          <input type="password" id="clave" name="clave" class="form-control" 
+                 placeholder="Ingrese su contraseña" required 
+                 aria-describedby="clave-error" />
+          <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
-        <!-- Opciones adicionales -->
-        <div class="form-options">
-          <label class="checkbox-wrapper">
-            <input type="checkbox" id="remember-user" name="remember">
-            <span class="checkmark"></span>
-            <span class="checkbox-text">Recordar mi usuario</span>
-          </label>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
         </div>
-        <!-- Botón de envío -->
-        <button type="submit" aria-label="Iniciar sesión">Iniciar sesión</button>
-        <!-- Mensaje de estado -->
-        <div id="login-status" class="login-status" role="status" aria-live="polite"></div>
       </form>
-      <div class="login-footer">
-        <p class="login-links">
-          <a href="/registro" class="link-secondary">¿No tienes cuenta? Regístrate aquí</a>
-        </p>
-        <p class="login-links">
-          <a href="/recuperar" class="link-secondary">¿Olvidaste tu contraseña?</a>
-        </p>
+      
+      <div class="text-center mt-3">
+        <p>¿No tienes cuenta? <a href="/registro" class="btn btn-outline">Regístrate</a></p>
+        <p><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>
       </div>
     </div>
   </main>
-  <script>
-// Mostrar/ocultar contraseña
-function togglePassword() {
-  const input = document.getElementById('login-clave');
-  const icon = document.getElementById('icon-eye');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    icon.textContent = '👁️';
-  }
-}
 
-// Prevención de intentos múltiples
-let intentos = 0;
-document.getElementById('form-login').addEventListener('submit', function(e) {
-  const usuario = document.getElementById('login-usuario').value;
-  const clave = document.getElementById('login-clave').value;
-  if (!usuario || !clave) return;
-  // Simulación: después de 3 intentos fallidos, alerta visual
-  if (intentos >= 2) {
-    e.preventDefault();
-    mostrarAlertaVisual('Demasiados intentos fallidos. Por favor, espera o resuelve el captcha.');
-    return false;
-  }
-  // Aquí podrías agregar validación real con AJAX si lo deseas
-  // Si el login falla, incrementa intentos
-  // (En producción, esto debe hacerse en el backend)
-  setTimeout(() => {
-    // Simula fallo (elimina esto si usas validación real)
-    intentos++;
-  }, 500);
-});
-</script>
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Portal Turístico Ecuador</h3>
+        <p>Descubre la belleza y diversidad de Ecuador con nuestro portal turístico inclusivo.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Portal Turístico Ecuador. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 </body>
 </html>

@@ -2,188 +2,161 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro de Usuario</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Portal Turístico Ecuador</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  
+  <header role="banner">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
+        <span class="logo-text">PORTAL TURÍSTICO EC</span>
+      </a>
+      
+      <nav class="nav" role="navigation" aria-label="Navegación principal">
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/rutas">Rutas</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
   <main id="main-content" role="main">
-    <div class="modal-content registro-modal" style="max-width:600px;margin:2rem auto;box-shadow:0 0 10px #0002;">
-      <h2 id="modal-registro-titulo">Crear Cuenta</h2>
-      <p class="registro-subtitle">Únete al Portal Turístico Ecuador</p>
-      <form action="/registro" method="POST" id="form-registro" role="form" aria-describedby="registro-descripcion" autocomplete="on">
-        {% if mensaje %}
-          <div class="alert" style="color: white; background: #d9534f; padding: 10px; margin-bottom: 1rem; border-radius: 5px;">{{ mensaje }}</div>
-        {% endif %}
+    <div class="form-container fade-in">
+      <h1 class="form-title">Crear Cuenta</h1>
+      <p class="text-center mb-3">Únete a nuestro portal turístico y descubre Ecuador</p>
+      
+      <form method="POST" role="form" aria-describedby="registro-descripcion">
         <p id="registro-descripcion" class="sr-only">Formulario para crear una nueva cuenta de usuario</p>
-        <fieldset>
-          <legend>Datos personales</legend>
-          <div class="form-group">
-            <label for="nombre">Nombre completo *</label>
-            <input type="text" id="nombre" name="nombre" required autocomplete="name" aria-describedby="nombre-error" />
-            <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="cedula">Cédula *</label>
-            <input type="text" id="cedula" name="cedula" required pattern="[0-9]{10}" autocomplete="off" aria-describedby="cedula-error" />
-            <div id="cedula-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Contacto</legend>
-          <div class="form-group">
-            <label for="email">Correo electrónico *</label>
-            <input type="email" id="email" name="email" required autocomplete="email" aria-describedby="email-error" />
-            <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" autocomplete="tel" aria-describedby="telefono-error" />
-            <div id="telefono-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Credenciales</legend>
-          <div class="form-group">
-            <label for="usuario">Usuario *</label>
-            <input type="text" id="usuario" name="usuario" required autocomplete="username" aria-describedby="usuario-error" />
-            <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="clave">Contraseña *</label>
-            <div style="position:relative;">
-              <input type="password" id="clave" name="clave" required minlength="8" autocomplete="new-password" aria-describedby="clave-error" />
-              <button type="button" onclick="togglePasswordReg()" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">
-                <span id="icon-eye-reg">👁️</span>
-              </button>
-            </div>
-            <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
-            <div id="password-strength" style="height:8px; margin-top:4px; background:#eee; border-radius:4px;"></div>
-          </div>
-          <div class="form-group">
-            <label for="confirmar_clave">Confirmar contraseña *</label>
-            <input type="password" id="confirmar_clave" name="confirmar_clave" required autocomplete="new-password" aria-describedby="confirmar-error" />
-            <div id="confirmar-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-        </fieldset>
+        
         <div class="form-group">
-          <input type="checkbox" id="aceptar_terminos" name="aceptar_terminos" required />
-          <label for="aceptar_terminos">Acepto los términos y condiciones *</label>
+          <label for="nombre">Nombre completo:</label>
+          <input type="text" id="nombre" name="nombre" class="form-control" 
+                 placeholder="Ingrese su nombre completo" required 
+                 aria-describedby="nombre-error" />
+          <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
+        
+        <div class="form-group">
+          <label for="cedula">Cédula:</label>
+          <input type="text" id="cedula" name="cedula" class="form-control" 
+                 placeholder="Ingrese su número de cédula" required 
+                 aria-describedby="cedula-error" />
+          <div id="cedula-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Correo electrónico:</label>
+          <input type="email" id="email" name="email" class="form-control" 
+                 placeholder="ejemplo@correo.com" required 
+                 aria-describedby="email-error" />
+          <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input type="tel" id="telefono" name="telefono" class="form-control" 
+                 placeholder="Ingrese su número de teléfono" 
+                 aria-describedby="telefono-error" />
+          <div id="telefono-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="usuario">Nombre de usuario:</label>
+          <input type="text" id="usuario" name="usuario" class="form-control" 
+                 placeholder="Elija un nombre de usuario" required 
+                 aria-describedby="usuario-error" />
+          <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="clave">Contraseña:</label>
+          <input type="password" id="clave" name="clave" class="form-control" 
+                 placeholder="Mínimo 8 caracteres" required 
+                 aria-describedby="clave-error" />
+          <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmar_clave">Confirmar contraseña:</label>
+          <input type="password" id="confirmar_clave" name="confirmar_clave" class="form-control" 
+                 placeholder="Repita su contraseña" required 
+                 aria-describedby="confirmar-clave-error" />
+          <div id="confirmar-clave-error" class="error-message" role="alert" aria-live="polite"></div>
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="aceptar_terminos" name="aceptar_terminos" required>
+            <span class="checkbox-text">Acepto los términos y condiciones</span>
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="recibir_notificaciones" name="recibir_notificaciones">
+            <span class="checkbox-text">Deseo recibir notificaciones sobre nuevos destinos</span>
+          </label>
+        </div>
+        
         <div class="form-actions">
-          <button type="submit" aria-label="Registrarse">Registrarse</button>
-          <button type="button" onclick="window.location.href='/'" aria-label="Cancelar">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Crear Cuenta</button>
         </div>
-        <div id="registro-exito" class="registro-exito" role="status" aria-live="polite" style="display:none; color:green; font-weight:bold; margin-top:1em;">¡Registro exitoso!</div>
       </form>
-      <div class="registro-footer">
-        <p class="registro-links">
-          <a href="/login" class="link-secondary">¿Ya tienes cuenta? Inicia sesión aquí</a>
-        </p>
+      
+      <div class="text-center mt-3">
+        <p>¿Ya tienes cuenta? <a href="/login" class="btn btn-outline">Inicia sesión</a></p>
       </div>
     </div>
   </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Portal Turístico Ecuador</h3>
+        <p>Descubre la belleza y diversidad de Ecuador con nuestro portal turístico inclusivo.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Portal Turístico Ecuador. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Validación de contraseñas
+    document.getElementById('confirmar_clave').addEventListener('input', function() {
+      const clave = document.getElementById('clave').value;
+      const confirmar = this.value;
+      const errorDiv = document.getElementById('confirmar-clave-error');
+      
+      if (confirmar && clave !== confirmar) {
+        errorDiv.textContent = 'Las contraseñas no coinciden';
+        this.setCustomValidity('Las contraseñas no coinciden');
+      } else {
+        errorDiv.textContent = '';
+        this.setCustomValidity('');
+      }
+    });
+    
+    // Validación de contraseña
+    document.getElementById('clave').addEventListener('input', function() {
+      const clave = this.value;
+      const errorDiv = document.getElementById('clave-error');
+      
+      if (clave.length < 8) {
+        errorDiv.textContent = 'La contraseña debe tener al menos 8 caracteres';
+        this.setCustomValidity('La contraseña debe tener al menos 8 caracteres');
+      } else {
+        errorDiv.textContent = '';
+        this.setCustomValidity('');
+      }
+    });
+  </script>
 </body>
 </html>
-<script>
-// Mostrar/ocultar contraseña
-function togglePasswordReg() {
-  const input = document.getElementById('clave');
-  const icon = document.getElementById('icon-eye-reg');
-  if (input.type === 'password') {
-    input.type = 'text';
-    icon.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    icon.textContent = '👁️';
-  }
-}
-
-// Validación en tiempo real y barra de fortaleza
-const form = document.getElementById('form-registro');
-const campos = ['nombre', 'cedula', 'email', 'usuario', 'clave', 'confirmar_clave'];
-const strengthBar = document.getElementById('password-strength');
-
-function validarCampo(id, validador, mensaje) {
-  const input = document.getElementById(id);
-  const error = document.getElementById(id + '-error');
-  if (!validador(input.value)) {
-    error.textContent = mensaje;
-    input.style.borderColor = 'red';
-    return false;
-  } else {
-    error.textContent = '';
-    input.style.borderColor = 'green';
-    return true;
-  }
-}
-
-function validarFortaleza(password) {
-  let fuerza = 0;
-  if (password.length >= 8) fuerza++;
-  if (/[A-Z]/.test(password)) fuerza++;
-  if (/[0-9]/.test(password)) fuerza++;
-  if (/[^A-Za-z0-9]/.test(password)) fuerza++;
-  return fuerza;
-}
-
-function actualizarBarraFortaleza() {
-  const clave = document.getElementById('clave').value;
-  const fuerza = validarFortaleza(clave);
-  strengthBar.style.width = (fuerza * 25) + '%';
-  if (fuerza <= 1) strengthBar.style.background = 'red';
-  else if (fuerza === 2) strengthBar.style.background = 'orange';
-  else if (fuerza === 3) strengthBar.style.background = 'yellowgreen';
-  else strengthBar.style.background = 'green';
-}
-
-document.getElementById('clave').addEventListener('input', actualizarBarraFortaleza);
-
-document.getElementById('confirmar_clave').addEventListener('input', function() {
-  const clave = document.getElementById('clave').value;
-  const confirmar = this.value;
-  const error = document.getElementById('confirmar-error');
-  if (clave !== confirmar) {
-    error.textContent = 'Las contraseñas no coinciden';
-    this.style.borderColor = 'red';
-  } else {
-    error.textContent = '';
-    this.style.borderColor = 'green';
-  }
-});
-
-form.addEventListener('input', function(e) {
-  if (e.target.id === 'nombre') validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
-  if (e.target.id === 'cedula') validarCampo('cedula', v => /^[0-9]{10}$/.test(v), 'Cédula inválida');
-  if (e.target.id === 'email') validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
-  if (e.target.id === 'usuario') validarCampo('usuario', v => v.length >= 4, 'Usuario muy corto');
-  if (e.target.id === 'clave') validarCampo('clave', v => v.length >= 8, 'Mínimo 8 caracteres');
-});
-
-form.addEventListener('submit', function(e) {
-  let valido = true;
-  valido &= validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
-  valido &= validarCampo('cedula', v => /^[0-9]{10}$/.test(v), 'Cédula inválida');
-  valido &= validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
-  valido &= validarCampo('usuario', v => v.length >= 4, 'Usuario muy corto');
-  valido &= validarCampo('clave', v => v.length >= 8, 'Mínimo 8 caracteres');
-  const clave = document.getElementById('clave').value;
-  const confirmar = document.getElementById('confirmar_clave').value;
-  if (clave !== confirmar) {
-    document.getElementById('confirmar-error').textContent = 'Las contraseñas no coinciden';
-    valido = false;
-  }
-  if (!document.getElementById('aceptar_terminos').checked) {
-    valido = false;
-    mostrarAlertaVisual('Debes aceptar los términos y condiciones.');
-  }
-  if (!valido) {
-    e.preventDefault();
-    return false;
-  }
-  // Confirmación visual tras registro exitoso (simulado)
-  document.getElementById('registro-exito').style.display = 'block';
-  setTimeout(() => {
-    document.getElementById('registro-exito').style.display = 'none';
-  }, 3000);
-});
-</script>

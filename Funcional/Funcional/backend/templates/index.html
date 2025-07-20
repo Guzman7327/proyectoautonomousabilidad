@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Turismo Inclusivo Ecuador - Portal Turístico Accesible</title>
   <meta name="description" content="Portal turístico inclusivo de Ecuador con información accesible sobre destinos, rutas y servicios turísticos" />
- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 {% set textos = {
@@ -17,7 +18,11 @@
     'contacto': 'Contacto',
     'login': 'Iniciar sesión',
     'registro': 'Registrarse',
-    'accesibilidad': 'Accesibilidad'
+    'accesibilidad': 'Accesibilidad',
+    'hero_title': 'Descubre la Magia de Ecuador',
+    'hero_subtitle': 'Explora destinos únicos con accesibilidad garantizada para todos los viajeros',
+    'destinos_titulo': 'Destinos Destacados',
+    'ver_mas': 'Ver más'
   },
   'en': {
     'inicio': 'Home',
@@ -25,114 +30,156 @@
     'contacto': 'Contact',
     'login': 'Login',
     'registro': 'Sign up',
-    'accesibilidad': 'Accessibility'
+    'accesibilidad': 'Accessibility',
+    'hero_title': 'Discover Ecuador\'s Magic',
+    'hero_subtitle': 'Explore unique destinations with guaranteed accessibility for all travelers',
+    'destinos_titulo': 'Featured Destinations',
+    'ver_mas': 'Learn more'
   }
 } %}
 
- <div class="magnifier" id="magnifier" style="display:none; position:fixed; width:150px; height:150px; border-radius:50%; overflow:hidden; pointer-events:none; z-index:10000; border:3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.7);">
- </div>
+<div class="magnifier" id="magnifier" style="display:none; position:fixed; width:150px; height:150px; border-radius:50%; overflow:hidden; pointer-events:none; z-index:10000; border:3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.7);">
+</div>
 
 <body>
   <!-- Skip to main content link for screen readers -->
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
   
   <header role="banner">
-    <div class="logo">
-      <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
-      <span class="logo-text">PORTAL TURÍSTICO EC</span>
+    <div class="header-container">
+      <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
+        <span class="logo-text">PORTAL TURÍSTICO EC</span>
+      </a>
+
+      <div class="language-selector">
+        <form method="get" action="{{ url_for('cambiar_idioma') }}" style="display:inline;">
+          <select name="lang" onchange="this.form.submit()" aria-label="Seleccionar idioma">
+            <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
+            <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="menu-accesibilidad" role="navigation" aria-label="Herramientas de accesibilidad">
+        <button class="menu-toggle" onclick="toggleAccMenu()" aria-expanded="false" aria-controls="accesibilidad-lista">
+          <span aria-hidden="true">♿</span> Accesibilidad <span aria-hidden="true">▾</span>
+        </button>
+        <ul id="accesibilidad-lista" class="accesibilidad-lista oculto" role="menu">
+          <li role="none"><button role="menuitem" onclick="activateHighContrast()">🌓 Alto contraste</button></li>
+          <li role="none"><button role="menuitem" onclick="toggleMonochrome()">⚫ Modo monocromático</button></li>
+          <li role="none"><button role="menuitem" onclick="increaseTextSize()">👁️ Aumentar texto</button></li>
+          <li role="none"><button role="menuitem" onclick="decreaseTextSize()">👁️ Disminuir texto</button></li>
+          <li role="none"><button role="menuitem" onclick="adjustSpacing('increase')">↔️ Aumentar espaciado</button></li>
+          <li role="none"><button role="menuitem" onclick="adjustSpacing('decrease')">↔️ Disminuir espaciado</button></li>
+          <li role="none"><button role="menuitem" onclick="useReadableFont()">🅰️ Tipografía dislexia-friendly</button></li>
+          <li role="none"><button role="menuitem" onclick="toggleZoom()">🔍 Zoom de página</button></li>
+          <li role="none"><button role="menuitem" onclick="activarLupaPuntual()">🔎 Lupa puntual</button></li>
+          <li role="none"><button role="menuitem" onclick="highlightFocus()">🔦 Resaltar foco/enlaces</button></li>
+          <li role="none"><button role="menuitem" onclick="pauseAnimations()">⏸️ Pausar animaciones</button></li>
+          <li role="none"><button role="menuitem" onclick="readText()">👂 Lector de pantalla</button></li>
+          <li role="none"><button role="menuitem" onclick="showAudioDescription()">🎧 Descripción de audio</button></li>
+          <li role="none"><button role="menuitem" onclick="resetAccessibility()">♻️ Restablecer</button></li>
+        </ul>
+      </div>
+
+      <nav class="nav" role="navigation" aria-label="Navegación principal">
+        <ul>
+          <li><a href="/" aria-current="page">{{ textos[lang]['inicio'] }}</a></li>
+          <li><a href="/rutas">{{ textos[lang]['rutas'] }}</a></li>
+          <li><a href="#alojamientos">Alojamientos</a></li>
+          <li><a href="#accesibilidad">{{ textos[lang]['accesibilidad'] }}</a></li>
+          <li><a href="/contacto">{{ textos[lang]['contacto'] }}</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/login" class="btn btn-secondary">{{ textos[lang]['login'] }}</a>
+        <a href="/registro" class="btn btn-primary">{{ textos[lang]['registro'] }}</a>
+      </div>
     </div>
-    <form method="get" action="{{ url_for('cambiar_idioma') }}" style="display:inline; float:right; margin-left:1em;">
-      <select name="lang" onchange="this.form.submit()" aria-label="Seleccionar idioma">
-        <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
-        <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
-      </select>
-    </form>
-
-    <div class="menu-accesibilidad" role="navigation" aria-label="Herramientas de accesibilidad">
-      <button class="menu-toggle" onclick="toggleAccMenu()" aria-expanded="false" aria-controls="accesibilidad-lista">
-        <span aria-hidden="true">♿</span> Accesibilidad <span aria-hidden="true">▾</span>
-      </button>
-      <ul id="accesibilidad-lista" class="accesibilidad-lista oculto" role="menu">
-        <li role="none"><button role="menuitem" onclick="activateHighContrast()">🌓 Alto contraste</button></li>
-        <li role="none"><button role="menuitem" onclick="toggleMonochrome()">⚫ Modo monocromático</button></li>
-        <li role="none"><button role="menuitem" onclick="increaseTextSize()">👁️ Aumentar texto</button></li>
-        <li role="none"><button role="menuitem" onclick="decreaseTextSize()">👁️ Disminuir texto</button></li>
-        <li role="none"><button role="menuitem" onclick="adjustSpacing('increase')">↔️ Aumentar espaciado</button></li>
-        <li role="none"><button role="menuitem" onclick="adjustSpacing('decrease')">↔️ Disminuir espaciado</button></li>
-        <li role="none"><button role="menuitem" onclick="useReadableFont()">🅰️ Tipografía dislexia-friendly</button></li>
-        <li role="none"><button role="menuitem" onclick="toggleZoom()">🔍 Zoom de página</button></li>
-        <li role="none"><button role="menuitem" onclick="activarLupaPuntual()">🔎 Lupa puntual</button></li>
-        <li role="none"><button role="menuitem" onclick="highlightFocus()">🔦 Resaltar foco/enlaces</button></li>
-        <li role="none"><button role="menuitem" onclick="pauseAnimations()">⏸️ Pausar animaciones</button></li>
-        <li role="none"><button role="menuitem" onclick="readText()">👂 Lector de pantalla</button></li>
-        <li role="none"><button role="menuitem" onclick="showAudioDescription()">🎧 Descripción de audio</button></li>
-        <li role="none"><button role="menuitem" onclick="resetAccessibility()">♻️ Restablecer</button></li>
-      </ul>
-    </div>
-
-    <nav class="nav" role="navigation" aria-label="Navegación principal">
-      <ul>
-        <li><a href="/">{{ textos[lang]['inicio'] }}</a></li>
-        <li><a href="/rutas">{{ textos[lang]['rutas'] }}</a></li>
-        <li><a href="#alojamientos">Alojamientos</a></li>
-        <li><a href="#accesibilidad">{{ textos[lang]['accesibilidad'] }}</a></li>
-        <li><a href="/contacto">{{ textos[lang]['contacto'] }}</a></li>
-        <li><a href="/login">{{ textos[lang]['login'] }}</a></li>
-        <li><a href="/registro">{{ textos[lang]['registro'] }}</a></li>
-      </ul>
-    </nav>
-
-    <!-- Eliminar los botones personalizados de login y registro -->
-    <!-- <div class="custom-buttons"> ... </div> -->
   </header>
 
-    <div style="text-align: center; margin: 30px 0;">
-  <h2>Video turístico sobre Ecuador</h2>
-  <video width="560" height="315" controls>
-    <source src="/static/videos/ecuador.mp4" type="video/mp4">
-    <track src="/static/videos/subtitulos.vtt" kind="subtitles" srclang="es" label="Español" default>
-    Tu navegador no soporta el video.
-  </video>
-  <br>
-  <a href="/static/transcripciones/ecuador.txt" download>Descargar transcripción</a>
-  <br>
-  <button onclick="mostrarAlertaVisual('¡Alerta visual de ejemplo para usuarios con discapacidad auditiva!')">Probar alerta visual</button>
-    </div>
- 
   <main id="main-content" role="main">
+    <!-- Hero Section -->
+    <section class="hero-section fade-in">
+      <h1 class="hero-title">{{ textos[lang]['hero_title'] }}</h1>
+      <p class="hero-subtitle">{{ textos[lang]['hero_subtitle'] }}</p>
+      <div class="hero-actions">
+        <a href="/rutas" class="btn btn-primary">Explorar Destinos</a>
+        <a href="/contacto" class="btn btn-outline">Contactar</a>
+      </div>
+    </section>
+
+    <!-- Banner Rotativo -->
     <section class="banner-rotativo" aria-label="Imágenes de destinos turísticos de Ecuador">
       <img src="{{ url_for('static', filename='img/banner1.jpg') }}" class="active" alt="Vista panorámica de Cuenca, ciudad patrimonio de la humanidad" />
       <img src="{{ url_for('static', filename='img/banner2.jpg') }}" alt="Playa de Salinas con aguas cristalinas del Pacífico" />
       <img src="{{ url_for('static', filename='img/banner3.jpg') }}" alt="Paisaje montañoso de los Andes ecuatorianos" />
-</section>
-
-    <section aria-labelledby="mapa-titulo">
-      <h2 id="mapa-titulo" style="text-align:center; margin-top: 2rem;">Mapa de Rutas Turísticas</h2>
-      <div id="map" style="height: 400px; margin: 20px auto; width: 90%; max-width: 1000px;" 
-           role="application" aria-label="Mapa interactivo de destinos turísticos de Ecuador"></div>
+      
+      <div class="banner-overlay">
+        <h2 class="banner-title">Ecuador te espera</h2>
+        <p class="banner-description">Descubre la diversidad natural y cultural de nuestro país</p>
+      </div>
+      
+      <div class="banner-controls">
+        <button class="active" onclick="cambiarBanner(0)" aria-label="Ir a imagen 1"></button>
+        <button onclick="cambiarBanner(1)" aria-label="Ir a imagen 2"></button>
+        <button onclick="cambiarBanner(2)" aria-label="Ir a imagen 3"></button>
+      </div>
     </section>
 
-    <!-- Sección de destinos destacados -->
+    <!-- Video Section -->
+    <section class="video-section slide-in">
+      <h2>Video turístico sobre Ecuador</h2>
+      <div class="video-container">
+        <video controls>
+          <source src="/static/videos/ecuador.mp4" type="video/mp4">
+          <track src="/static/videos/subtitulos.vtt" kind="subtitles" srclang="es" label="Español" default>
+          Tu navegador no soporta el video.
+        </video>
+      </div>
+      <div class="video-actions">
+        <a href="/static/transcripciones/ecuador.txt" download class="btn btn-secondary">Descargar transcripción</a>
+        <button onclick="mostrarAlertaVisual('¡Alerta visual de ejemplo para usuarios con discapacidad auditiva!')" class="btn btn-outline">Probar alerta visual</button>
+      </div>
+    </section>
+
+    <!-- Mapa Section -->
+    <section class="map-section" aria-labelledby="mapa-titulo">
+      <h2 id="mapa-titulo">Mapa de Rutas Turísticas</h2>
+      <div id="map" role="application" aria-label="Mapa interactivo de destinos turísticos de Ecuador"></div>
+    </section>
+
+    <!-- Destinos Destacados -->
     <section class="destinos-destacados" aria-labelledby="destinos-titulo">
-      <h2 id="destinos-titulo">Destinos Destacados</h2>
+      <h2 id="destinos-titulo">{{ textos[lang]['destinos_titulo'] }}</h2>
       <div class="destinos-grid">
-       <article class="destino-card">
-         <img src="{{ url_for('static', filename='img/cuenca.jpg') }}" alt="Centro histórico de Cuenca" />
-         <h3>Cuenca</h3>
-         <p>Ciudad patrimonio de la humanidad con arquitectura colonial y artesanías tradicionales.</p>
-         <button class="btn-destino" aria-label="Ver más información sobre Cuenca">Ver más</button>
-       </article>
-       <article class="destino-card">
+        <article class="destino-card fade-in">
+          <img src="{{ url_for('static', filename='img/cuenca.jpg') }}" alt="Centro histórico de Cuenca" />
+          <div class="destino-content">
+            <h3>Cuenca</h3>
+            <p>Ciudad patrimonio de la humanidad con arquitectura colonial y artesanías tradicionales.</p>
+            <a href="#" class="btn-destino" aria-label="Ver más información sobre Cuenca">{{ textos[lang]['ver_mas'] }}</a>
+          </div>
+        </article>
+        
+        <article class="destino-card fade-in">
           <img src="{{ url_for('static', filename='img/salinas.jpg') }}" alt="Playa de Salinas" />
-          <h3>Salinas</h3>
-          <p> Hermosa playa del Pacífico con excelente infraestructura turística y accesibilidad.</p>
-          <button class="btn-destino" aria-label="Ver más información sobre Salinas">Ver más</button>
-       </article>
-       <article class="destino-card">
+          <div class="destino-content">
+            <h3>Salinas</h3>
+            <p>Hermosa playa del Pacífico con excelente infraestructura turística y accesibilidad.</p>
+            <a href="#" class="btn-destino" aria-label="Ver más información sobre Salinas">{{ textos[lang]['ver_mas'] }}</a>
+          </div>
+        </article>
+        
+        <article class="destino-card fade-in">
           <img src="{{ url_for('static', filename='img/manta.jpg') }}" alt="Ciudad de Manta" />
-          <h3>Manta</h3>
-          <p>Puerto pesquero con hermosas playas y deliciosa gastronomía marina.</p>
-          <button class="btn-destino" aria-label="Ver más información sobre Manta">Ver más</button>
+          <div class="destino-content">
+            <h3>Manta</h3>
+            <p>Puerto pesquero con hermosas playas y deliciosa gastronomía marina.</p>
+            <a href="#" class="btn-destino" aria-label="Ver más información sobre Manta">{{ textos[lang]['ver_mas'] }}</a>
+          </div>
         </article>
       </div>
     </section>
@@ -142,48 +189,51 @@
   <div id="modal-auth" class="modal oculto" role="dialog" aria-labelledby="modal-registro-titulo" aria-hidden="true">
     <div class="modal-content">
       <span class="cerrar" onclick="cerrarModal('modal-auth')" aria-label="Cerrar ventana de registro">&times;</span>
-      <h2 id="modal-registro-titulo">Crear una cuenta</h2>
+      <h2 id="modal-registro-titulo" class="form-title">Crear una cuenta</h2>
       <form id="form-registro" role="form" aria-describedby="registro-descripcion">
         <p id="registro-descripcion" class="sr-only">Formulario para crear una nueva cuenta de usuario</p>
         <div class="form-group">
           <label for="usuario">Usuario:</label>
-          <input type="text" id="usuario" name="usuario" placeholder="Ingrese su nombre de usuario" required 
+          <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Ingrese su nombre de usuario" required 
                  aria-describedby="usuario-error" />
           <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
         <div class="form-group">
           <label for="clave">Contraseña:</label>
-          <input type="password" id="clave" name="clave" placeholder="Ingrese su contraseña" required 
+          <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese su contraseña" required 
                  aria-describedby="clave-error" />
           <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
-        <!-- Se retira el campo "rol" ya que no existe -->
-        <button type="submit" aria-label="Crear cuenta de usuario">Registrarse</button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" aria-label="Crear cuenta de usuario">Registrarse</button>
+        </div>
       </form>
-      <p>¿Ya tienes cuenta? <a href="#" onclick="cerrarModal('modal-auth'); mostrarModal('modal-login')">Inicia sesión</a></p>
+      <p class="text-center mt-3">¿Ya tienes cuenta? <a href="#" onclick="cerrarModal('modal-auth'); mostrarModal('modal-login')">Inicia sesión</a></p>
     </div>
   </div>
 
-  <!-- Modal de Registro de Administrador (solo visible para admins) -->
+  <!-- Modal de Registro de Administrador -->
   <div id="modal-admin" class="modal oculto" role="dialog" aria-labelledby="modal-admin-titulo" aria-hidden="true">
     <div class="modal-content">
       <span class="cerrar" onclick="cerrarModal('modal-admin')" aria-label="Cerrar ventana de registro de admin">&times;</span>
-      <h2 id="modal-admin-titulo">Registrar Administrador</h2>
+      <h2 id="modal-admin-titulo" class="form-title">Registrar Administrador</h2>
       <form id="form-registro-admin" role="form" aria-describedby="admin-descripcion">
         <p id="admin-descripcion" class="sr-only">Formulario para crear una nueva cuenta de administrador</p>
         <div class="form-group">
           <label for="admin-usuario">Usuario:</label>
-          <input type="text" id="admin-usuario" name="usuario" placeholder="Nombre de usuario" required />
+          <input type="text" id="admin-usuario" name="usuario" class="form-control" placeholder="Nombre de usuario" required />
         </div>
         <div class="form-group">
           <label for="admin-clave">Contraseña:</label>
-          <input type="password" id="admin-clave" name="clave" placeholder="Contraseña" required />
+          <input type="password" id="admin-clave" name="clave" class="form-control" placeholder="Contraseña" required />
         </div>
         <div class="form-group">
           <label for="admin-email">Email:</label>
-          <input type="email" id="admin-email" name="email" placeholder="Correo electrónico" required />
+          <input type="email" id="admin-email" name="email" class="form-control" placeholder="Correo electrónico" required />
         </div>
-        <button type="submit" aria-label="Registrar administrador">Registrar Admin</button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" aria-label="Registrar administrador">Registrar Admin</button>
+        </div>
       </form>
     </div>
   </div>
@@ -192,655 +242,187 @@
   <div id="modal-login" class="modal oculto" role="dialog" aria-labelledby="modal-login-titulo" aria-hidden="true">
     <div class="modal-content">
       <span class="cerrar" onclick="cerrarModal('modal-login')" aria-label="Cerrar ventana de inicio de sesión">&times;</span>
-      <h2 id="modal-login-titulo">Iniciar sesión</h2>
+      <h2 id="modal-login-titulo" class="form-title">Iniciar sesión</h2>
       <form id="form-login" role="form" aria-describedby="login-descripcion">
         <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal</p>
         <div class="form-group">
           <label for="login-usuario">Usuario:</label>
-          <input type="text" id="login-usuario" name="usuario" placeholder="Ingrese su nombre de usuario" required 
+          <input type="text" id="login-usuario" name="usuario" class="form-control" placeholder="Ingrese su nombre de usuario" required 
                  aria-describedby="login-usuario-error" />
           <div id="login-usuario-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
         <div class="form-group">
           <label for="login-clave">Contraseña:</label>
-          <input type="password" id="login-clave" name="clave" placeholder="Ingrese su contraseña" required 
+          <input type="password" id="login-clave" name="clave" class="form-control" placeholder="Ingrese su contraseña" required 
                  aria-describedby="login-clave-error" />
           <div id="login-clave-error" class="error-message" role="alert" aria-live="polite"></div>
         </div>
-        <button type="submit" aria-label="Iniciar sesión">Iniciar sesión</button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" aria-label="Iniciar sesión">Iniciar sesión</button>
+        </div>
       </form>
+      <p class="text-center mt-3">¿No tienes cuenta? <a href="#" onclick="cerrarModal('modal-login'); mostrarModal('modal-auth')">Regístrate</a></p>
     </div>
   </div>
 
-  <footer role="contentinfo">
+  <!-- Footer -->
+  <footer>
     <div class="footer-content">
+      <div class="footer-section">
+        <h3>Portal Turístico Ecuador</h3>
+        <p>Descubre la belleza y diversidad de Ecuador con nuestro portal turístico inclusivo y accesible para todos.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Enlaces rápidos</h3>
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/rutas">Rutas turísticas</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+          <li><a href="/login">Iniciar sesión</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Destinos</h3>
+        <ul>
+          <li><a href="#">Cuenca</a></li>
+          <li><a href="#">Salinas</a></li>
+          <li><a href="#">Manta</a></li>
+          <li><a href="#">Quito</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Accesibilidad</h3>
+        <ul>
+          <li><a href="#accesibilidad">Herramientas</a></li>
+          <li><a href="#">Guía de uso</a></li>
+          <li><a href="#">Soporte técnico</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
       <p>&copy; 2024 Portal Turístico Ecuador. Todos los derechos reservados.</p>
-      <nav aria-label="Enlaces de pie de página">
-        <a href="#politica-privacidad">Política de Privacidad</a> |
-        <a href="#terminos-uso">Términos de Uso</a> |
-        <a href="#contacto">Contacto</a>
-      </nav>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/accesibilidad.js') }}"></script>
+  
   <script>
-    // Configuración global
-    const API_BASE_URL = 'http://127.0.0.1:5000';  // o también puede ser 'http://localhost:5000'
-
-    let currentUser = null;
-    let speechSynthesis = window.speechSynthesis;
-
-    // Utilidades de accesibilidad
-    function announceToScreenReader(message) {
-      const announcement = document.createElement('div');
-      announcement.setAttribute('aria-live', 'polite');
-      announcement.setAttribute('aria-atomic', 'true');
-      announcement.className = 'sr-only';
-      announcement.textContent = message;
-      document.body.appendChild(announcement);
-      setTimeout(() => document.body.removeChild(announcement), 1000);
+    // Banner rotativo
+    let currentBanner = 0;
+    const banners = document.querySelectorAll('.banner-rotativo img');
+    const controls = document.querySelectorAll('.banner-controls button');
+    
+    function cambiarBanner(index) {
+      banners[currentBanner].classList.remove('active');
+      controls[currentBanner].classList.remove('active');
+      
+      currentBanner = index;
+      
+      banners[currentBanner].classList.add('active');
+      controls[currentBanner].classList.add('active');
     }
-
-    function showNotification(message, type = 'info') {
-      const notification = document.createElement('div');
-      notification.className = `notification ${type}`;
-      notification.setAttribute('role', 'alert');
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.classList.add('fade-out');
-        setTimeout(() => document.body.removeChild(notification), 300);
-      }, 3000);
+    
+    function autoCambiarBanner() {
+      const nextBanner = (currentBanner + 1) % banners.length;
+      cambiarBanner(nextBanner);
     }
-
-    // Validación de formularios
-    function validateForm(formData) {
-      const errors = {};
-      
-      if (!formData.usuario || formData.usuario.trim().length < 3) {
-        errors.usuario = 'El usuario debe tener al menos 3 caracteres';
-      }
-      
-      if (!formData.clave || formData.clave.length < 6) {
-        errors.clave = 'La contraseña debe tener al menos 6 caracteres';
-      }
-      
-      return errors;
+    
+    // Cambiar banner cada 5 segundos
+    setInterval(autoCambiarBanner, 5000);
+    
+    // Funciones de modal
+    function mostrarModal(modalId) {
+      document.getElementById(modalId).classList.remove('oculto');
     }
-
-    function displayFormErrors(errors) {
-      Object.keys(errors).forEach(field => {
-        const errorElement = document.getElementById(`${field}-error`);
-        if (errorElement) {
-          errorElement.textContent = errors[field];
-          errorElement.style.display = 'block';
+    
+    function cerrarModal(modalId) {
+      document.getElementById(modalId).classList.add('oculto');
+    }
+    
+    // Cerrar modal al hacer clic fuera
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('oculto');
         }
       });
-    }
-
-    function clearFormErrors() {
-      const errorElements = document.querySelectorAll('.error-message');
-      errorElements.forEach(element => {
-        element.textContent = '';
-        element.style.display = 'none';
-      });
-    }
-
-    // Mapa interactivo mejorado
-    function initializeMap() {
-      const map = L.map('map').setView([-1.8312, -78.1834], 6);
+    });
+    
+    // Mapa de Leaflet
+    document.addEventListener('DOMContentLoaded', function() {
+      const map = L.map('map').setView([-1.8312, -78.1834], 7);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
       }).addTo(map);
-
-      const destinations = [
-        { 
-          lat: -2.9006, 
-          lng: -79.0045, 
-          name: "Cuenca",
-          description: "Ciudad patrimonio de la humanidad",
-          accessibility: "Accesible para sillas de ruedas"
-        },
-        { 
-          lat: -0.9683, 
-          lng: -80.7128, 
-          name: "Salinas",
-          description: "Playa del Pacífico",
-          accessibility: "Rampas de acceso disponibles"
-        },
-        { 
-          lat: -0.9462, 
-          lng: -80.7214, 
-          name: "Manta",
-          description: "Puerto pesquero",
-          accessibility: "Transporte adaptado disponible"
-        },
-        { 
-          lat: -1.2547, 
-          lng: -78.6229, 
-          name: "Baños",
-          description: "Aventura en los Andes",
-          accessibility: "Guías especializados en accesibilidad"
-        }
+      
+      // Marcadores de ejemplo
+      const destinos = [
+        {lat: -2.9006, lng: -79.0045, nombre: 'Cuenca', descripcion: 'Ciudad patrimonio de la humanidad'},
+        {lat: -2.2167, lng: -80.9667, nombre: 'Salinas', descripcion: 'Hermosa playa del Pacífico'},
+        {lat: -0.9500, lng: -80.7167, nombre: 'Manta', descripcion: 'Puerto pesquero y playas'},
+        {lat: -0.2299, lng: -78.5249, nombre: 'Quito', descripcion: 'Capital de Ecuador'}
       ];
-
-      destinations.forEach(dest => {
-        const marker = L.marker([dest.lat, dest.lng]).addTo(map);
-        const popupContent = `
-          <div class="map-popup">
-            <h3>${dest.name}</h3>
-            <p>${dest.description}</p>
-            <p><strong>Accesibilidad:</strong> ${dest.accessibility}</p>
-            <button onclick="showDestinationDetails('${dest.name}')" class="btn-destino">
-              Ver más información
-            </button>
-          </div>
-        `;
-        marker.bindPopup(popupContent);
-      });
-
-      return map;
-    }
-
-    // Banner rotativo mejorado
-    function initializeBanner() {
-      const banners = document.querySelectorAll('.banner-rotativo img');
-      let bannerIndex = 0;
       
-      function rotateBanner() {
-        banners.forEach((img, i) => {
-          img.classList.toggle('active', i === bannerIndex);
-          img.setAttribute('aria-hidden', i !== bannerIndex);
-        });
-        bannerIndex = (bannerIndex + 1) % banners.length;
-      }
-      
-      // Controles de banner para accesibilidad
-      const bannerControls = document.createElement('div');
-      bannerControls.className = 'banner-controls';
-      bannerControls.innerHTML = `
-        <button onclick="previousBanner()" aria-label="Imagen anterior">‹</button>
-        <span class="banner-counter">1 de ${banners.length}</span>
-        <button onclick="nextBanner()" aria-label="Siguiente imagen">›</button>
-      `;
-      document.querySelector('.banner-rotativo').appendChild(bannerControls);
-      
-      setInterval(rotateBanner, 5000);
-    }
-
-    function previousBanner() {
-      const banners = document.querySelectorAll('.banner-rotativo img');
-      const currentIndex = Array.from(banners).findIndex(img => img.classList.contains('active'));
-      const newIndex = currentIndex > 0 ? currentIndex - 1 : banners.length - 1;
-      
-      banners.forEach((img, i) => {
-        img.classList.toggle('active', i === newIndex);
-        img.setAttribute('aria-hidden', i !== newIndex);
-      });
-      
-      updateBannerCounter(newIndex + 1);
-    }
-
-    function nextBanner() {
-      const banners = document.querySelectorAll('.banner-rotativo img');
-      const currentIndex = Array.from(banners).findIndex(img => img.classList.contains('active'));
-      const newIndex = (currentIndex + 1) % banners.length;
-      
-      banners.forEach((img, i) => {
-        img.classList.toggle('active', i === newIndex);
-        img.setAttribute('aria-hidden', i !== newIndex);
-      });
-      
-      updateBannerCounter(newIndex + 1);
-    }
-
-    function updateBannerCounter(current) {
-      const counter = document.querySelector('.banner-counter');
-      if (counter) {
-        counter.textContent = `${current} de ${document.querySelectorAll('.banner-rotativo img').length}`;
-      }
-    }
-
-    // Modales mejorados
-    function mostrarModal(id) {
-      const modal = document.getElementById(id);
-      modal.classList.remove('oculto');
-      modal.setAttribute('aria-hidden', 'false');
-      
-      // Enfoque en el primer elemento interactivo
-      const firstFocusable = modal.querySelector('input, button, select');
-      if (firstFocusable) {
-        firstFocusable.focus();
-      }
-      
-      // Cerrar con Escape
-      document.addEventListener('keydown', handleEscapeKey);
-      
-      announceToScreenReader(`Ventana ${id === 'modal-login' ? 'de inicio de sesión' : id === 'modal-auth' ? 'de registro' : 'de administrador'} abierta`);
-    }
-
-    function cerrarModal(id) {
-      const modal = document.getElementById(id);
-      modal.classList.add('oculto');
-      modal.setAttribute('aria-hidden', 'true');
-      
-      document.removeEventListener('keydown', handleEscapeKey);
-      clearFormErrors();
-      
-      announceToScreenReader('Ventana cerrada');
-    }
-
-    function handleEscapeKey(event) {
-      if (event.key === 'Escape') {
-        const openModal = document.querySelector('.modal:not(.oculto)');
-        if (openModal) {
-          cerrarModal(openModal.id);
-        }
-      }
-    }
-
-    // Registro mejorado
-    document.getElementById("form-registro").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      clearFormErrors();
-      
-      const usuario = document.getElementById("usuario").value.trim();
-      const clave = document.getElementById("clave").value;
-      
-      const formData = { usuario, clave };  // Se retira el campo "rol"
-      
-      const errors = validateForm(formData);
-      if (Object.keys(errors).length > 0) {
-        displayFormErrors(errors);
-        announceToScreenReader('Hay errores en el formulario. Por favor, revíselos.');
-        return;
-      }
-      
-      try {
-        showNotification('Registrando usuario...', 'info');
-        
-        const response = await fetch(`${API_BASE_URL}/registro`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-          showNotification(data.mensaje, 'success');
-          announceToScreenReader('Usuario registrado exitosamente');
-          cerrarModal('modal-auth');
-        } else {
-          showNotification(data.mensaje, 'error');
-          announceToScreenReader('Error al registrar usuario');
-        }
-      } catch (error) {
-        showNotification("Error de conexión. Intente nuevamente.", 'error');
-        announceToScreenReader('Error de conexión');
-      }
-    });
-
-    // Login mejorado
-    document.getElementById("form-login").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      clearFormErrors();
-      
-      const formData = {
-        usuario: document.getElementById("login-usuario").value.trim(),
-        clave: document.getElementById("login-clave").value
-      };
-      
-      const errors = validateForm(formData);
-      if (Object.keys(errors).length > 0) {
-        displayFormErrors(errors);
-        announceToScreenReader('Hay errores en el formulario. Por favor, revíselos.');
-        return;
-      }
-      
-      try {
-        showNotification('Iniciando sesión...', 'info');
-        
-        const response = await fetch(`${API_BASE_URL}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData)
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-          currentUser = { usuario: formData.usuario, rol: data.rol };
-          showNotification(data.mensaje, 'success');
-          announceToScreenReader(`Bienvenido ${formData.usuario}`);
-          cerrarModal('modal-login');
-          
-          if (data.rol === 'admin') {
-            showAdminPanel();
-          }
-        } else {
-          showNotification(data.mensaje, 'error');
-          announceToScreenReader('Credenciales incorrectas');
-        }
-      } catch (error) {
-        showNotification("Error de conexión. Intente nuevamente.", 'error');
-        announceToScreenReader('Error de conexión');
-      }
-    });
-
-    // Registro administrador (solo admins)
-    document.getElementById("form-registro-admin").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const usuario = document.getElementById("admin-usuario").value;
-      const clave = document.getElementById("admin-clave").value;
-      const email = document.getElementById("admin-email").value;
-      const token = localStorage.getItem("token");
-      try {
-        const response = await fetch(`${API_BASE_URL}/registro_admin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({ usuario, clave, email })
-        });
-        const data = await response.json();
-        if (response.ok) {
-          showNotification("Administrador registrado con éxito", "success");
-          cerrarModal("modal-admin");
-        } else {
-          showNotification(data.mensaje || "Error al registrar admin", "error");
-        }
-      } catch (error) {
-        showNotification("Error de conexión. Intente nuevamente.", "error");
-      }
-    });
-
-    // Panel de administración mejorado
-    function showAdminPanel() {
-      if (document.getElementById("panel-admin")) return;
-      
-      const panel = document.createElement("div");
-      panel.id = "panel-admin";
-      panel.className = "admin-panel";
-      panel.innerHTML = `
-        <div class="admin-header">
-          <h2>Panel de Administrador</h2>
-          <button onclick="closeAdminPanel()" aria-label="Cerrar panel de administrador">×</button>
-        </div>
-        <div class="admin-content">
-          <h3>Usuarios Registrados</h3>
-          <div id="users-list" class="users-list">
-            <p>Cargando usuarios...</p>
-          </div>
-        </div>
-      `;
-      
-      document.body.appendChild(panel);
-      loadUsers();
-      announceToScreenReader("Panel de administrador abierto");
-    }
-
-    function closeAdminPanel() {
-      const panel = document.getElementById("panel-admin");
-      if (panel) {
-        document.body.removeChild(panel);
-        announceToScreenReader("Panel de administrador cerrado");
-      }
-    }
-
-    async function loadUsers() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/admin/usuarios`);
-        const users = await response.json();
-        
-        const usersList = document.getElementById("users-list");
-        if (users.length > 0) {
-          usersList.innerHTML = users.map(user => `
-            <div class="user-item">
-              <span class="user-name">${user.usuario}</span>
-              <span class="user-id">ID: ${user.id}</span>
+      destinos.forEach(destino => {
+        L.marker([destino.lat, destino.lng])
+          .addTo(map)
+          .bindPopup(`
+            <div class="map-popup">
+              <h3>${destino.nombre}</h3>
+              <p>${destino.descripcion}</p>
+              <button class="btn-destino">Ver más</button>
             </div>
-          `).join("");
-        } else {
-          usersList.innerHTML = "<p>No hay usuarios registrados</p>";
-        }
-      } catch (error) {
-        document.getElementById("users-list").innerHTML = "<p>Error al cargar usuarios</p>";
-      }
-    }
-
-    // Funciones de accesibilidad mejoradas
-    function toggleAccMenu() {
-      const menu = document.getElementById("accesibilidad-lista");
-      const button = document.querySelector(".menu-toggle");
-      const isExpanded = menu.classList.contains("oculto");
-      
-      menu.classList.toggle("oculto");
-      button.setAttribute("aria-expanded", !isExpanded);
-      
-      announceToScreenReader(`Menú de accesibilidad ${isExpanded ? "abierto" : "cerrado"}`);
-    }
-
-    function activateHighContrast() {
-      document.body.classList.toggle("alto-contraste");
-      const isActive = document.body.classList.contains("alto-contraste");
-      announceToScreenReader(`Modo alto contraste ${isActive ? "activado" : "desactivado"}`);
-    }
-
-    function increaseTextSize() {
-      document.body.classList.remove("texto-pequeno");
-      document.body.classList.add("texto-grande");
-      announceToScreenReader("Tamaño de texto aumentado");
-    }
-
-    function decreaseTextSize() {
-      document.body.classList.remove("texto-grande");
-      document.body.classList.add("texto-pequeno");
-      announceToScreenReader("Tamaño de texto reducido");
-    }
-
-    function useReadableFont() {
-      document.body.classList.toggle("fuente-legible");
-      const isActive = document.body.classList.contains("fuente-legible");
-      announceToScreenReader(`Fuente legible ${isActive ? "activada" : "desactivada"}`);
-    }
-
-    let zoomLevel = 1;
-    const maxZoom = 1.6;
-    const minZoom = 1;
-
-    function toggleZoom() {
-    zoomLevel += 0.2;
-    if (zoomLevel > maxZoom) zoomLevel = minZoom;
-
-    document.body.style.transform = `scale(${zoomLevel})`;
-    document.body.style.transformOrigin = "top left";
-
-     announceToScreenReader(`Zoom ${zoomLevel > 1 ? "activado" : "restablecido"}`);
-    }
-
-
-    function resetAccessibility() {
-      zoomLevel = 1;
-      document.body.style.transform = "scale(1)";
-      document.body.classList.remove("alto-contraste", "texto-grande", "texto-pequeno", "fuente-legible");
-      if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
-      }
-      announceToScreenReader("Configuración de accesibilidad restablecida");
-    }
-
-    function readText() {
-      if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
-        announceToScreenReader("Lectura detenida");
-        return;
-      }
-      
-      const textToRead = document.querySelector("main").innerText;
-      const speech = new SpeechSynthesisUtterance(textToRead);
-      speech.lang = "es-ES";
-      speech.rate = 0.9;
-      
-      speech.onend = () => announceToScreenReader("Lectura completada");
-      speech.onerror = () => announceToScreenReader("Error en la lectura");
-      
-      speechSynthesis.speak(speech);
-      announceToScreenReader("Iniciando lectura del contenido");
-    }
-
-    // Funciones para destinos
-    function showDestinationDetails(destinationName) {
-      const destinations = {
-        "Cuenca": {
-          description: "Cuenca es una ciudad del sur de Ecuador, capital de la provincia del Azuay. Es conocida por su centro histórico declarado Patrimonio de la Humanidad por la UNESCO.",
-          accessibility: "La ciudad cuenta con rampas de acceso en la mayoría de edificios históricos y transporte público adaptado.",
-          attractions: ["Centro Histórico", "Catedral Nueva", "Museo Pumapungo", "Mercado 10 de Agosto"]
-        },
-        "Salinas": {
-          description: "Salinas es una ciudad costera en la provincia de Santa Elena, conocida por sus hermosas playas y excelente infraestructura turística.",
-          accessibility: "Playas con acceso para sillas de ruedas y hoteles con habitaciones adaptadas.",
-          attractions: ["Playa de Salinas", "Malecón", "Museo del Mar", "Restaurantes de mariscos"]
-        },
-        "Manta": {
-          description: "Manta es un importante puerto pesquero y ciudad turística en la provincia de Manabí.",
-          accessibility: "Transporte público adaptado y guías turísticos especializados en accesibilidad.",
-          attractions: ["Puerto Pesquero", "Playa de Manta", "Museo del Banco Central", "Malecon 2000"]
-        }
-      };
-      
-      const dest = destinations[destinationName];
-      if (dest) {
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.innerHTML = `
-          <div class="modal-content destination-modal">
-            <span class="cerrar" onclick="this.parentElement.parentElement.remove()">&times;</span>
-            <h2>${destinationName}</h2>
-            <p>${dest.description}</p>
-            <h3>Accesibilidad</h3>
-            <p>${dest.accessibility}</p>
-            <h3>Atracciones Principales</h3>
-            <ul>
-              ${dest.attractions.map(attr => `<li>${attr}</li>`).join("")}
-            </ul>
-            <button onclick="this.parentElement.parentElement.remove()" class="btn-destino">Cerrar</button>
-          </div>
-        `;
-        document.body.appendChild(modal);
-        modal.classList.remove("oculto");
-      }
-    }
-
-    // Navegación por teclado
-    document.addEventListener("keydown", function(event) {
-      if (event.key === "Tab") {
-        document.body.classList.add("keyboard-navigation");
-      }
-    });
-
-    document.addEventListener("mousedown", function() {
-      document.body.classList.remove("keyboard-navigation");
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-      initializeMap();
-      initializeBanner();
-      
-      // Alias para compatibilidad
-      window.mostrarModal = mostrarModal;
-      window.cerrarModal = cerrarModal;
-      window.activateHighContrast = activateHighContrast;
-      window.increaseTextSize = increaseTextSize;
-      window.decreaseTextSize = decreaseTextSize;
-      window.useReadableFont = useReadableFont;
-      window.resetAccessibility = resetAccessibility;
-      window.readText = readText;
-      window.showDestinationDetails = showDestinationDetails;
-    });
-
-    // Guardar token y rol tras login
-    function guardarSesion(token, rol) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("rol", rol);
-    }
-
-    // Mostrar/ocultar botón de registro de admin según el rol
-    function actualizarUIporRol() {
-      const rol = localStorage.getItem("rol");
-      const btnAdmin = document.getElementById("btn-registro-admin");
-      if (rol === "admin") {
-        if (!btnAdmin) {
-          const btn = document.createElement("button");
-          btn.id = "btn-registro-admin";
-          btn.className = "btn-outline";
-          btn.innerText = "Registrar Admin";
-          btn.onclick = () => mostrarModal("modal-admin");
-          document.querySelector(".custom-buttons").appendChild(btn);
-        }
-      } else if (btnAdmin) {
-        btnAdmin.remove();
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      actualizarUIporRol();
+          `);
+      });
     });
     
-    let lupaActiva = false;
-    const magnifier = document.getElementById("magnifier");
-    let snapshotCanvas = null;
-
-    function activarLupaPuntual() {
-      lupaActiva = !lupaActiva;
-
-      if (lupaActiva) {
-        html2canvas(document.body).then(canvas => {
-          snapshotCanvas = canvas;
-          snapshotCanvas.style.transform = "scale(2)";
-          snapshotCanvas.style.transformOrigin = "top left";
-          snapshotCanvas.style.position = "absolute";
-
-          magnifier.innerHTML = '';
-          magnifier.appendChild(snapshotCanvas);
-          magnifier.style.display = "block";
-
-          document.body.addEventListener("mousemove", moverLupa);
-          announceToScreenReader("Lupa puntual activada");
-        });
-      } else {
-        document.body.removeEventListener("mousemove", moverLupa);
-        magnifier.style.display = "none";
-        magnifier.innerHTML = '';
-        announceToScreenReader("Lupa puntual desactivada");
-      }
+    // Función para mostrar alertas visuales
+    function mostrarAlertaVisual(mensaje) {
+      const notification = document.createElement('div');
+      notification.className = 'notification info';
+      notification.innerHTML = `
+        <h4>Alerta Visual</h4>
+        <p>${mensaje}</p>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 5000);
     }
-
-
-    function moverLupa(e) {
-       const offset = 75;
-       const x = e.clientX - offset;
-       const y = e.clientY - offset;
-
-       magnifier.style.left = `${x}px`;
-       magnifier.style.top = `${y}px`;
-
-       if (snapshotCanvas) {
-       const relX = e.clientX;
-       const relY = e.clientY;
-
-       snapshotCanvas.style.left = `-${relX * 1}px`;
-       snapshotCanvas.style.top = `-${relY * 1}px`;
-      }
-  }
+    
+    // Animaciones al hacer scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.destino-card, .video-section, .map-section').forEach(el => {
+      observer.observe(el);
+    });
   </script>
-  <script src="{{ url_for('static', filename='js/accesibilidad.js') }}"></script>
 </body>
- <div class="magnifier" id="magnifier" style="display:none; position:fixed; width:150px; height:150px; border-radius:50%; overflow:hidden; pointer-events:none; z-index:10000; border:3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.7);">
- </div>
-
 </html>

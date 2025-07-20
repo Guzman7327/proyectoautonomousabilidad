@@ -1,233 +1,177 @@
-# Portal Turístico Ecuador - Mejoras de Usabilidad y Accesibilidad
+# Portal Turístico Ecuador - Diseño Moderno y Accesible
 
-## 📋 Resumen del Proyecto
+## 🎨 Nuevo Diseño Implementado
 
-Este portal turístico de Ecuador ha sido completamente rediseñado con un enfoque en **usabilidad** y **accesibilidad web**, siguiendo las mejores prácticas de WCAG 2.1 y principios de UX modernos.
+Este proyecto ha sido completamente rediseñado con un enfoque moderno, atractivo y accesible. El nuevo diseño incluye:
 
-## ✨ Mejoras Implementadas
+### ✨ Características del Nuevo Diseño
 
-### 🎯 **Accesibilidad Web (WCAG 2.1)**
+#### 🎯 **Diseño Moderno y Profesional**
+- **Paleta de colores moderna**: Azul primario (#2563eb) con acentos dorados
+- **Tipografía elegante**: Inter para texto y Playfair Display para títulos
+- **Gradientes atractivos**: Fondo degradado azul-púrpura
+- **Sombras y efectos**: Sistema de sombras consistente y efectos hover suaves
 
-#### **1. Estructura Semántica Mejorada**
-- ✅ Etiquetas HTML5 semánticas (`<header>`, `<main>`, `<footer>`, `<nav>`, `<section>`)
-- ✅ Roles ARIA apropiados para elementos interactivos
-- ✅ Atributos `aria-label`, `aria-describedby`, `aria-live`
-- ✅ Enlaces de "saltar al contenido" para lectores de pantalla
+#### 📱 **Responsive Design**
+- **Mobile-first**: Optimizado para dispositivos móviles
+- **Grid layouts**: Uso de CSS Grid para layouts flexibles
+- **Breakpoints inteligentes**: Adaptación automática a diferentes tamaños de pantalla
 
-#### **2. Navegación por Teclado**
-- ✅ Navegación completa con Tab/Shift+Tab
-- ✅ Indicadores de foco visibles y consistentes
-- ✅ Cierre de modales con tecla Escape
-- ✅ Controles de banner accesibles por teclado
+#### ♿ **Accesibilidad Mejorada**
+- **Alto contraste**: Modo de alto contraste para usuarios con discapacidad visual
+- **Navegación por teclado**: Soporte completo para navegación sin mouse
+- **Screen readers**: Etiquetas ARIA y estructura semántica
+- **Zoom y texto**: Controles para aumentar/disminuir texto
+- **Lupa puntual**: Herramienta de zoom para usuarios con baja visión
 
-#### **3. Contraste y Legibilidad**
-- ✅ Contraste de colores que cumple WCAG AA (4.5:1)
-- ✅ Modo alto contraste personalizable
-- ✅ Opciones de tamaño de texto (pequeño, normal, grande)
-- ✅ Fuente legible alternativa (Arial)
+#### 🎬 **Elementos Interactivos**
+- **Banner rotativo**: Carrusel automático con controles
+- **Mapa interactivo**: Integración con Leaflet para mostrar destinos
+- **Modales elegantes**: Ventanas emergentes con animaciones suaves
+- **Formularios modernos**: Validación en tiempo real y feedback visual
 
-#### **4. Tecnologías Asistivas**
-- ✅ Compatibilidad completa con lectores de pantalla
-- ✅ Anuncios automáticos de cambios de estado
-- ✅ Textos alternativos descriptivos en imágenes
-- ✅ Síntesis de voz integrada
+### 🏗️ **Estructura del Proyecto**
 
-### 🎨 **Experiencia de Usuario (UX)**
+```
+Funcional/
+├── backend/
+│   ├── app.py                 # Aplicación Flask principal
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css      # Estilos modernos completos
+│   │   ├── js/
+│   │   │   └── accesibilidad.js # Funciones de accesibilidad
+│   │   └── img/               # Imágenes optimizadas
+│   └── templates/             # Plantillas HTML modernas
+│       ├── index.html         # Página principal rediseñada
+│       ├── login.html         # Formulario de login moderno
+│       ├── registro.html      # Formulario de registro mejorado
+│       └── contacto.html      # Formulario de contacto elegante
+└── README.md                  # Este archivo
+```
 
-#### **1. Feedback Visual Mejorado**
-- ✅ Notificaciones toast no intrusivas
-- ✅ Indicadores de estado en formularios
-- ✅ Animaciones suaves y responsivas
-- ✅ Estados de carga y progreso
+### 🚀 **Enlaces de Formularios**
 
-#### **2. Formularios Inteligentes**
-- ✅ Validación en tiempo real
-- ✅ Mensajes de error contextuales
-- ✅ Autocompletado y sugerencias
-- ✅ Estructura de formularios clara
+Los formularios principales están disponibles en las siguientes rutas:
 
-#### **3. Navegación Intuitiva**
-- ✅ Breadcrumbs visuales
-- ✅ Menús desplegables accesibles
-- ✅ Búsqueda y filtros avanzados
-- ✅ Navegación contextual
+| Formulario | URL | Descripción |
+|------------|-----|-------------|
+| **Registro de Usuario** | `/registro` | Crear cuenta nueva |
+| **Inicio de Sesión** | `/login` | Acceder al sistema |
+| **Contacto** | `/contacto` | Enviar mensajes |
+| **Registro Admin** | `/registro_admin` | Crear cuenta de administrador |
+| **Recuperar Contraseña** | `/recuperar` | Recuperar acceso |
+| **Guardar Destino** | `/guardar_registro` | Añadir destino turístico |
+| **Editar Destino** | `/editar_registro` | Modificar destino existente |
+| **Búsqueda Avanzada** | `/busqueda_avanzada` | Buscar destinos |
+| **Formularios Múltiples** | `/formularios` | Todos los formularios en una página |
 
-#### **4. Contenido Enriquecido**
-- ✅ Información detallada de destinos
-- ✅ Información de accesibilidad por destino
-- ✅ Galería de imágenes organizada
-- ✅ Mapa interactivo con datos enriquecidos
+### 🎨 **Componentes de Diseño**
 
-### 📱 **Responsive Design**
+#### **Header Moderno**
+- Logo con tipografía elegante
+- Navegación principal responsive
+- Menú de accesibilidad integrado
+- Botones de acción destacados
 
-#### **1. Diseño Adaptativo**
-- ✅ Mobile-first approach
-- ✅ Breakpoints optimizados (480px, 768px, 1024px)
-- ✅ Navegación adaptativa
-- ✅ Contenido escalable
+#### **Hero Section**
+- Título impactante con tipografía serif
+- Subtítulo descriptivo
+- Botones de acción principales
+- Animaciones de entrada
 
-#### **2. Optimización Móvil**
-- ✅ Touch targets de tamaño adecuado (44px mínimo)
-- ✅ Gestos táctiles intuitivos
-- ✅ Carga rápida en conexiones lentas
-- ✅ Interfaz optimizada para pantallas pequeñas
+#### **Banner Rotativo**
+- Carrusel automático de imágenes
+- Controles de navegación
+- Overlay con información
+- Transiciones suaves
 
-### 🔧 **Funcionalidades Técnicas**
+#### **Destinos Destacados**
+- Cards modernos con hover effects
+- Imágenes optimizadas
+- Información estructurada
+- Botones de acción
 
-#### **1. JavaScript Moderno**
-- ✅ Manejo de errores robusto
-- ✅ Validación de formularios avanzada
-- ✅ Gestión de estado de la aplicación
-- ✅ API RESTful integrada
+#### **Formularios Modernos**
+- Diseño limpio y minimalista
+- Validación en tiempo real
+- Mensajes de error claros
+- Campos accesibles
 
-#### **2. CSS Avanzado**
-- ✅ Variables CSS para consistencia
-- ✅ Flexbox y Grid para layouts
-- ✅ Animaciones CSS optimizadas
-- ✅ Soporte para modo oscuro
+### 🛠️ **Tecnologías Utilizadas**
 
-## 🚀 **Funcionalidades Destacadas**
+- **Backend**: Flask (Python)
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Base de Datos**: PostgreSQL
+- **Mapas**: Leaflet.js
+- **Fuentes**: Google Fonts (Inter + Playfair Display)
+- **Iconos**: Emoji nativos + CSS
 
-### **1. Panel de Accesibilidad**
-- **Alto Contraste**: Cambio instantáneo de colores
-- **Tamaño de Texto**: 3 niveles ajustables
-- **Fuente Legible**: Alternativa más clara
-- **Lectura de Texto**: Síntesis de voz integrada
-- **Restablecer**: Volver a configuración original
+### 🎯 **Características de Accesibilidad**
 
-### **2. Mapa Interactivo**
-- Marcadores con información detallada
-- Información de accesibilidad por destino
-- Popups informativos
-- Navegación por teclado
+#### **Navegación**
+- Skip links para saltar al contenido principal
+- Navegación por teclado completa
+- Indicadores de foco visibles
+- Estructura semántica HTML5
 
-### **3. Sistema de Notificaciones**
-- Notificaciones toast no intrusivas
-- Tipos: info, success, error
-- Auto-desaparición
-- Accesibles para lectores de pantalla
+#### **Visual**
+- Alto contraste opcional
+- Modo monocromático
+- Control de tamaño de texto
+- Espaciado ajustable
 
-### **4. Gestión de Usuarios**
-- Registro e inicio de sesión
-- Panel de administración
-- Validación de formularios
-- Manejo de errores robusto
+#### **Auditivo**
+- Transcripciones de video
+- Subtítulos integrados
+- Alertas visuales
+- Descripciones de audio
 
-## 📊 **Métricas de Accesibilidad**
+### 📱 **Responsive Breakpoints**
 
-### **WCAG 2.1 Compliance**
-- **Nivel A**: ✅ 100% cumplido
-- **Nivel AA**: ✅ 100% cumplido
-- **Nivel AAA**: ✅ 95% cumplido
+- **Mobile**: < 480px
+- **Tablet**: 480px - 768px
+- **Desktop**: > 768px
 
-### **Puntuaciones de Accesibilidad**
-- **Lighthouse Accessibility**: 98/100
-- **WAVE Web Accessibility**: 0 errores
-- **axe-core**: 0 violaciones críticas
+### 🚀 **Cómo Ejecutar**
 
-## 🛠️ **Tecnologías Utilizadas**
+1. **Instalar dependencias**:
+   ```bash
+   pip install flask flask-cors psycopg2-binary bcrypt PyJWT
+   ```
 
-### **Frontend**
-- HTML5 semántico
-- CSS3 con variables y Grid/Flexbox
-- JavaScript ES6+ (módulos, async/await)
-- Leaflet.js para mapas
-- Web Speech API para síntesis de voz
+2. **Configurar base de datos**:
+   - Crear base de datos PostgreSQL
+   - Ejecutar `init.sql`
 
-### **Backend**
-- Python Flask
-- PostgreSQL con bcrypt
-- CORS habilitado
-- API RESTful
+3. **Ejecutar aplicación**:
+   ```bash
+   cd backend
+   python app.py
+   ```
 
-### **Herramientas de Desarrollo**
-- Validadores de accesibilidad
-- Testers de contraste
-- Simuladores de lectores de pantalla
-- Herramientas de testing de usabilidad
+4. **Acceder al portal**:
+   - Abrir http://localhost:5000
 
-## 📋 **Checklist de Accesibilidad**
+### 🎨 **Personalización**
 
-### **Perceptible**
-- [x] Textos alternativos en imágenes
-- [x] Subtítulos y transcripciones
-- [x] Contraste de colores adecuado
-- [x] Redimensionamiento de texto
+El diseño utiliza variables CSS para fácil personalización:
 
-### **Operable**
-- [x] Navegación por teclado
-- [x] Tiempo suficiente para leer
-- [x] Sin contenido que parpadee
-- [x] Navegación clara
+```css
+:root {
+  --primary-color: #2563eb;    /* Color principal */
+  --accent-color: #f59e0b;     /* Color de acento */
+  --font-sans: 'Inter';        /* Fuente sans-serif */
+  --font-serif: 'Playfair Display'; /* Fuente serif */
+}
+```
 
-### **Comprensible**
-- [x] Texto legible
-- [x] Funcionamiento predecible
-- [x] Ayuda para evitar errores
-- [x] Identificación de errores
+### 📞 **Soporte**
 
-### **Robusto**
-- [x] Compatible con tecnologías asistivas
-- [x] Marcado válido
-- [x] APIs accesibles
-
-## 🎯 **Próximas Mejoras Sugeridas**
-
-### **Corto Plazo**
-1. **PWA (Progressive Web App)**
-   - Instalación offline
-   - Notificaciones push
-   - Cache inteligente
-
-2. **Internacionalización**
-   - Soporte multiidioma
-   - Formatos locales
-   - RTL support
-
-3. **Analytics de Accesibilidad**
-   - Tracking de uso de herramientas
-   - Métricas de usabilidad
-   - Feedback de usuarios
-
-### **Mediano Plazo**
-1. **IA y Personalización**
-   - Recomendaciones inteligentes
-   - Rutas personalizadas
-   - Contenido adaptativo
-
-2. **Realidad Aumentada**
-   - Información contextual
-   - Navegación AR
-   - Experiencias inmersivas
-
-3. **Integración Social**
-   - Reviews de usuarios
-   - Compartir experiencias
-   - Comunidad turística
-
-### **Largo Plazo**
-1. **Accesibilidad Avanzada**
-   - Control por voz
-   - Gestos personalizados
-   - Interfaces cerebrales
-
-2. **Sostenibilidad**
-   - Huella de carbono
-   - Turismo responsable
-   - Impacto ambiental
-
-## 📞 **Contacto y Soporte**
-
-Para reportar problemas de accesibilidad o sugerir mejoras:
-
-- **Email**: accesibilidad@turismoecuador.com
-- **Teléfono**: +593 2 234-5678
-- **Horario**: Lunes a Viernes 8:00-18:00
-
-## 📄 **Licencia**
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Para soporte técnico o consultas sobre el diseño:
+- 📧 Email: info@turismoecuador.com
+- 📞 Teléfono: +593 2 234 5678
 
 ---
 
-**Desarrollado con ❤️ para hacer el turismo ecuatoriano accesible para todos.** 
+**© 2024 Portal Turístico Ecuador** - Diseño moderno y accesible para todos los usuarios. 
