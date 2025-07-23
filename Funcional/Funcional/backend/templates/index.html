@@ -1,471 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Turismo Inclusivo Ecuador - Portal Turístico Accesible</title>
-  <meta name="description" content="Portal turístico inclusivo de Ecuador con información accesible sobre destinos, rutas y servicios turísticos" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Turístico Ecuador</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
-{% set textos = {
-  'es': {
-    'inicio': 'Inicio',
-    'rutas': 'Rutas',
-    'contacto': 'Contacto',
-    'login': 'Iniciar sesión',
-    'registro': 'Registrarse',
-    'accesibilidad': 'Accesibilidad',
-    'hero_title': 'Descubre la Magia de Ecuador',
-    'hero_subtitle': 'Explora destinos únicos con accesibilidad garantizada para todos los viajeros',
-    'destinos_titulo': 'Destinos Destacados',
-    'ver_mas': 'Ver más'
-  },
-  'en': {
-    'inicio': 'Home',
-    'rutas': 'Routes',
-    'contacto': 'Contact',
-    'login': 'Login',
-    'registro': 'Sign up',
-    'accesibilidad': 'Accessibility',
-    'hero_title': 'Discover Ecuador\'s Magic',
-    'hero_subtitle': 'Explore unique destinations with guaranteed accessibility for all travelers',
-    'destinos_titulo': 'Featured Destinations',
-    'ver_mas': 'Learn more'
-  }
-} %}
-
-<div class="magnifier" id="magnifier" style="display:none; position:fixed; width:150px; height:150px; border-radius:50%; overflow:hidden; pointer-events:none; z-index:10000; border:3px solid #fff; box-shadow: 0 0 10px rgba(0,0,0,0.7);">
-</div>
-
 <body>
-  <!-- Skip to main content link for screen readers -->
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
-  
   <header role="banner">
     <div class="header-container">
       <a href="/" class="logo">
         <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
         <span class="logo-text">PORTAL TURÍSTICO EC</span>
       </a>
-
-      <div class="language-selector">
-        <form method="get" action="{{ url_for('cambiar_idioma') }}" style="display:inline;">
-          <select name="lang" onchange="this.form.submit()" aria-label="Seleccionar idioma">
-            <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
-            <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
-          </select>
-        </form>
-      </div>
-
-      <div class="menu-accesibilidad" role="navigation" aria-label="Herramientas de accesibilidad">
-        <button class="menu-toggle" onclick="toggleAccMenu()" aria-expanded="false" aria-controls="accesibilidad-lista">
-          <span aria-hidden="true">♿</span> Accesibilidad <span aria-hidden="true">▾</span>
-        </button>
-        <ul id="accesibilidad-lista" class="accesibilidad-lista oculto" role="menu">
-          <li role="none"><button role="menuitem" onclick="activateHighContrast()">🌓 Alto contraste</button></li>
-          <li role="none"><button role="menuitem" onclick="toggleMonochrome()">⚫ Modo monocromático</button></li>
-          <li role="none"><button role="menuitem" onclick="increaseTextSize()">👁️ Aumentar texto</button></li>
-          <li role="none"><button role="menuitem" onclick="decreaseTextSize()">👁️ Disminuir texto</button></li>
-          <li role="none"><button role="menuitem" onclick="adjustSpacing('increase')">↔️ Aumentar espaciado</button></li>
-          <li role="none"><button role="menuitem" onclick="adjustSpacing('decrease')">↔️ Disminuir espaciado</button></li>
-          <li role="none"><button role="menuitem" onclick="useReadableFont()">🅰️ Tipografía dislexia-friendly</button></li>
-          <li role="none"><button role="menuitem" onclick="toggleZoom()">🔍 Zoom de página</button></li>
-          <li role="none"><button role="menuitem" onclick="activarLupaPuntual()">🔎 Lupa puntual</button></li>
-          <li role="none"><button role="menuitem" onclick="highlightFocus()">🔦 Resaltar foco/enlaces</button></li>
-          <li role="none"><button role="menuitem" onclick="pauseAnimations()">⏸️ Pausar animaciones</button></li>
-          <li role="none"><button role="menuitem" onclick="readText()">👂 Lector de pantalla</button></li>
-          <li role="none"><button role="menuitem" onclick="showAudioDescription()">🎧 Descripción de audio</button></li>
-          <li role="none"><button role="menuitem" onclick="resetAccessibility()">♻️ Restablecer</button></li>
-        </ul>
-      </div>
-
       <nav class="nav" role="navigation" aria-label="Navegación principal">
         <ul>
-          <li><a href="/">{{ textos[lang]['inicio'] }}</a></li>
-          <li><a href="/rutas/nueva">{{ textos[lang]['rutas'] }}</a></li>
-          <li><a href="#alojamientos">Alojamientos</a></li>
-          <li><a href="#accesibilidad">{{ textos[lang]['accesibilidad'] }}</a></li>
-          <li><a href="/contacto">{{ textos[lang]['contacto'] }}</a></li>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/rutas">Rutas</a></li>
+          <li><a href="/contacto">Contacto</a></li>
+          <li><a href="/registro">Registro</a></li>
+          <li><a href="/login">Iniciar sesión</a></li>
         </ul>
       </nav>
-
-      <div class="header-actions">
-        <a href="/login" class="btn btn-secondary">{{ textos[lang]['login'] }}</a>
-        <a href="/registro" class="btn btn-primary">{{ textos[lang]['registro'] }}</a>
-      </div>
     </div>
   </header>
-
   <main id="main-content" role="main">
-    <!-- Hero Section -->
-    <section class="hero-section fade-in">
-      <h1 class="hero-title">{{ textos[lang]['hero_title'] }}</h1>
-      <p class="hero-subtitle">{{ textos[lang]['hero_subtitle'] }}</p>
-      <div class="hero-actions">
-        <a href="/rutas" class="btn btn-primary">Explorar Destinos</a>
-        <a href="/contacto" class="btn btn-outline">Contactar</a>
+    <section class="hero animate-fade-in-up">
+      <div class="container">
+        <h1>Descubre Ecuador</h1>
+        <p>Explora rutas, destinos y experiencias accesibles en todo el país. ¡Tu aventura comienza aquí!</p>
+        <div class="hero-actions">
+          <a href="/rutas" class="btn btn-primary btn-lg">Ver rutas turísticas</a>
+          <a href="/registro" class="btn btn-secondary btn-lg">Regístrate</a>
+        </div>
       </div>
     </section>
-
-    <!-- Banner Rotativo -->
-    <section class="banner-rotativo" aria-label="Imágenes de destinos turísticos de Ecuador">
-      <img src="{{ url_for('static', filename='img/banner1.jpg') }}" class="active" alt="Vista panorámica de Cuenca, ciudad patrimonio de la humanidad" />
-      <img src="{{ url_for('static', filename='img/banner2.jpg') }}" alt="Playa de Salinas con aguas cristalinas del Pacífico" />
-      <img src="{{ url_for('static', filename='img/banner3.jpg') }}" alt="Paisaje montañoso de los Andes ecuatorianos" />
-      
-      <div class="banner-overlay">
-        <h2 class="banner-title">Ecuador te espera</h2>
-        <p class="banner-description">Descubre la diversidad natural y cultural de nuestro país</p>
-      </div>
-      
-      <div class="banner-controls">
-        <button class="active" onclick="cambiarBanner(0)" aria-label="Ir a imagen 1"></button>
-        <button onclick="cambiarBanner(1)" aria-label="Ir a imagen 2"></button>
-        <button onclick="cambiarBanner(2)" aria-label="Ir a imagen 3"></button>
-      </div>
-    </section>
-
-    <!-- Video Section -->
-    <section class="video-section slide-in">
-      <h2>Video turístico sobre Ecuador</h2>
-      <div class="video-container">
-        <video controls>
-          <source src="/static/videos/ecuador.mp4" type="video/mp4">
-          <track src="/static/videos/subtitulos.vtt" kind="subtitles" srclang="es" label="Español" default>
-          Tu navegador no soporta el video.
-        </video>
-      </div>
-      <div class="video-actions">
-        <a href="/static/transcripciones/ecuador.txt" download class="btn btn-secondary">Descargar transcripción</a>
-        <button onclick="mostrarAlertaVisual('¡Alerta visual de ejemplo para usuarios con discapacidad auditiva!')" class="btn btn-outline">Probar alerta visual</button>
-      </div>
-    </section>
-
-    <!-- Mapa Section -->
-    <section class="map-section" aria-labelledby="mapa-titulo">
-      <h2 id="mapa-titulo">Mapa de Rutas Turísticas</h2>
-      <div id="map" role="application" aria-label="Mapa interactivo de destinos turísticos de Ecuador"></div>
-    </section>
-
-    <!-- Destinos Destacados -->
-    <section class="destinos-destacados" aria-labelledby="destinos-titulo">
-      <h2 id="destinos-titulo">{{ textos[lang]['destinos_titulo'] }}</h2>
-      <div class="destinos-grid">
-        <article class="destino-card fade-in">
-          <img src="{{ url_for('static', filename='img/cuenca.jpg') }}" alt="Centro histórico de Cuenca" />
-          <div class="destino-content">
-            <h3>Cuenca</h3>
-            <p>Ciudad patrimonio de la humanidad con arquitectura colonial y artesanías tradicionales.</p>
-            <a href="#" class="btn-destino" aria-label="Ver más información sobre Cuenca">{{ textos[lang]['ver_mas'] }}</a>
+    <section class="destinations">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Destinos destacados</h2>
+          <p class="section-description">Algunos de los lugares más visitados y recomendados de Ecuador.</p>
+        </div>
+        <div class="grid grid-4">
+          <div class="destination-card animate-fade-in-up">
+            <img src="{{ url_for('static', filename='img/cuenca2.jpg') }}" alt="Cuenca" class="destination-image">
+            <div class="destination-content">
+              <h3 class="destination-title">Cuenca</h3>
+              <p class="destination-description">Ciudad colonial declarada Patrimonio de la Humanidad por la UNESCO. Ideal para caminar y disfrutar de arquitectura antigua.</p>
+            </div>
           </div>
-        </article>
-        
-        <article class="destino-card fade-in">
-          <img src="{{ url_for('static', filename='img/salinas.jpg') }}" alt="Playa de Salinas" />
-          <div class="destino-content">
-            <h3>Salinas</h3>
-            <p>Hermosa playa del Pacífico con excelente infraestructura turística y accesibilidad.</p>
-            <a href="#" class="btn-destino" aria-label="Ver más información sobre Salinas">{{ textos[lang]['ver_mas'] }}</a>
+          <div class="destination-card animate-fade-in-up">
+            <img src="{{ url_for('static', filename='img/baños.jpg') }}" alt="Baños" class="destination-image">
+            <div class="destination-content">
+              <h3 class="destination-title">Baños</h3>
+              <p class="destination-description">Destino de aventura y naturaleza. Famoso por sus cascadas, aguas termales y deportes extremos.</p>
+            </div>
           </div>
-        </article>
-        
-        <article class="destino-card fade-in">
-          <img src="{{ url_for('static', filename='img/manta.jpg') }}" alt="Ciudad de Manta" />
-          <div class="destino-content">
-            <h3>Manta</h3>
-            <p>Puerto pesquero con hermosas playas y deliciosa gastronomía marina.</p>
-            <a href="#" class="btn-destino" aria-label="Ver más información sobre Manta">{{ textos[lang]['ver_mas'] }}</a>
+          <div class="destination-card animate-fade-in-up">
+            <img src="{{ url_for('static', filename='img/salinas.jpg') }}" alt="Salinas" class="destination-image">
+            <div class="destination-content">
+              <h3 class="destination-title">Salinas</h3>
+              <p class="destination-description">Una de las playas más visitadas del Ecuador, con excelente infraestructura turística y vida nocturna.</p>
+            </div>
           </div>
-        </article>
+          <div class="destination-card animate-fade-in-up">
+            <img src="{{ url_for('static', filename='img/quito.jpg') }}" alt="Quito" class="destination-image">
+            <div class="destination-content">
+              <h3 class="destination-title">Quito</h3>
+              <p class="destination-description">Capital del Ecuador, con el centro histórico mejor conservado de América Latina. Llena de iglesias, museos y cultura.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
-  <section class="checklist-main" style="max-width:900px;margin:3rem auto 2rem auto;padding:2rem;background:#f9fafb;border-radius:1.5rem;box-shadow:0 2px 16px rgba(37,99,235,0.07);">
-    <h1 style="text-align:center;margin-bottom:2rem;">Checklist de Usabilidad y Accesibilidad</h1>
-    <section class="checklist-bloque" style="margin-bottom:2.5rem;">
-      <h2 style="color:#2563eb;">1. Accesibilidad y Usabilidad del Sistema</h2>
-      <ul class="checklist-lista" style="margin-top:1rem;line-height:2;font-size:1.1em;">
-        <li>✅ Modo alto contraste</li>
-        <li>✅ Modo monocromático/inversión de color</li>
-        <li>✅ Aumentar/disminuir tamaño de texto</li>
-        <li>✅ Ajustar espaciado (línea, palabra, carácter)</li>
-        <li>✅ Tipografía dislexia-friendly</li>
-        <li>✅ Zoom de página / lupa puntual</li>
-        <li>✅ Resaltar foco y enlaces</li>
-        <li>✅ Navegación por teclado y skiplinks</li>
-        <li>✅ Pausar/ocultar animaciones</li>
-        <li>✅ Lector de pantalla integrado (texto a voz)</li>
-        <li>✅ Descripción de audio</li>
-        <li>✅ Menú consistente y jerárquico</li>
-        <li>✅ Iconos y texto en menú</li>
-        <li>✅ Responsive y compatible con lectores de pantalla</li>
-        <li>✅ Feedback visual (hover, foco, animaciones)</li>
-        <li>✅ Soporte multilingüe</li>
-      </ul>
-    </section>
-    <section class="checklist-bloque">
-      <h2 style="color:#10b981;">2. Formularios y Flujos Principales</h2>
-      <ul class="checklist-lista" style="margin-top:1rem;line-height:2;font-size:1.1em;">
-        <li>✅ Etiquetas claras y visibles en todos los campos</li>
-        <li>✅ Validación en tiempo real y mensajes de error específicos</li>
-        <li>✅ Botones claros y comprensibles (“Enviar”, “Cancelar”, etc.)</li>
-        <li>✅ Feedback visual al guardar/enviar (mensajes, animaciones)</li>
-        <li>✅ Confirmación previa en acciones críticas (editar email, etc.)</li>
-        <li>✅ Prevención de intentos múltiples (captcha/alerta)</li>
-        <li>✅ Autofocus en campos clave</li>
-        <li>✅ Autocompletado y sugerencias</li>
-        <li>✅ Agrupación lógica con fieldset/legend</li>
-        <li>✅ Mensaje visible si no hay resultados</li>
-        <li>✅ Diseño responsive y accesible</li>
-        <li>✅ Captcha o verificación antispam en contacto/login</li>
-        <li>✅ Mensaje de “procesando” en formularios</li>
-        <li>✅ No pedir más datos de los necesarios</li>
-      </ul>
-    </section>
-  </section>
-
-  <!-- Modal de Registro de Usuario -->
-  <div id="modal-auth" class="modal oculto" role="dialog" aria-labelledby="modal-registro-titulo" aria-hidden="true">
-    <div class="modal-content">
-      <span class="cerrar" onclick="cerrarModal('modal-auth')" aria-label="Cerrar ventana de registro">&times;</span>
-      <h2 id="modal-registro-titulo" class="form-title">Crear una cuenta</h2>
-      <form id="form-registro" role="form" aria-describedby="registro-descripcion">
-        <p id="registro-descripcion" class="sr-only">Formulario para crear una nueva cuenta de usuario</p>
-        <div class="form-group">
-          <label for="usuario">Usuario:</label>
-          <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Ingrese su nombre de usuario" required 
-                 aria-describedby="usuario-error" />
-          <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        <div class="form-group">
-          <label for="clave">Contraseña:</label>
-          <input type="password" id="clave" name="clave" class="form-control" placeholder="Ingrese su contraseña" required 
-                 aria-describedby="clave-error" />
-          <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary" aria-label="Crear cuenta de usuario">Registrarse</button>
-        </div>
-      </form>
-      <p class="text-center mt-3">¿Ya tienes cuenta? <a href="#" onclick="cerrarModal('modal-auth'); mostrarModal('modal-login')">Inicia sesión</a></p>
-    </div>
-  </div>
-
-  <!-- Modal de Registro de Administrador -->
-  <div id="modal-admin" class="modal oculto" role="dialog" aria-labelledby="modal-admin-titulo" aria-hidden="true">
-    <div class="modal-content">
-      <span class="cerrar" onclick="cerrarModal('modal-admin')" aria-label="Cerrar ventana de registro de admin">&times;</span>
-      <h2 id="modal-admin-titulo" class="form-title">Registrar Administrador</h2>
-      <form id="form-registro-admin" role="form" aria-describedby="admin-descripcion">
-        <p id="admin-descripcion" class="sr-only">Formulario para crear una nueva cuenta de administrador</p>
-        <div class="form-group">
-          <label for="admin-usuario">Usuario:</label>
-          <input type="text" id="admin-usuario" name="usuario" class="form-control" placeholder="Nombre de usuario" required />
-        </div>
-        <div class="form-group">
-          <label for="admin-clave">Contraseña:</label>
-          <input type="password" id="admin-clave" name="clave" class="form-control" placeholder="Contraseña" required />
-        </div>
-        <div class="form-group">
-          <label for="admin-email">Email:</label>
-          <input type="email" id="admin-email" name="email" class="form-control" placeholder="Correo electrónico" required />
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary" aria-label="Registrar administrador">Registrar Admin</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de Login -->
-  <div id="modal-login" class="modal oculto" role="dialog" aria-labelledby="modal-login-titulo" aria-hidden="true">
-    <div class="modal-content">
-      <span class="cerrar" onclick="cerrarModal('modal-login')" aria-label="Cerrar ventana de inicio de sesión">&times;</span>
-      <h2 id="modal-login-titulo" class="form-title">Iniciar sesión</h2>
-      <form id="form-login" role="form" aria-describedby="login-descripcion">
-        <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal</p>
-        <div class="form-group">
-          <label for="login-usuario">Usuario:</label>
-          <input type="text" id="login-usuario" name="usuario" class="form-control" placeholder="Ingrese su nombre de usuario" required 
-                 aria-describedby="login-usuario-error" />
-          <div id="login-usuario-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        <div class="form-group">
-          <label for="login-clave">Contraseña:</label>
-          <input type="password" id="login-clave" name="clave" class="form-control" placeholder="Ingrese su contraseña" required 
-                 aria-describedby="login-clave-error" />
-          <div id="login-clave-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary" aria-label="Iniciar sesión">Iniciar sesión</button>
-        </div>
-      </form>
-      <p class="text-center mt-3">¿No tienes cuenta? <a href="#" onclick="cerrarModal('modal-login'); mostrarModal('modal-auth')">Regístrate</a></p>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-content">
+  <footer class="footer">
+    <div class="container footer-content">
       <div class="footer-section">
-        <h3>Portal Turístico Ecuador</h3>
-        <p>Descubre la belleza y diversidad de Ecuador con nuestro portal turístico inclusivo y accesible para todos.</p>
-      </div>
-      
-      <div class="footer-section">
-        <h3>Enlaces rápidos</h3>
+        <h3>Enlaces útiles</h3>
         <ul>
           <li><a href="/">Inicio</a></li>
-          <li><a href="/rutas">Rutas turísticas</a></li>
+          <li><a href="/rutas">Rutas</a></li>
           <li><a href="/contacto">Contacto</a></li>
-          <li><a href="/login">Iniciar sesión</a></li>
         </ul>
       </div>
-      
       <div class="footer-section">
-        <h3>Destinos</h3>
+        <h3>Contacto</h3>
         <ul>
-          <li><a href="#">Cuenca</a></li>
-          <li><a href="#">Salinas</a></li>
-          <li><a href="#">Manta</a></li>
-          <li><a href="#">Quito</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h3>Accesibilidad</h3>
-        <ul>
-          <li><a href="#accesibilidad">Herramientas</a></li>
-          <li><a href="#">Guía de uso</a></li>
-          <li><a href="#">Soporte técnico</a></li>
+          <li>Email: info@ecuadorturismo.com</li>
+          <li>Teléfono: +593 2 123 4567</li>
         </ul>
       </div>
     </div>
-    
     <div class="footer-bottom">
-      <p>&copy; 2024 Portal Turístico Ecuador. Todos los derechos reservados.</p>
+      &copy; 2025 Portal Turístico Ecuador. Todos los derechos reservados.
     </div>
   </footer>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="{{ url_for('static', filename='js/accesibilidad.js') }}"></script>
-  
-  <script>
-    // Banner rotativo
-    let currentBanner = 0;
-    const banners = document.querySelectorAll('.banner-rotativo img');
-    const controls = document.querySelectorAll('.banner-controls button');
-    
-    function cambiarBanner(index) {
-      banners[currentBanner].classList.remove('active');
-      controls[currentBanner].classList.remove('active');
-      
-      currentBanner = index;
-      
-      banners[currentBanner].classList.add('active');
-      controls[currentBanner].classList.add('active');
-    }
-    
-    function autoCambiarBanner() {
-      const nextBanner = (currentBanner + 1) % banners.length;
-      cambiarBanner(nextBanner);
-    }
-    
-    // Cambiar banner cada 5 segundos
-    setInterval(autoCambiarBanner, 5000);
-    
-    // Funciones de modal
-    function mostrarModal(modalId) {
-      document.getElementById(modalId).classList.remove('oculto');
-    }
-    
-    function cerrarModal(modalId) {
-      document.getElementById(modalId).classList.add('oculto');
-    }
-    
-    // Cerrar modal al hacer clic fuera
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.add('oculto');
-        }
-      });
-    });
-    
-    // Mapa de Leaflet
-    document.addEventListener('DOMContentLoaded', function() {
-      const map = L.map('map').setView([-1.8312, -78.1834], 7);
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-      
-      // Marcadores de ejemplo
-      const destinos = [
-        {lat: -2.9006, lng: -79.0045, nombre: 'Cuenca', descripcion: 'Ciudad patrimonio de la humanidad'},
-        {lat: -2.2167, lng: -80.9667, nombre: 'Salinas', descripcion: 'Hermosa playa del Pacífico'},
-        {lat: -0.9500, lng: -80.7167, nombre: 'Manta', descripcion: 'Puerto pesquero y playas'},
-        {lat: -0.2299, lng: -78.5249, nombre: 'Quito', descripcion: 'Capital de Ecuador'}
-      ];
-      
-      destinos.forEach(destino => {
-        L.marker([destino.lat, destino.lng])
-          .addTo(map)
-          .bindPopup(`
-            <div class="map-popup">
-              <h3>${destino.nombre}</h3>
-              <p>${destino.descripcion}</p>
-              <button class="btn-destino">Ver más</button>
-            </div>
-          `);
-      });
-    });
-    
-    // Función para mostrar alertas visuales
-    function mostrarAlertaVisual(mensaje) {
-      const notification = document.createElement('div');
-      notification.className = 'notification info';
-      notification.innerHTML = `
-        <h4>Alerta Visual</h4>
-        <p>${mensaje}</p>
-      `;
-      
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.classList.add('show');
-      }, 100);
-      
-      setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-          document.body.removeChild(notification);
-        }, 300);
-      }, 5000);
-    }
-    
-    // Animaciones al hacer scroll
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in');
-        }
-      });
-    }, observerOptions);
-    
-    document.querySelectorAll('.destino-card, .video-section, .map-section').forEach(el => {
-      observer.observe(el);
-    });
-  </script>
 </body>
 </html>

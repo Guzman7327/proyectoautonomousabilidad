@@ -46,6 +46,8 @@
         </fieldset>
         <div class="form-actions">
           <button type="button" class="btn btn-primary" onclick="confirmarActualizar()">Actualizar</button>
+          <button type="button" class="btn btn-secondary" onclick="cancelarEdicion()">Cancelar</button>
+          <button type="button" class="btn btn-info" onclick="verificarCambios()">Ver cambios</button>
         </div>
       </form>
       <div id="editar-exito" style="display:none; margin-top:1em; text-align:center; font-weight:bold; color:#22c55e; background:#e6ffed; border-radius:8px; padding:0.7em;">¡Registro actualizado exitosamente!</div>
@@ -142,32 +144,96 @@ function mostrarSinCambios() {
 
 function confirmarActualizar() {
   // Detectar cambios
-  let cambios = false;
-  if (document.getElementById('nombre').value != original.nombre) cambios = true;
-  if (document.getElementById('email').value != original.email) cambios = true;
-  if (document.getElementById('fecha').value != original.fecha) cambios = true;
-  if (document.getElementById('ciudad').value != original.ciudad) cambios = true;
-  if (document.getElementById('pais').value != original.pais) cambios = true;
-  if (document.getElementById('suscripcion').checked != original.suscripcion) cambios = true;
-  if (!cambios) {
+  let cambios = detectarCambios();
+  if (!cambios.hayCambios) {
     mostrarSinCambios();
     return;
   }
-  // Confirmación previa si se edita el email
-  if (document.getElementById('email').value != original.email) {
-    if (!confirm('Está a punto de cambiar el correo electrónico. ¿Desea continuar?')) return;
-  }
+  
+  // Mostrar resumen de cambios
+  let mensaje = 'Se detectaron los siguientes cambios:\n';
+  cambios.lista.forEach(cambio => {
+    mensaje += `- ${cambio}\n`;
+  });
+  mensaje += '\n¿Desea continuar con la actualización?';
+  
+  if (!confirm(mensaje)) return;
+  
   // Validar todos los campos
-  if (!validarCampo('nombre', v => v.length > 1, 'Nombre requerido') ||
-      !validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido') ||
-      !validarCampo('fecha', v => v.length > 0, 'Fecha requerida') ||
-      !validarCampo('ciudad', v => v.length > 1, 'Ciudad requerida') ||
-      !validarCampo('pais', v => v.length > 0, 'Seleccione un país')) {
+  if (!validarFormulario()) {
     mostrarError('Por favor, corrige los errores antes de actualizar.');
     return;
   }
+  
   // Simulación de actualización exitosa
   mostrarExito();
+  formChanged = false;
+}
+
+function detectarCambios() {
+  let cambios = [];
+  let hayCambios = false;
+  
+  if (document.getElementById('nombre').value != original.nombre) {
+    cambios.push(`Nombre: "${original.nombre}" → "${document.getElementById('nombre').value}"`);
+    hayCambios = true;
+  }
+  if (document.getElementById('email').value != original.email) {
+    cambios.push(`Email: "${original.email}" → "${document.getElementById('email').value}"`);
+    hayCambios = true;
+  }
+  if (document.getElementById('fecha').value != original.fecha) {
+    cambios.push(`Fecha: "${original.fecha}" → "${document.getElementById('fecha').value}"`);
+    hayCambios = true;
+  }
+  if (document.getElementById('ciudad').value != original.ciudad) {
+    cambios.push(`Ciudad: "${original.ciudad}" → "${document.getElementById('ciudad').value}"`);
+    hayCambios = true;
+  }
+  if (document.getElementById('pais').value != original.pais) {
+    cambios.push(`País: "${original.pais}" → "${document.getElementById('pais').value}"`);
+    hayCambios = true;
+  }
+  if (document.getElementById('suscripcion').checked != original.suscripcion) {
+    cambios.push(`Suscripción: ${original.suscripcion ? 'Sí' : 'No'} → ${document.getElementById('suscripcion').checked ? 'Sí' : 'No'}`);
+    hayCambios = true;
+  }
+  
+  return { hayCambios, lista: cambios };
+}
+
+function validarFormulario() {
+  let esValido = true;
+  esValido &= validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
+  esValido &= validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
+  esValido &= validarCampo('fecha', v => v.length > 0, 'Fecha requerida');
+  esValido &= validarCampo('ciudad', v => v.length > 1, 'Ciudad requerida');
+  esValido &= validarCampo('pais', v => v.length > 0, 'Seleccione un país');
+  return esValido;
+}
+
+function verificarCambios() {
+  let cambios = detectarCambios();
+  if (!cambios.hayCambios) {
+    alert('No se han realizado cambios en el formulario.');
+  } else {
+    let mensaje = 'Cambios detectados:\n\n';
+    cambios.lista.forEach(cambio => {
+      mensaje += `• ${cambio}\n`;
+    });
+    alert(mensaje);
+  }
+}
+
+function cancelarEdicion() {
+  let cambios = detectarCambios();
+  if (cambios.hayCambios) {
+    if (confirm('¿Está seguro de que desea cancelar? Se perderán los cambios realizados.')) {
+      window.location.href = '/';
+    }
+  } else {
+    window.location.href = '/';
+  }
 }
 
 // Alerta si el usuario intenta salir sin guardar cambios

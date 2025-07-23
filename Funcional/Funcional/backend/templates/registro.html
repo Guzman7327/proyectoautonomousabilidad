@@ -9,124 +9,391 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
-  
   <header role="banner">
     <div class="header-container">
       <a href="/" class="logo">
         <img src="{{ url_for('static', filename='img/logo-ecuador.png') }}" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
         <span class="logo-text">PORTAL TURÍSTICO EC</span>
       </a>
-      
       <nav class="nav" role="navigation" aria-label="Navegación principal">
         <ul>
           <li><a href="/">Inicio</a></li>
-          <li><a href="/rutas">Rutas</a></li>
+          <li><a href="/rutas/nueva">Rutas</a></li>
           <li><a href="/contacto">Contacto</a></li>
         </ul>
       </nav>
     </div>
   </header>
-
   <main id="main-content" role="main">
-    <div class="form-container fade-in">
-      <h1 class="form-title">Crear Cuenta</h1>
-      <p class="text-center mb-3">Únete a nuestro portal turístico y descubre Ecuador</p>
-      
-      <form method="POST" role="form" aria-describedby="registro-descripcion">
-        <p id="registro-descripcion" class="sr-only">Formulario para crear una nueva cuenta de usuario</p>
-        <fieldset>
-          <legend>Datos personales</legend>
-          <div class="form-group">
-            <label for="nombre">Nombre completo:</label>
-            <input type="text" id="nombre" name="nombre" class="form-control" 
-                   placeholder="Ingrese su nombre completo" required 
-                   aria-describedby="nombre-error" />
-            <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
+    <!-- Background decorativo -->
+    <div class="registro-bg">
+      <div class="bg-pattern"></div>
+      <div class="floating-elements">
+        <div class="float-elem elem-1"></div>
+        <div class="float-elem elem-2"></div>
+        <div class="float-elem elem-3"></div>
+      </div>
+    </div>
+    
+    <div class="registro-layout">
+      <!-- Panel informativo lateral -->
+      <div class="info-panel slide-in-left">
+        <div class="panel-content">
+          <div class="panel-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
           </div>
-          <div class="form-group">
-            <label for="cedula">Cédula:</label>
-            <input type="text" id="cedula" name="cedula" class="form-control" 
-                   placeholder="Ingrese su número de cédula" required 
-                   aria-describedby="cedula-error" />
-            <div id="cedula-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="email">Correo electrónico:</label>
-            <input type="email" id="email" name="email" class="form-control" 
-                   placeholder="ejemplo@correo.com" required 
-                   aria-describedby="email-error" />
-            <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" id="telefono" name="telefono" class="form-control" 
-                   placeholder="Ingrese su número de teléfono" 
-                   aria-describedby="telefono-error" />
-            <div id="telefono-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Credenciales de acceso</legend>
-          <div class="form-group">
-            <label for="usuario">Nombre de usuario:</label>
-            <input type="text" id="usuario" name="usuario" class="form-control" 
-                   placeholder="Elija un nombre de usuario" required 
-                   aria-describedby="usuario-error" />
-            <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
-          </div>
-          <div class="form-group">
-            <label for="clave">Contraseña:</label>
-            <div style="position:relative;">
-              <input type="password" id="clave" name="clave" class="form-control" 
-                     placeholder="Mínimo 8 caracteres" required 
-                     aria-describedby="clave-error" />
-              <button type="button" onclick="togglePassword('clave', this)" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">
-                <span class="icon-eye">👁️</span>
-              </button>
+          <h2 class="panel-title">¡Descubre Ecuador!</h2>
+          <p class="panel-subtitle">Tu aventura comienza aquí</p>
+          <ul class="benefits-list">
+            <li class="benefit-item">
+              <div class="benefit-icon">🏔️</div>
+              <span>Explora destinos únicos</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">📱</div>
+              <span>Acceso a rutas personalizadas</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">🎯</div>
+              <span>Recomendaciones basadas en tus gustos</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">🔒</div>
+              <span>Tu información siempre segura</span>
+            </li>
+          </ul>
+          <div class="stats-preview">
+            <div class="stat-item">
+              <span class="stat-number">150+</span>
+              <span class="stat-label">Destinos</span>
             </div>
-            <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
-            <div id="password-strength-bar" style="height: 8px; border-radius: 4px; margin-top: 6px; background: #eee; transition: background 0.3s;"></div>
-            <div id="password-strength-text" style="font-size: 0.95em; margin-top: 2px; min-height: 1.2em;"></div>
-          </div>
-          <div class="form-group">
-            <label for="confirmar_clave">Confirmar contraseña:</label>
-            <div style="position:relative;">
-              <input type="password" id="confirmar_clave" name="confirmar_clave" class="form-control" 
-                     placeholder="Repita su contraseña" required 
-                     aria-describedby="confirmar-clave-error" />
-              <button type="button" onclick="togglePassword('confirmar_clave', this)" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">
-                <span class="icon-eye">👁️</span>
-              </button>
+            <div class="stat-item">
+              <span class="stat-number">50K+</span>
+              <span class="stat-label">Viajeros</span>
             </div>
-            <div id="confirmar-clave-error" class="error-message" role="alert" aria-live="polite"></div>
+            <div class="stat-item">
+              <span class="stat-number">4.9★</span>
+              <span class="stat-label">Valoración</span>
+            </div>
           </div>
-        </fieldset>
-        <fieldset>
-          <legend>Preferencias</legend>
-          <div class="form-group">
-            <label class="checkbox-wrapper">
-              <input type="checkbox" id="aceptar_terminos" name="aceptar_terminos" required>
-              <span class="checkbox-text">Acepto los términos y condiciones</span>
-            </label>
-          </div>
-          <div class="form-group">
-            <label class="checkbox-wrapper">
-              <input type="checkbox" id="recibir_notificaciones" name="recibir_notificaciones">
-              <span class="checkbox-text">Deseo recibir notificaciones sobre nuevos destinos</span>
-            </label>
-          </div>
-        </fieldset>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Crear Cuenta</button>
         </div>
-      </form>
-      
-      <div class="text-center mt-3">
-        <p>¿Ya tienes cuenta? <a href="/login" class="btn btn-outline">Inicia sesión</a></p>
+      </div>
+
+      <!-- Formulario principal -->
+      <div class="form-wrapper slide-in-right">
+        <div class="form-container-modern">
+          <div class="form-header">
+            <div class="progress-indicator">
+              <div class="progress-step active" data-step="1">1</div>
+              <div class="progress-line"></div>
+              <div class="progress-step" data-step="2">2</div>
+              <div class="progress-line"></div>
+              <div class="progress-step" data-step="3">3</div>
+            </div>
+            <h1 class="form-title-modern">Crear Cuenta</h1>
+            <p class="form-subtitle">Únete a nuestra comunidad de viajeros</p>
+          </div>
+          
+          {% if mensaje %}
+            <div class="notification-modern {{ 'success' if 'exitosamente' in mensaje else 'error' }}">
+              <div class="notification-icon">
+                {% if 'exitosamente' in mensaje %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20,6 9,17 4,12"></polyline>
+                  </svg>
+                {% else %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                {% endif %}
+              </div>
+              <p>{{ mensaje }}</p>
+            </div>
+          {% endif %}
+          <form method="POST" role="form" aria-describedby="registro-descripcion" autocomplete="on" class="multi-step-form">
+            <p id="registro-descripcion" class="sr-only">Formulario para crear una nueva cuenta de usuario</p>
+            
+            <!-- Paso 1: Datos Personales -->
+            <div class="form-step active" data-step="1">
+              <div class="step-header">
+                <h3 class="step-title">Datos Personales</h3>
+                <p class="step-description">Cuéntanos sobre ti para personalizar tu experiencia</p>
+              </div>
+              
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="nombre" class="field-label">
+                    <span class="label-text">Nombre completo</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </div>
+                    <input type="text" id="nombre" name="nombre" class="form-input" 
+                           placeholder="Ingresa tu nombre completo"
+                           required autocomplete="name" aria-describedby="nombre-error" />
+                  </div>
+                  <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-field">
+                  <label for="cedula" class="field-label">
+                    <span class="label-text">Cédula</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                        <line x1="7" y1="8" x2="17" y2="8"></line>
+                        <line x1="7" y1="12" x2="17" y2="12"></line>
+                        <line x1="7" y1="16" x2="11" y2="16"></line>
+                      </svg>
+                    </div>
+                    <input type="text" id="cedula" name="cedula" class="form-input" 
+                           placeholder="1234567890"
+                           required autocomplete="off" aria-describedby="cedula-error" />
+                  </div>
+                  <div id="cedula-error" class="error-message" role="alert" aria-live="polite"></div>
+                  <small class="field-help">Debe tener 10 dígitos numéricos</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="email" class="field-label">
+                    <span class="label-text">Correo electrónico</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <input type="email" id="email" name="email" class="form-input" 
+                           placeholder="tu@email.com"
+                           required autocomplete="email" aria-describedby="email-error" />
+                  </div>
+                  <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-field">
+                  <label for="telefono" class="field-label">
+                    <span class="label-text">Teléfono</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <input type="tel" id="telefono" name="telefono" class="form-input" 
+                           placeholder="0987654321"
+                           autocomplete="tel" aria-describedby="telefono-error" />
+                  </div>
+                  <div id="telefono-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+              </div>
+              
+              <div class="step-actions">
+                <button type="button" class="btn-next" onclick="nextStep()">
+                  Continuar
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Paso 2: Credenciales -->
+            <div class="form-step" data-step="2">
+              <div class="step-header">
+                <h3 class="step-title">Credenciales de Acceso</h3>
+                <p class="step-description">Crea tus datos de acceso seguros</p>
+              </div>
+              
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="usuario" class="field-label">
+                    <span class="label-text">Nombre de usuario</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6"></path>
+                        <path d="m15.5 7.5 3 3m-6 6-3 3"></path>
+                        <path d="m8.5 7.5-3 3m6 6 3 3"></path>
+                      </svg>
+                    </div>
+                    <input type="text" id="usuario" name="usuario" class="form-input" 
+                           placeholder="miusuario123"
+                           required autocomplete="username" aria-describedby="usuario-error" />
+                  </div>
+                  <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
+                  <small class="field-help">Debe tener al menos 4 caracteres</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="clave" class="field-label">
+                    <span class="label-text">Contraseña</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <circle cx="12" cy="16" r="1"></circle>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </div>
+                    <input type="password" id="clave" name="clave" class="form-input" 
+                           placeholder="••••••••"
+                           required autocomplete="new-password" aria-describedby="clave-error" />
+                    <button type="button" class="password-toggle" onclick="togglePassword('clave', this)" 
+                            aria-label="Mostrar u ocultar contraseña">
+                      <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                      <svg class="eye-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    </button>
+                  </div>
+                  <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
+                  <div class="password-strength">
+                    <div class="strength-bar">
+                      <div id="password-strength-fill" class="strength-fill"></div>
+                    </div>
+                    <div id="password-strength-text" class="strength-text"></div>
+                  </div>
+                  <small class="field-help">Mínimo 8 caracteres, incluir mayúscula, número y símbolo</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="confirmar_clave" class="field-label">
+                    <span class="label-text">Confirmar contraseña</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <circle cx="12" cy="16" r="1"></circle>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                    </div>
+                    <input type="password" id="confirmar_clave" name="confirmar_clave" class="form-input" 
+                           placeholder="••••••••"
+                           required autocomplete="new-password" aria-describedby="confirmar-clave-error" />
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmar_clave', this)" 
+                            aria-label="Mostrar u ocultar contraseña">
+                      <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                      <svg class="eye-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    </button>
+                  </div>
+                  <div id="confirmar-clave-error" class="error-message" role="alert" aria-live="polite"></div>
+                </div>
+              </div>
+              
+              <div class="step-actions">
+                <button type="button" class="btn-prev" onclick="prevStep()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                  </svg>
+                  Anterior
+                </button>
+                <button type="button" class="btn-next" onclick="nextStep()">
+                  Continuar
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Paso 3: Finalizar -->
+            <div class="form-step" data-step="3">
+              <div class="step-header">
+                <h3 class="step-title">Finalizar Registro</h3>
+                <p class="step-description">Acepta nuestros términos y completa tu registro</p>
+              </div>
+              
+              <div class="form-grid">
+                <div class="form-field">
+                  <div class="checkbox-group">
+                    <label class="checkbox-modern">
+                      <input type="checkbox" id="aceptar_terminos" name="aceptar_terminos" required>
+                      <span class="checkmark">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                          <polyline points="20,6 9,17 4,12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="checkbox-label">
+                        Acepto los <a href="#" class="link-inline">términos y condiciones</a> 
+                        <span class="label-required">*</span>
+                      </span>
+                    </label>
+                    
+                    <label class="checkbox-modern">
+                      <input type="checkbox" id="recibir_notificaciones" name="recibir_notificaciones">
+                      <span class="checkmark">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                          <polyline points="20,6 9,17 4,12"></polyline>
+                        </svg>
+                      </span>
+                      <span class="checkbox-label">
+                        Deseo recibir notificaciones sobre nuevos destinos y ofertas especiales
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="step-actions">
+                <button type="button" class="btn-prev" onclick="prevStep()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                  </svg>
+                  Anterior
+                </button>
+                <button type="submit" class="btn-submit">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20,6 9,17 4,12"></polyline>
+                  </svg>
+                  Crear Mi Cuenta
+                </button>
+              </div>
+            </div>
+          </form>
+          
+          <div class="form-footer">
+            <p class="footer-text">¿Ya tienes cuenta? 
+              <a href="/login" class="link-primary">Inicia sesión aquí</a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </main>
-
   <footer>
     <div class="footer-content">
       <div class="footer-section">
@@ -138,56 +405,209 @@
       <p>&copy; 2024 Portal Turístico Ecuador. Todos los derechos reservados.</p>
     </div>
   </footer>
-
   <script>
-    // Validación de contraseñas
-    document.getElementById('confirmar_clave').addEventListener('input', function() {
-      const clave = document.getElementById('clave').value;
-      const confirmar = this.value;
-      const errorDiv = document.getElementById('confirmar-clave-error');
-      
-      if (confirmar && clave !== confirmar) {
-        errorDiv.textContent = 'Las contraseñas no coinciden';
-        this.setCustomValidity('Las contraseñas no coinciden');
-      } else {
-        errorDiv.textContent = '';
-        this.setCustomValidity('');
+    // Variables globales
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    // Funciones de navegación de pasos
+    function nextStep() {
+      if (validateCurrentStep() && currentStep < totalSteps) {
+        currentStep++;
+        updateStepDisplay();
+        updateProgressIndicator();
       }
-    });
-    
-    function evaluarFortaleza(password) {
-      let fuerza = 0;
-      if (password.length >= 8) fuerza++;
-      if (/[A-Z]/.test(password)) fuerza++;
-      if (/[0-9]/.test(password)) fuerza++;
-      if (/[^A-Za-z0-9]/.test(password)) fuerza++;
-      return fuerza;
     }
 
-    document.getElementById('clave').addEventListener('input', function() {
-      const clave = this.value;
-      const bar = document.getElementById('password-strength-bar');
-      const text = document.getElementById('password-strength-text');
-      const fuerza = evaluarFortaleza(clave);
-      let color = '#e53e3e', mensaje = 'Débil';
-      if (fuerza === 2) { color = '#f6ad55'; mensaje = 'Media'; }
-      if (fuerza === 3) { color = '#ecc94b'; mensaje = 'Buena'; }
-      if (fuerza === 4) { color = '#38a169'; mensaje = 'Fuerte'; }
-      bar.style.background = color;
-      bar.style.width = (fuerza * 25) + '%';
-      text.textContent = clave.length === 0 ? '' : `Fortaleza: ${mensaje}`;
-    });
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepDisplay();
+        updateProgressIndicator();
+      }
+    }
 
+    function updateStepDisplay() {
+      document.querySelectorAll('.form-step').forEach((step, index) => {
+        step.classList.toggle('active', index + 1 === currentStep);
+      });
+    }
+
+    function updateProgressIndicator() {
+      document.querySelectorAll('.progress-step').forEach((step, index) => {
+        step.classList.toggle('active', index + 1 <= currentStep);
+      });
+    }
+
+    function validateCurrentStep() {
+      const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+      const requiredFields = currentStepElement.querySelectorAll('[required]');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.checkValidity()) {
+          isValid = false;
+          field.focus();
+          return false;
+        }
+      });
+
+      return isValid;
+    }
+
+    // Función mejorada para toggle de contraseña
     function togglePassword(inputId, btn) {
       const input = document.getElementById(inputId);
+      const eyeOpen = btn.querySelector('.eye-open');
+      const eyeClosed = btn.querySelector('.eye-closed');
+      
       if (input.type === 'password') {
         input.type = 'text';
-        btn.querySelector('.icon-eye').textContent = '🙈';
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
       } else {
         input.type = 'password';
-        btn.querySelector('.icon-eye').textContent = '👁️';
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
       }
     }
+
+    // Función mejorada para evaluar fortaleza de contraseña
+    function evaluarFortaleza(password) {
+      let fuerza = 0;
+      const criterios = {
+        longitud: password.length >= 8,
+        mayuscula: /[A-Z]/.test(password),
+        numero: /[0-9]/.test(password),
+        simbolo: /[^A-Za-z0-9]/.test(password)
+      };
+
+      Object.values(criterios).forEach(cumple => {
+        if (cumple) fuerza++;
+      });
+
+      return { fuerza, criterios };
+    }
+
+    function actualizarBarraFortaleza(password) {
+      const { fuerza, criterios } = evaluarFortaleza(password);
+      const fill = document.getElementById('password-strength-fill');
+      const text = document.getElementById('password-strength-text');
+      
+      const niveles = [
+        { color: '#ef4444', texto: 'Muy débil', width: '25%' },
+        { color: '#f97316', texto: 'Débil', width: '50%' },
+        { color: '#eab308', texto: 'Media', width: '75%' },
+        { color: '#22c55e', texto: 'Fuerte', width: '100%' }
+      ];
+
+      if (password.length === 0) {
+        fill.style.width = '0%';
+        fill.style.backgroundColor = '#e5e7eb';
+        text.textContent = '';
+        return;
+      }
+
+      const nivel = niveles[fuerza - 1] || niveles[0];
+      fill.style.width = nivel.width;
+      fill.style.backgroundColor = nivel.color;
+      text.textContent = `Fortaleza: ${nivel.texto}`;
+      text.style.color = nivel.color;
+    }
+
+    // Event listeners cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Validación de contraseña en tiempo real
+      document.getElementById('clave').addEventListener('input', function() {
+        const clave = this.value;
+        const errorDiv = document.getElementById('clave-error');
+        
+        actualizarBarraFortaleza(clave);
+        
+        if (clave.length > 0 && clave.length < 8) {
+          errorDiv.textContent = 'La contraseña debe tener al menos 8 caracteres';
+          this.setCustomValidity('La contraseña debe tener al menos 8 caracteres');
+        } else {
+          errorDiv.textContent = '';
+          this.setCustomValidity('');
+        }
+      });
+
+      // Validación de confirmación de contraseña
+      document.getElementById('confirmar_clave').addEventListener('input', function() {
+        const clave = document.getElementById('clave').value;
+        const confirmar = this.value;
+        const errorDiv = document.getElementById('confirmar-clave-error');
+        
+        if (confirmar && clave !== confirmar) {
+          errorDiv.textContent = 'Las contraseñas no coinciden';
+          this.setCustomValidity('Las contraseñas no coinciden');
+        } else {
+          errorDiv.textContent = '';
+          this.setCustomValidity('');
+        }
+      });
+
+      // Validación de cédula
+      document.getElementById('cedula').addEventListener('input', function() {
+        const cedula = this.value;
+        const errorDiv = document.getElementById('cedula-error');
+        
+        if (cedula && !/^\d{10}$/.test(cedula)) {
+          errorDiv.textContent = 'La cédula debe tener 10 dígitos numéricos';
+          this.setCustomValidity('Cédula inválida');
+        } else {
+          errorDiv.textContent = '';
+          this.setCustomValidity('');
+        }
+      });
+
+      // Validación de usuario
+      document.getElementById('usuario').addEventListener('input', function() {
+        const usuario = this.value;
+        const errorDiv = document.getElementById('usuario-error');
+        
+        if (usuario && usuario.length < 4) {
+          errorDiv.textContent = 'El usuario debe tener al menos 4 caracteres';
+          this.setCustomValidity('Usuario muy corto');
+        } else {
+          errorDiv.textContent = '';
+          this.setCustomValidity('');
+        }
+      });
+
+      // Validación de email
+      document.getElementById('email').addEventListener('input', function() {
+        const email = this.value;
+        const errorDiv = document.getElementById('email-error');
+        
+        if (email && !/.+@.+\..+/.test(email)) {
+          errorDiv.textContent = 'Correo electrónico inválido';
+          this.setCustomValidity('Correo inválido');
+        } else {
+          errorDiv.textContent = '';
+          this.setCustomValidity('');
+        }
+      });
+
+      // Navegación con teclado
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.target.type !== 'submit') {
+          e.preventDefault();
+          if (currentStep < totalSteps) {
+            nextStep();
+          }
+        }
+      });
+
+      // Animaciones de entrada
+      setTimeout(() => {
+        document.querySelector('.slide-in-left').classList.add('animate');
+        setTimeout(() => {
+          document.querySelector('.slide-in-right').classList.add('animate');
+        }, 200);
+      }, 100);
+    });
   </script>
 </body>
 </html>

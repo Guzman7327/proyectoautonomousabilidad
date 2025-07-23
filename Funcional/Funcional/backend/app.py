@@ -257,13 +257,17 @@ def cambiar_idioma():
 
 @app.route("/")
 def inicio():
-    lang = session.get('lang', 'es')
-    return render_template("index.html",
-        video_url=url_for('serve_video', filename='ecuador.mp4'),
-        subtitulos_url=url_for('serve_subtitulos', filename='subtitulos.vtt'),
-        transcripcion_url=url_for('serve_transcripcion', filename='ecuador.txt'),
-        lang=lang
-    )
+    try:
+        lang = session.get('lang', 'es')
+        return render_template("index.html",
+            video_url='#',  # Temporal sin video
+            subtitulos_url='#',  # Temporal sin subtítulos
+            transcripcion_url='#',  # Temporal sin transcripción
+            lang=lang
+        )
+    except Exception as e:
+        print(f"Error en índice: {e}")
+        return render_template("test.html")  # Fallback a página de prueba
 
 @app.route("/contacto", methods=["GET", "POST"])
 def contacto():
@@ -784,6 +788,10 @@ def guardar_mensaje_contacto():
     cur.close()
     conn.close()
     return jsonify({'mensaje': 'Mensaje guardado correctamente'})
+
+@app.route("/test")
+def test():
+    return render_template("test.html")
 
 # --- MAIN ---
 if __name__ == "__main__":

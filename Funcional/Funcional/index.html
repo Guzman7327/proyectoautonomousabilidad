@@ -17,203 +17,535 @@
     <span id="status-text">Accesibilidad: Normal</span>
   </div>
   
-  <header role="banner">
-    <div class="logo">
-      <img src="img/logo-ecuador.png" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
-      <span class="logo-text">PORTAL TURÍSTICO EC</span>
+  <header role="banner" class="modern-header">
+    <!-- Barra superior con información -->
+    <div class="top-bar">
+      <div class="contact-info">
+        <span class="contact-item">
+          <i class="icon-phone" aria-hidden="true">📞</i> +593 2 123-4567
+        </span>
+        <span class="contact-item">
+          <i class="icon-email" aria-hidden="true">✉️</i> info@ecuadorturismo.gov.ec
+        </span>
+      </div>
+      <div class="header-actions">
+        <div class="language-selector">
+          <button class="lang-btn active" aria-label="Español" title="Español">ES</button>
+          <button class="lang-btn" aria-label="English" title="English">EN</button>
+        </div>
+        <div class="accessibility-quick">
+          <button class="acc-btn" onclick="activarContraste()" aria-label="Alto contraste" title="Alto contraste">
+            <span aria-hidden="true">�</span>
+          </button>
+          <button class="acc-btn" onclick="aumentarTexto()" aria-label="Aumentar texto" title="Aumentar texto">
+            <span aria-hidden="true">A+</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="menu-accesibilidad" role="navigation" aria-label="Herramientas de accesibilidad">
-      <button class="menu-toggle" onclick="toggleAccMenu()" aria-expanded="false" aria-controls="accesibilidad-lista">
-        <span aria-hidden="true">♿</span> Accesibilidad <span aria-hidden="true">▾</span>
-      </button>
-      <ul id="accesibilidad-lista" class="accesibilidad-lista oculto" role="menu">
-        <li role="none"><button role="menuitem" onclick="activarContraste()" aria-label="Activar modo alto contraste">
-          <span aria-hidden="true">🌓</span> Alto contraste
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarModoMonocromatico()" aria-label="Activar modo monocromático">
-          <span aria-hidden="true">🎨</span> Modo monocromático
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="aumentarTexto()" aria-label="Aumentar tamaño del texto">
-          <span aria-hidden="true">👁️</span> Aumentar texto
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="reducirTexto()" aria-label="Reducir tamaño del texto">
-          <span aria-hidden="true">👁️</span> Reducir texto
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="ajustarEspaciado()" aria-label="Ajustar espaciado de texto">
-          <span aria-hidden="true">📏</span> Ajustar espaciado
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="usarFuenteLegible()" aria-label="Cambiar a fuente más legible">
-          <span aria-hidden="true">🅰️</span> Fuente legible
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarZoom()" aria-label="Activar zoom de página">
-          <span aria-hidden="true">🔍</span> Zoom de página
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="resaltarEnlaces()" aria-label="Resaltar enlaces y foco">
-          <span aria-hidden="true">✨</span> Resaltar enlaces
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="pausarAnimaciones()" aria-label="Pausar animaciones">
-          <span aria-hidden="true">⏸️</span> Pausar animaciones
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="leerTexto()" aria-label="Activar lectura de texto en voz alta">
-          <span aria-hidden="true">👂</span> Lectura de texto
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarDescripcionAudio()" aria-label="Activar descripción de audio">
-          <span aria-hidden="true">🎧</span> Descripción de audio
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarSubtitulos()" aria-label="Activar subtítulos cerrados">
-          <span aria-hidden="true">📺</span> Subtítulos cerrados
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarSubtitulosDirecto()" aria-label="Activar subtítulos en directo">
-          <span aria-hidden="true">📡</span> Subtítulos en directo
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="descargarTranscripcion()" aria-label="Descargar transcripción">
-          <span aria-hidden="true">📄</span> Descargar transcripción
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="mostrarControlesAudio()" aria-label="Mostrar controles de audio">
-          <span aria-hidden="true">🔊</span> Controles de audio
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="activarAlertasVisuales()" aria-label="Activar alertas visuales">
-          <span aria-hidden="true">⚠️</span> Alertas visuales
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="restablecerAccesibilidad()" aria-label="Restablecer configuración de accesibilidad">
-          <span aria-hidden="true">♻️</span> Restablecer
-        </button></li>
-        <li role="none"><button role="menuitem" onclick="mostrarInfoAccesibilidad()" aria-label="Mostrar información de accesibilidad">
-          <span aria-hidden="true">ℹ️</span> Información
-        </button></li>
-      </ul>
-    </div>
+    <!-- Header principal -->
+    <div class="main-header">
+      <div class="logo-section">
+        <img src="img/logo-ecuador.png" alt="Logo oficial de Ecuador Turismo" class="logo-img" />
+        <div class="logo-text">
+          <h1 class="brand-title">Ecuador Turístico</h1>
+          <p class="brand-subtitle">Portal Inclusivo de Turismo</p>
+        </div>
+      </div>
 
-    <!-- Menú principal mejorado -->
-    <nav class="nav-main" role="navigation" aria-label="Navegación principal">
-      <button class="menu-toggle-mobile" onclick="toggleMobileMenu()" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú principal">
-        <span class="hamburger-icon" aria-hidden="true">☰</span>
-        <span class="menu-text">Menú</span>
+      <!-- Menú de accesibilidad mejorado -->
+      <div class="accessibility-menu" role="navigation" aria-label="Herramientas de accesibilidad">
+        <button class="accessibility-toggle" onclick="toggleAccMenu()" aria-expanded="false" aria-controls="accesibilidad-lista">
+          <span class="acc-icon" aria-hidden="true">♿</span>
+          <span class="acc-text">Accesibilidad</span>
+          <span class="acc-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div id="accesibilidad-lista" class="accessibility-dropdown oculto" role="menu">
+          <div class="acc-section">
+            <h3 class="acc-section-title">Visual</h3>
+            <button role="menuitem" onclick="activarContraste()" class="acc-option">
+              <span aria-hidden="true">🌓</span> Alto contraste
+            </button>
+            <button role="menuitem" onclick="activarModoMonocromatico()" class="acc-option">
+              <span aria-hidden="true">🎨</span> Modo monocromático
+            </button>
+            <button role="menuitem" onclick="aumentarTexto()" class="acc-option">
+              <span aria-hidden="true">�</span> Aumentar texto
+            </button>
+            <button role="menuitem" onclick="reducirTexto()" class="acc-option">
+              <span aria-hidden="true">🔍</span> Reducir texto
+            </button>
+          </div>
+          <div class="acc-section">
+            <h3 class="acc-section-title">Navegación</h3>
+            <button role="menuitem" onclick="resaltarEnlaces()" class="acc-option">
+              <span aria-hidden="true">✨</span> Resaltar enlaces
+            </button>
+            <button role="menuitem" onclick="activarZoom()" class="acc-option">
+              <span aria-hidden="true">�</span> Zoom de página
+            </button>
+            <button role="menuitem" onclick="ajustarEspaciado()" class="acc-option">
+              <span aria-hidden="true">�</span> Ajustar espaciado
+            </button>
+          </div>
+          <div class="acc-section">
+            <h3 class="acc-section-title">Audio</h3>
+            <button role="menuitem" onclick="leerTexto()" class="acc-option">
+              <span aria-hidden="true">�</span> Lectura de texto
+            </button>
+            <button role="menuitem" onclick="activarSubtitulos()" class="acc-option">
+              <span aria-hidden="true">📺</span> Subtítulos
+            </button>
+            <button role="menuitem" onclick="descargarTranscripcion()" class="acc-option">
+              <span aria-hidden="true">📄</span> Transcripción
+            </button>
+          </div>
+          <div class="acc-section">
+            <button role="menuitem" onclick="restablecerAccesibilidad()" class="acc-reset">
+              <span aria-hidden="true">♻️</span> Restablecer todo
+            </button>
+          </div>
+        </div>
+      </div>
+
+    <!-- Navegación principal moderna -->
+    <nav class="main-navigation" role="navigation" aria-label="Navegación principal">
+      <button class="nav-toggle" onclick="toggleMobileMenu()" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú principal">
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
+        <span class="nav-toggle-line"></span>
       </button>
       
-      <ul id="menu-principal" class="menu-principal" role="menubar">
-        <!-- Sección: Navegación Principal -->
-        <li class="menu-section" role="none">
-          <span class="menu-section-title" aria-hidden="true">Navegación</span>
-          <ul class="menu-items" role="group" aria-label="Navegación principal">
-            <li role="none">
-              <a href="#inicio" class="menu-item active" role="menuitem" aria-current="page">
-                <span class="menu-icon" aria-hidden="true">🏠</span>
-                <span class="menu-text">Inicio</span>
-              </a>
-            </li>
-            <li role="none">
-              <a href="#rutas" class="menu-item" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">🛣️</span>
-                <span class="menu-text">Rutas</span>
-              </a>
-            </li>
-            <li role="none">
-              <a href="#alojamientos" class="menu-item" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">🏨</span>
-                <span class="menu-text">Alojamientos</span>
-              </a>
-            </li>
-            <li role="none">
-              <a href="#accesibilidad" class="menu-item" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">🚶‍♂️</span>
-                <span class="menu-text">Accesibilidad</span>
-              </a>
-            </li>
-            <li role="none">
-              <a href="#contacto" class="menu-item" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">📞</span>
-                <span class="menu-text">Contacto</span>
-              </a>
-            </li>
-            <li role="none" class="menu-item-user">
-              <button class="menu-item btn-login" onclick="mostrarModal('modal-login')" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">👤</span>
-                <span class="menu-text">Iniciar Sesión</span>
-              </button>
-            </li>
-            <li role="none" class="menu-item-user">
-              <button class="menu-item btn-register" onclick="mostrarModal('modal-auth')" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">📝</span>
-                <span class="menu-text">Registrarse</span>
-              </button>
-            </li>
+      <ul id="menu-principal" class="nav-menu" role="menubar">
+        <li role="none">
+          <a href="#inicio" class="nav-item active" role="menuitem" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-text">Inicio</span>
+          </a>
+        </li>
+        <li role="none" class="nav-dropdown">
+          <button class="nav-item dropdown-toggle" role="menuitem" aria-expanded="false" aria-haspopup="true">
+            <span class="nav-icon" aria-hidden="true">🗺️</span>
+            <span class="nav-text">Destinos</span>
+            <span class="dropdown-arrow" aria-hidden="true">▾</span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a href="#costa" role="menuitem">Costa</a></li>
+            <li role="none"><a href="#sierra" role="menuitem">Sierra</a></li>
+            <li role="none"><a href="#amazonia" role="menuitem">Amazonía</a></li>
+            <li role="none"><a href="#galapagos" role="menuitem">Galápagos</a></li>
           </ul>
         </li>
-
-        <!-- Sección: Servicios -->
-        <li class="menu-section" role="none">
-          <span class="menu-section-title" aria-hidden="true">Servicios</span>
-          <ul class="menu-items" role="group" aria-label="Servicios turísticos">
-            <li role="none">
-              <a href="#multimedia" class="menu-item" role="menuitem">
-                <span class="menu-icon" aria-hidden="true">🎥</span>
-                <span class="menu-text">Multimedia</span>
-              </a>
-            </li>
-          </ul>
+        <li role="none">
+          <a href="#rutas" class="nav-item" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">🛣️</span>
+            <span class="nav-text">Rutas</span>
+          </a>
+        </li>
+        <li role="none">
+          <a href="#alojamientos" class="nav-item" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">🏨</span>
+            <span class="nav-text">Alojamientos</span>
+          </a>
+        </li>
+        <li role="none">
+          <a href="#multimedia" class="nav-item" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">🎥</span>
+            <span class="nav-text">Multimedia</span>
+          </a>
+        </li>
+        <li role="none">
+          <a href="#contacto" class="nav-item" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">📞</span>
+            <span class="nav-text">Contacto</span>
+          </a>
+        </li>
+        <li role="none" class="nav-auth">
+          <button class="nav-item auth-btn login-btn" onclick="mostrarModal('modal-login')" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">👤</span>
+            <span class="nav-text">Entrar</span>
+          </button>
+        </li>
+        <li role="none" class="nav-auth">
+          <button class="nav-item auth-btn register-btn" onclick="mostrarModal('modal-auth')" role="menuitem">
+            <span class="nav-icon" aria-hidden="true">📝</span>
+            <span class="nav-text">Registro</span>
+          </button>
         </li>
       </ul>
     </nav>
-
-    <!-- Accesos rápidos -->
-    <div class="quick-access" role="complementary" aria-label="Accesos rápidos">
-      <button class="quick-btn" onclick="scrollToSection('destinos')" aria-label="Ir a destinos destacados">
-        <span class="quick-icon" aria-hidden="true">⭐</span>
-        <span class="quick-text">Destinos</span>
-      </button>
-      <button class="quick-btn" onclick="scrollToSection('multimedia')" aria-label="Ir a contenido multimedia">
-        <span class="quick-icon" aria-hidden="true">🎬</span>
-        <span class="quick-text">Videos</span>
-      </button>
-      <button class="quick-btn" onclick="mostrarModal('modal-login')" aria-label="Acceso rápido a inicio de sesión">
-        <span class="quick-icon" aria-hidden="true">🔑</span>
-        <span class="quick-text">Acceder</span>
-      </button>
     </div>
   </header>
 
   <main id="main-content" role="main">
-    <!-- Breadcrumbs -->
-    <nav id="breadcrumbs" class="breadcrumbs" aria-label="Navegación de migas de pan">
-      <a href="#inicio">Inicio</a>
+    <!-- Breadcrumbs modernos -->
+    <nav id="breadcrumbs" class="modern-breadcrumbs" aria-label="Navegación de migas de pan">
+      <div class="breadcrumb-container">
+        <a href="#inicio" class="breadcrumb-link">
+          <span class="breadcrumb-icon" aria-hidden="true">🏠</span>
+          Inicio
+        </a>
+      </div>
     </nav>
     
-    <section class="banner-rotativo" aria-label="Imágenes de destinos turísticos de Ecuador">
-      <img src="img/banner1.jpg" class="active" alt="Vista panorámica de Cuenca, ciudad patrimonio de la humanidad" />
-      <img src="img/banner2.jpg" alt="Playa de Salinas con aguas cristalinas del Pacífico" />
-      <img src="img/banner3.jpg" alt="Paisaje montañoso de los Andes ecuatorianos" />
+    <!-- Hero Section con carousel mejorado -->
+    <section class="hero-section" aria-label="Destinos destacados de Ecuador">
+      <div class="hero-carousel">
+        <div class="hero-slide active">
+          <img src="backend/static/img/cuenca.jpg" alt="Vista panorámica de Cuenca, ciudad patrimonio de la humanidad" />
+          <div class="hero-overlay">
+            <div class="hero-content">
+              <h1 class="hero-title">Descubre Ecuador</h1>
+              <p class="hero-subtitle">Un país de contrastes únicos y bellezas incomparables</p>
+              <div class="hero-stats">
+                <div class="stat-item">
+                  <span class="stat-number">24</span>
+                  <span class="stat-label">Provincias</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">4</span>
+                  <span class="stat-label">Regiones</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">50+</span>
+                  <span class="stat-label">Destinos</span>
+                </div>
+              </div>
+              <div class="hero-actions">
+                <button class="hero-btn primary" onclick="scrollToSection('destinos')">
+                  <span class="btn-icon" aria-hidden="true">🗺️</span>
+                  Explorar Destinos
+                </button>
+                <button class="hero-btn secondary" onclick="scrollToSection('multimedia')">
+                  <span class="btn-icon" aria-hidden="true">🎥</span>
+                  Ver Videos
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-slide">
+          <img src="backend/static/img/salinas.jpg" alt="Playa de Salinas con aguas cristalinas del Pacífico" />
+          <div class="hero-overlay">
+            <div class="hero-content">
+              <h2 class="hero-title">Costa Ecuatoriana</h2>
+              <p class="hero-subtitle">Playas paradisíacas y ciudades llenas de vida</p>
+              <div class="hero-actions">
+                <button class="hero-btn primary" onclick="scrollToSection('costa')">
+                  <span class="btn-icon" aria-hidden="true">🏖️</span>
+                  Explorar Costa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-slide">
+          <img src="backend/static/img/quito.jpg" alt="Centro histórico de Quito iluminado al atardecer" />
+          <div class="hero-overlay">
+            <div class="hero-content">
+              <h2 class="hero-title">Sierra Andina</h2>
+              <p class="hero-subtitle">Montañas majestuosas y ciudades coloniales</p>
+              <div class="hero-actions">
+                <button class="hero-btn primary" onclick="scrollToSection('sierra')">
+                  <span class="btn-icon" aria-hidden="true">⛰️</span>
+                  Explorar Sierra
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Controles del carousel -->
+      <div class="carousel-controls">
+        <button class="carousel-btn prev" onclick="previousSlide()" aria-label="Imagen anterior">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="carousel-indicators">
+          <button class="indicator active" onclick="goToSlide(0)" aria-label="Ver primera imagen"></button>
+          <button class="indicator" onclick="goToSlide(1)" aria-label="Ver segunda imagen"></button>
+          <button class="indicator" onclick="goToSlide(2)" aria-label="Ver tercera imagen"></button>
+        </div>
+        <button class="carousel-btn next" onclick="nextSlide()" aria-label="Imagen siguiente">
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
     </section>
 
-    <section aria-labelledby="mapa-titulo">
-      <h2 id="mapa-titulo" style="text-align:center; margin-top: 2rem;">Mapa de Rutas Turísticas</h2>
-      <div id="map" style="height: 400px; margin: 20px auto; width: 90%; max-width: 1000px;" 
-           role="application" aria-label="Mapa interactivo de destinos turísticos de Ecuador"></div>
+    <!-- Barra de búsqueda prominente -->
+    <section class="search-section" aria-labelledby="search-title">
+      <div class="search-container">
+        <h2 id="search-title" class="search-title">¿Qué destino buscas?</h2>
+        <div class="search-form">
+          <div class="search-input-group">
+            <input type="text" class="search-input" placeholder="Buscar destinos, actividades, hoteles..." aria-label="Buscar en el portal turístico">
+            <button class="search-btn" aria-label="Buscar">
+              <span aria-hidden="true">🔍</span>
+            </button>
+          </div>
+          <div class="search-filters">
+            <select class="filter-select" aria-label="Filtrar por región">
+              <option value="">Todas las regiones</option>
+              <option value="costa">Costa</option>
+              <option value="sierra">Sierra</option>
+              <option value="amazonia">Amazonía</option>
+              <option value="galapagos">Galápagos</option>
+            </select>
+            <select class="filter-select" aria-label="Filtrar por tipo">
+              <option value="">Todos los tipos</option>
+              <option value="cultura">Cultura</option>
+              <option value="naturaleza">Naturaleza</option>
+              <option value="aventura">Aventura</option>
+              <option value="playa">Playa</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Sección de destinos destacados -->
-    <section class="destinos-destacados" aria-labelledby="destinos-titulo">
-      <h2 id="destinos-titulo">Destinos Destacados</h2>
-      <div class="destinos-grid">
-        <article class="destino-card">
-          <img src="img/cuenca.jpg" alt="Centro histórico de Cuenca" />
-          <h3>Cuenca</h3>
-          <p>Ciudad patrimonio de la humanidad con arquitectura colonial y artesanías tradicionales.</p>
-          <button class="btn-destino" aria-label="Ver más información sobre Cuenca">Ver más</button>
-        </article>
-        <article class="destino-card">
-          <img src="img/salinas.jpg" alt="Playa de Salinas" />
-          <h3>Salinas</h3>
-          <p>Hermosa playa del Pacífico con excelente infraestructura turística y accesibilidad.</p>
-          <button class="btn-destino" aria-label="Ver más información sobre Salinas">Ver más</button>
-        </article>
-        <article class="destino-card">
-          <img src="img/manta.jpg" alt="Ciudad de Manta" />
-          <h3>Manta</h3>
-          <p>Puerto pesquero con hermosas playas y deliciosa gastronomía marina.</p>
-          <button class="btn-destino" aria-label="Ver más información sobre Manta">Ver más</button>
-        </article>
+    <!-- Mapa interactivo mejorado -->
+    <section class="map-section" aria-labelledby="mapa-titulo">
+      <div class="map-container">
+        <div class="map-header">
+          <h2 id="mapa-titulo">Explora Ecuador en el Mapa</h2>
+          <p class="map-subtitle">Descubre destinos y rutas turísticas interactivas</p>
+        </div>
+        <div class="map-wrapper">
+          <div id="map" role="application" aria-label="Mapa interactivo de destinos turísticos de Ecuador"></div>
+          <div class="map-controls">
+            <button class="map-control-btn" onclick="centrarMapa()" aria-label="Centrar mapa en Ecuador">
+              <span aria-hidden="true">🎯</span> Centrar
+            </button>
+            <button class="map-control-btn" onclick="mostrarTodosDestinos()" aria-label="Mostrar todos los destinos">
+              <span aria-hidden="true">📍</span> Todos los destinos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Destinos por regiones -->
+    <section class="destinations-section" aria-labelledby="destinos-titulo">
+      <div class="destinations-container">
+        <div class="section-header">
+          <h2 id="destinos-titulo">Destinos por Regiones</h2>
+          <p class="section-subtitle">Explora la diversidad de Ecuador región por región</p>
+        </div>
+        
+        <!-- Pestañas de regiones -->
+        <div class="region-tabs" role="tablist" aria-label="Regiones de Ecuador">
+          <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="costa-panel" onclick="switchRegion('costa')">
+            <span class="tab-icon" aria-hidden="true">🏖️</span>
+            Costa
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="sierra-panel" onclick="switchRegion('sierra')">
+            <span class="tab-icon" aria-hidden="true">⛰️</span>
+            Sierra
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="amazonia-panel" onclick="switchRegion('amazonia')">
+            <span class="tab-icon" aria-hidden="true">🌳</span>
+            Amazonía
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="galapagos-panel" onclick="switchRegion('galapagos')">
+            <span class="tab-icon" aria-hidden="true">🐢</span>
+            Galápagos
+          </button>
+        </div>
+
+        <!-- Contenido de la región Costa -->
+        <div id="costa-panel" class="region-panel active" role="tabpanel" aria-labelledby="costa-tab">
+          <div class="destinations-grid">
+            <article class="destination-card featured">
+              <div class="card-image">
+                <img src="backend/static/img/salinas.jpg" alt="Playa de Salinas con su malecón y aguas cristalinas" loading="lazy" />
+                <div class="card-badge">Destacado</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Salinas</h3>
+                <p class="card-description">La península de Santa Elena te recibe con playas perfectas, aguas cálidas y una infraestructura turística de primer nivel.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🏖️ Playas</span>
+                  <span class="feature-tag">♿ Accesible</span>
+                  <span class="feature-tag">🏨 Hoteles</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Salinas">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('salinas')" aria-label="Agregar Salinas a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-image">
+                <img src="backend/static/img/manta.jpg" alt="Puerto pesquero de Manta con barcos y mercado de mariscos" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Manta</h3>
+                <p class="card-description">Puerto pesquero con hermosas playas y la mejor gastronomía marina del país.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🐟 Gastronomía</span>
+                  <span class="feature-tag">🏖️ Playas</span>
+                  <span class="feature-tag">⚓ Puerto</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Manta">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('manta')" aria-label="Agregar Manta a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-image">
+                <img src="backend/static/img/salinas1.jpg" alt="Atardecer en las playas de la costa ecuatoriana" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Costa del Sol</h3>
+                <p class="card-description">Descubre pueblos pesqueros auténticos y playas vírgenes de arena dorada.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🌅 Atardeceres</span>
+                  <span class="feature-tag">🎣 Pesca</span>
+                  <span class="feature-tag">🏄 Deportes</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Costa del Sol">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('costa-sol')" aria-label="Agregar Costa del Sol a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Contenido de la región Sierra -->
+        <div id="sierra-panel" class="region-panel" role="tabpanel" aria-labelledby="sierra-tab">
+          <div class="destinations-grid">
+            <article class="destination-card featured">
+              <div class="card-image">
+                <img src="backend/static/img/cuenca.jpg" alt="Centro histórico de Cuenca con arquitectura colonial" loading="lazy" />
+                <div class="card-badge">Patrimonio UNESCO</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Cuenca</h3>
+                <p class="card-description">Ciudad patrimonio de la humanidad con arquitectura colonial perfectamente conservada y tradiciones vivas.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🏛️ Patrimonio</span>
+                  <span class="feature-tag">🎨 Artesanías</span>
+                  <span class="feature-tag">♿ Accesible</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Cuenca">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('cuenca')" aria-label="Agregar Cuenca a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-image">
+                <img src="backend/static/img/quito.jpg" alt="Quito histórico iluminado al atardecer" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Quito Histórico</h3>
+                <p class="card-description">Capital del Ecuador con el centro histórico mejor conservado de América Latina.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🏛️ Historia</span>
+                  <span class="feature-tag">🎭 Cultura</span>
+                  <span class="feature-tag">🏔️ Montañas</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Quito">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('quito')" aria-label="Agregar Quito a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-image">
+                <img src="backend/static/img/baños.jpg" alt="Cascadas y paisajes verdes de Baños de Agua Santa" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Baños de Agua Santa</h3>
+                <p class="card-description">Portal a la Amazonía con aguas termales, cascadas espectaculares y aventura extrema.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🌊 Termas</span>
+                  <span class="feature-tag">🏃 Aventura</span>
+                  <span class="feature-tag">💦 Cascadas</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Baños">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('banos')" aria-label="Agregar Baños a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Contenido de Amazonía -->
+        <div id="amazonia-panel" class="region-panel" role="tabpanel" aria-labelledby="amazonia-tab">
+          <div class="destinations-grid">
+            <article class="destination-card featured">
+              <div class="card-image">
+                <img src="backend/static/img/cuenca2.jpg" alt="Selva amazónica ecuatoriana con ríos y vegetación exuberante" loading="lazy" />
+                <div class="card-badge">Biodiversidad</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Amazonía Ecuatoriana</h3>
+                <p class="card-description">La selva más biodiversa del planeta te espera con comunidades indígenas y fauna única.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🌳 Naturaleza</span>
+                  <span class="feature-tag">🐦 Fauna</span>
+                  <span class="feature-tag">🛶 Canoas</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Amazonía">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('amazonia')" aria-label="Agregar Amazonía a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Contenido de Galápagos -->
+        <div id="galapagos-panel" class="region-panel" role="tabpanel" aria-labelledby="galapagos-tab">
+          <div class="destinations-grid">
+            <article class="destination-card featured">
+              <div class="card-image">
+                <img src="backend/static/img/fondos_rutas.png" alt="Islas Galápagos con fauna única y paisajes volcánicos" loading="lazy" />
+                <div class="card-badge">Patrimonio Natural</div>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Islas Galápagos</h3>
+                <p class="card-description">Laboratorio viviente de la evolución con especies únicas y paisajes volcánicos extraordinarios.</p>
+                <div class="card-features">
+                  <span class="feature-tag">🐢 Fauna única</span>
+                  <span class="feature-tag">🌋 Volcanes</span>
+                  <span class="feature-tag">🤿 Buceo</span>
+                </div>
+                <div class="card-actions">
+                  <button class="card-btn primary" aria-label="Explorar Galápagos">Explorar</button>
+                  <button class="card-btn secondary" onclick="addToFavorites('galapagos')" aria-label="Agregar Galápagos a favoritos">
+                    <span aria-hidden="true">❤️</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -5842,5 +6174,8 @@ Generado automáticamente por el Portal Turístico Ecuador
       }
     });
   </script>
+  
+  <!-- Script para la interfaz moderna -->
+  <script src="js/modern-interface.js"></script>
 </body>
 </html>

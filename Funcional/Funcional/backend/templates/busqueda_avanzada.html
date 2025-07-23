@@ -139,15 +139,29 @@
           </div>
         </fieldset>
         <div class="form-actions">
-          <button type="submit" class="btn-registro-submit">🔍 Buscar</button>
+          <button type="button" onclick="buscarEnTiempoReal()" class="btn-registro-submit">🔍 Buscar</button>
           <button type="button" onclick="limpiarFiltros()" class="btn-registro-cancel">Limpiar filtros</button>
+          <button type="button" onclick="guardarFiltrosFrecuentes()" class="btn btn-info">💾 Guardar filtros</button>
+          <button type="button" onclick="cargarFiltrosFrecuentes()" class="btn btn-secondary">📋 Cargar filtros guardados</button>
         </div>
+        
+        <!-- Contador de resultados -->
+        <div id="contador-resultados" style="display:none; margin:1em 0; text-align:center; font-weight:bold; color:#2563eb; background:#f0f9ff; padding:0.5em; border-radius:8px;">
+          <span id="numero-resultados">0</span> resultados encontrados
+        </div>
+        
         <div id="busqueda-loader" style="display:none; text-align:center; margin-top:1em;">
           <span class="loader"></span> Buscando...
         </div>
         <div id="busqueda-status" class="registro-status" role="status" aria-live="polite">{{ mensaje }}</div>
         <div id="busqueda-feedback" style="display:none; margin-top:1em; text-align:center; font-weight:bold; color:#2563eb;"></div>
       </form>
+      
+      <!-- Área de resultados en tiempo real -->
+      <div id="resultados-tiempo-real" style="display:none; margin-top:2em; border-top:2px solid #e5e7eb; padding-top:1em;">
+        <h3>Resultados de la búsqueda</h3>
+        <div id="lista-resultados"></div>
+      </div>
       <div id="resultados-busqueda">
         <!-- Aquí se mostrarán los resultados dinámicamente -->
         {% if resultados %}
@@ -208,53 +222,183 @@
   }
   </style>
   <script>
+  // Datos simulados para búsqueda
+  const destinosSimulados = [
+    { nombre: 'Centro Histórico de Cuenca', tipo: 'ciudad', provincia: 'azuay', ciudad: 'Cuenca', precio: 0, caracteristicas: ['cultural', 'accesible'] },
+    { nombre: 'Playa de Salinas', tipo: 'playa', provincia: 'guayas', ciudad: 'Salinas', precio: 15, caracteristicas: ['familiar', 'naturaleza'] },
+    { nombre: 'Baños de Agua Santa', tipo: 'ciudad', provincia: 'tungurahua', ciudad: 'Baños', precio: 25, caracteristicas: ['aventura', 'naturaleza'] },
+    { nombre: 'Islas Galápagos', tipo: 'isla', provincia: 'galapagos', ciudad: 'Puerto Ayora', precio: 200, caracteristicas: ['naturaleza', 'aventura'] },
+    { nombre: 'Malecón 2000', tipo: 'monumento', provincia: 'guayas', ciudad: 'Guayaquil', precio: 0, caracteristicas: ['cultural', 'familiar'] },
+    { nombre: 'Mitad del Mundo', tipo: 'monumento', provincia: 'pichincha', ciudad: 'Quito', precio: 10, caracteristicas: ['cultural', 'familiar'] }
+  ];
+
+  let timeoutBusqueda;
+
   // Limpiar filtros
   function limpiarFiltros() {
     document.getElementById('form-busqueda-filtros').reset();
+    document.getElementById('contador-resultados').style.display = 'none';
+    document.getElementById('resultados-tiempo-real').style.display = 'none';
+    mostrarFeedback('Filtros limpiados', 'success');
   }
 
-  // AJAX para búsqueda dinámica
-  const form = document.getElementById('form-busqueda-filtros');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
+  // Búsqueda en tiempo real
+  function buscarEnTiempoReal() {
+    clearTimeout(timeoutBusqueda);
     document.getElementById('busqueda-loader').style.display = 'block';
-    document.getElementById('resultados-busqueda').innerHTML = '';
-    const datos = new FormData(form);
-    fetch('/busqueda_avanzada', {
-      method: 'POST',
-      body: datos
-    })
-    .then(r => r.text())
-    .then(html => {
+    
+    timeoutBusqueda = setTimeout(() => {
+      const resultados = filtrarDestinos();
+      mostrarResultados(resultados);
       document.getElementById('busqueda-loader').style.display = 'none';
-      // Extraer solo la tabla de resultados del HTML devuelto
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const resultados = doc.querySelector('#resultados-busqueda');
-      if (resultados) {
-        document.getElementById('resultados-busqueda').innerHTML = resultados.innerHTML;
-      } else {
-        document.getElementById('resultados-busqueda').innerHTML = '<p style="margin-top:2rem;">No se encontraron resultados.</p>';
+    }, 500);
+  }
+
+  // Agregar búsqueda automática mientras se escribe
+  document.addEventListener('DOMContentLoaded', function() {
+    const campos = ['busqueda-nombre', 'busqueda-tipo', 'busqueda-provincia', 'busqueda-ciudad'];
+    campos.forEach(campo => {
+      const elemento = document.getElementById(campo);
+      if (elemento) {
+        elemento.addEventListener('input', () => {
+          clearTimeout(timeoutBusqueda);
+          timeoutBusqueda = setTimeout(buscarEnTiempoReal, 300);
+        });
       }
+    });
+
+    // Buscar al cambiar checkboxes y radios
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(elemento => {
+      elemento.addEventListener('change', buscarEnTiempoReal);
     });
   });
 
-  document.getElementById('limpiar-filtros').addEventListener('click', function() {
-    const form = document.getElementById('form-busqueda-filtros');
-    form.reset();
-    document.getElementById('busqueda-feedback').textContent = 'Filtros limpiados';
-    document.getElementById('busqueda-feedback').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('busqueda-feedback').style.display = 'none';
-    }, 1500);
-  });
+  function filtrarDestinos() {
+    const nombre = document.getElementById('busqueda-nombre').value.toLowerCase();
+    const tipo = document.getElementById('busqueda-tipo').value;
+    const provincia = document.getElementById('busqueda-provincia').value;
+    const ciudad = document.getElementById('busqueda-ciudad').value.toLowerCase();
+    const precioMin = parseFloat(document.getElementById('busqueda-precio-min').value) || 0;
+    const precioMax = parseFloat(document.getElementById('busqueda-precio-max').value) || Infinity;
+    
+    const caracteristicasSeleccionadas = [];
+    document.querySelectorAll('input[name="caracteristicas"]:checked').forEach(cb => {
+      caracteristicasSeleccionadas.push(cb.value);
+    });
 
-  document.getElementById('form-busqueda-filtros').addEventListener('submit', function(e) {
-    document.getElementById('busqueda-feedback').textContent = 'Buscando...';
-    document.getElementById('busqueda-feedback').style.display = 'block';
+    return destinosSimulados.filter(destino => {
+      const coincideNombre = !nombre || destino.nombre.toLowerCase().includes(nombre);
+      const coincideTipo = !tipo || destino.tipo === tipo;
+      const coincideProvincia = !provincia || destino.provincia === provincia;
+      const coincideCiudad = !ciudad || destino.ciudad.toLowerCase().includes(ciudad);
+      const coincidePrecio = destino.precio >= precioMin && destino.precio <= precioMax;
+      
+      const coincideCaracteristicas = caracteristicasSeleccionadas.length === 0 || 
+        caracteristicasSeleccionadas.some(car => destino.caracteristicas.includes(car));
+
+      return coincideNombre && coincideTipo && coincideProvincia && coincideCiudad && coincidePrecio && coincideCaracteristicas;
+    });
+  }
+
+  function mostrarResultados(resultados) {
+    const contador = document.getElementById('contador-resultados');
+    const numeroResultados = document.getElementById('numero-resultados');
+    const listaResultados = document.getElementById('lista-resultados');
+    const contenedorResultados = document.getElementById('resultados-tiempo-real');
+
+    numeroResultados.textContent = resultados.length;
+    contador.style.display = 'block';
+
+    if (resultados.length === 0) {
+      listaResultados.innerHTML = `
+        <div style="text-align:center; padding:2em; color:#6b7280;">
+          <span style="font-size:2em;">🔍</span><br>
+          No se encontraron resultados para tu búsqueda.<br>
+          <span style="font-size:0.9em;">Prueba con otros filtros o revisa la ortografía.</span>
+        </div>
+      `;
+    } else {
+      listaResultados.innerHTML = resultados.map(destino => `
+        <div style="border:1px solid #e5e7eb; border-radius:8px; padding:1em; margin-bottom:1em; background:white;">
+          <h4 style="margin:0 0 0.5em 0; color:#1f2937;">${destino.nombre}</h4>
+          <p style="margin:0; color:#6b7280;">
+            <strong>Tipo:</strong> ${destino.tipo} | 
+            <strong>Ubicación:</strong> ${destino.ciudad}, ${destino.provincia} | 
+            <strong>Precio:</strong> ${destino.precio === 0 ? 'Gratuito' : '$' + destino.precio}
+          </p>
+          <p style="margin:0.5em 0 0 0; color:#374151;">
+            <strong>Características:</strong> ${destino.caracteristicas.join(', ')}
+          </p>
+        </div>
+      `).join('');
+    }
+
+    contenedorResultados.style.display = 'block';
+  }
+
+  function mostrarFeedback(mensaje, tipo = 'info') {
+    const feedback = document.getElementById('busqueda-feedback');
+    feedback.textContent = mensaje;
+    feedback.style.color = tipo === 'success' ? '#16a34a' : tipo === 'error' ? '#dc2626' : '#2563eb';
+    feedback.style.display = 'block';
     setTimeout(() => {
-      document.getElementById('busqueda-feedback').style.display = 'none';
-    }, 1200);
+      feedback.style.display = 'none';
+    }, 2000);
+  }
+
+  // Guardar filtros frecuentes
+  function guardarFiltrosFrecuentes() {
+    const filtros = {
+      nombre: document.getElementById('busqueda-nombre').value,
+      tipo: document.getElementById('busqueda-tipo').value,
+      provincia: document.getElementById('busqueda-provincia').value,
+      ciudad: document.getElementById('busqueda-ciudad').value,
+      precioMin: document.getElementById('busqueda-precio-min').value,
+      precioMax: document.getElementById('busqueda-precio-max').value,
+      caracteristicas: Array.from(document.querySelectorAll('input[name="caracteristicas"]:checked')).map(cb => cb.value)
+    };
+
+    localStorage.setItem('filtrosFrecuentes', JSON.stringify(filtros));
+    mostrarFeedback('Filtros guardados correctamente', 'success');
+  }
+
+  // Cargar filtros frecuentes
+  function cargarFiltrosFrecuentes() {
+    const filtrosGuardados = localStorage.getItem('filtrosFrecuentes');
+    if (!filtrosGuardados) {
+      mostrarFeedback('No hay filtros guardados', 'error');
+      return;
+    }
+
+    const filtros = JSON.parse(filtrosGuardados);
+    
+    document.getElementById('busqueda-nombre').value = filtros.nombre || '';
+    document.getElementById('busqueda-tipo').value = filtros.tipo || '';
+    document.getElementById('busqueda-provincia').value = filtros.provincia || '';
+    document.getElementById('busqueda-ciudad').value = filtros.ciudad || '';
+    document.getElementById('busqueda-precio-min').value = filtros.precioMin || '';
+    document.getElementById('busqueda-precio-max').value = filtros.precioMax || '';
+
+    // Limpiar checkboxes primero
+    document.querySelectorAll('input[name="caracteristicas"]').forEach(cb => cb.checked = false);
+    
+    // Marcar los checkboxes guardados
+    if (filtros.caracteristicas) {
+      filtros.caracteristicas.forEach(valor => {
+        const checkbox = document.querySelector(`input[name="caracteristicas"][value="${valor}"]`);
+        if (checkbox) checkbox.checked = true;
+      });
+    }
+
+    mostrarFeedback('Filtros cargados correctamente', 'success');
+    buscarEnTiempoReal();
+  }
+
+  // AJAX para búsqueda dinámica (mantener compatibilidad)
+  const form = document.getElementById('form-busqueda-filtros');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    buscarEnTiempoReal();
   });
   </script>
 </body>

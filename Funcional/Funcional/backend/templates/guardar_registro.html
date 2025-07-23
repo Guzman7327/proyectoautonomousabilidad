@@ -41,9 +41,22 @@
           </div>
         </fieldset>
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="mostrarConfirmacion()">Guardar</button>
+          <button type="button" class="btn btn-secondary" onclick="cancelarRegistro()">Cancelar</button>
         </div>
       </form>
+    </div>
+    
+    <!-- Modal de confirmación -->
+    <div id="modalConfirmacion" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Confirmar guardado</h3>
+        <p>¿Está seguro de que desea guardar este registro?</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary" onclick="confirmarGuardado()">Sí, guardar</button>
+          <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        </div>
+      </div>
     </div>
   </main>
 <script>
@@ -88,12 +101,43 @@ function mostrarBorrador() {
   setTimeout(() => { document.getElementById('guardar-borrador').style.display = 'none'; }, 3000);
 }
 
+// Funciones para el modal de confirmación
+function mostrarConfirmacion() {
+  if (!validarFormulario()) {
+    mostrarError('Por favor, corrige los errores antes de guardar.');
+    return;
+  }
+  document.getElementById('modalConfirmacion').style.display = 'flex';
+}
+
+function cerrarModal() {
+  document.getElementById('modalConfirmacion').style.display = 'none';
+}
+
+function confirmarGuardado() {
+  // Enviar el formulario
+  document.querySelector('form').submit();
+  cerrarModal();
+}
+
+function cancelarRegistro() {
+  if (confirm('¿Está seguro de que desea cancelar? Se perderán los datos ingresados.')) {
+    window.location.href = '/';
+  }
+}
+
+function validarFormulario() {
+  let esValido = true;
+  esValido &= validarCampo('nombre', v => v.length > 1, 'Nombre requerido');
+  esValido &= validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido');
+  esValido &= validarCampo('fecha', v => v.length > 0, 'Fecha requerida');
+  esValido &= validarCampo('ciudad', v => v.length > 1, 'Ciudad requerida');
+  esValido &= validarCampo('pais', v => v.length > 0, 'Seleccione un país');
+  return esValido;
+}
+
 function confirmarGuardar() {
-  if (!validarCampo('nombre', v => v.length > 1, 'Nombre requerido') ||
-      !validarCampo('email', v => /.+@.+\..+/.test(v), 'Correo inválido') ||
-      !validarCampo('fecha', v => v.length > 0, 'Fecha requerida') ||
-      !validarCampo('ciudad', v => v.length > 1, 'Ciudad requerida') ||
-      !validarCampo('pais', v => v.length > 0, 'Seleccione un país')) {
+  if (!validarFormulario()) {
     mostrarError('Por favor, corrige los errores antes de guardar.');
     return;
   }

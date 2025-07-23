@@ -28,47 +28,131 @@
   </header>
 
   <main id="main-content" role="main">
-    <div class="form-container fade-in">
-      <h1 class="form-title">Iniciar Sesión</h1>
-      
-      {% if mensaje %}
-        <div class="notification {% if 'error' in mensaje.lower() %}error{% else %}success{% endif %} mb-3">
-          <p>{{ mensaje }}</p>
-        </div>
-      {% endif %}
-      
-      <form method="POST" role="form" aria-describedby="login-descripcion">
-        <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal turístico</p>
-        
-        <div class="form-group">
-          <label for="usuario">Usuario:</label>
-          <input type="text" id="usuario" name="usuario" class="form-control" 
-                 placeholder="Ingrese su nombre de usuario" required 
-                 aria-describedby="usuario-error" autofocus />
-          <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-group">
-          <label for="clave">Contraseña:</label>
-          <div style="position:relative;">
-            <input type="password" id="clave" name="clave" class="form-control" 
-                   placeholder="Ingrese su contraseña" required 
-                   aria-describedby="clave-error" />
-            <button type="button" onclick="togglePassword('clave', this)" aria-label="Mostrar u ocultar contraseña" style="position:absolute; right:8px; top:8px; background:none; border:none; cursor:pointer;">
-              <span class="icon-eye">👁️</span>
-            </button>
+    <!-- Background decorativo -->
+    <div class="registro-bg">
+      <div class="bg-pattern"></div>
+      <div class="floating-elements">
+        <div class="float-elem elem-1"></div>
+        <div class="float-elem elem-2"></div>
+        <div class="float-elem elem-3"></div>
+      </div>
+    </div>
+    
+    <div class="registro-layout">
+      <!-- Panel informativo lateral -->
+      <div class="info-panel slide-in-left">
+        <div class="panel-content">
+          <div class="panel-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"></path>
+            </svg>
           </div>
-          <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
+          <h2 class="panel-title">¡Bienvenido de vuelta!</h2>
+          <p class="panel-subtitle">Continúa tu aventura por Ecuador</p>
+          <ul class="benefits-list">
+            <li class="benefit-item">
+              <div class="benefit-icon">🎯</div>
+              <span>Acceso a rutas personalizadas</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">❤️</div>
+              <span>Guarda tus destinos favoritos</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">📍</div>
+              <span>Historial de viajes</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">🌟</div>
+              <span>Recomendaciones exclusivas</span>
+            </li>
+          </ul>
+          <div class="stats-preview">
+            <div class="stat-item">
+              <span class="stat-number">150+</span>
+              <span class="stat-label">Destinos</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">50K+</span>
+              <span class="stat-label">Viajeros</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">4.9★</span>
+              <span class="stat-label">Valoración</span>
+            </div>
+          </div>
         </div>
-        
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      </div>
+
+      <!-- Formulario principal -->
+      <div class="form-wrapper slide-in-right">
+        <div class="form-container-modern">
+          <div class="form-header">
+            <h1 class="form-title-modern">Iniciar Sesión</h1>
+            <p class="form-subtitle">Accede a tu cuenta de viajero</p>
+          </div>
+          
+          {% if mensaje %}
+            <div class="notification {% if 'error' in mensaje.lower() %}error{% else %}success{% endif %} mb-3">
+              <p>{{ mensaje }}</p>
+            </div>
+          {% endif %}
+          
+          <form method="POST" class="form-steps" role="form" aria-describedby="login-descripcion">
+            <p id="login-descripcion" class="sr-only">Formulario para iniciar sesión en el portal turístico</p>
+            
+            <div class="step-panel active" data-step="1">
+              <div class="form-group-modern">
+                <label for="usuario" class="form-label-modern">
+                  <span class="label-icon">👤</span>
+                  Usuario
+                </label>
+                <input type="text" id="usuario" name="usuario" class="form-input-modern" 
+                       placeholder="Ingrese su nombre de usuario" required 
+                       aria-describedby="usuario-error" autofocus />
+                <div id="usuario-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-group-modern">
+                <label for="clave" class="form-label-modern">
+                  <span class="label-icon">🔒</span>
+                  Contraseña
+                </label>
+                <div class="password-input-wrapper">
+                  <input type="password" id="clave" name="clave" class="form-input-modern" 
+                         placeholder="Ingrese su contraseña" required 
+                         aria-describedby="clave-error" />
+                  <button type="button" class="password-toggle-btn" onclick="togglePassword('clave', this)" 
+                          aria-label="Mostrar u ocultar contraseña">
+                    <span class="icon-eye">👁️</span>
+                  </button>
+                </div>
+                <div id="clave-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-options">
+                <label class="checkbox-wrapper-modern">
+                  <input type="checkbox" id="recordar" name="recordar" />
+                  <span class="checkmark-modern"></span>
+                  <span class="checkbox-text">Recordar mi sesión</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="form-actions-modern">
+              <button type="submit" class="btn-primary-modern full-width" id="submit-btn">
+                <span class="btn-icon">🚀</span>
+                <span class="btn-text">Iniciar Sesión</span>
+                <div class="btn-loader" style="display: none;"></div>
+              </button>
+            </div>
+            
+            <div class="form-links">
+              <p>¿No tienes cuenta? <a href="/registro" class="link-accent">Regístrate aquí</a></p>
+              <p><a href="/recuperar" class="link-secondary">¿Olvidaste tu contraseña?</a></p>
+            </div>
+          </form>
         </div>
-      </form>
-      
-      <div class="text-center mt-3">
-        <p>¿No tienes cuenta? <a href="/registro" class="btn btn-outline">Regístrate</a></p>
-        <p><a href="/recuperar">¿Olvidaste tu contraseña?</a></p>
       </div>
     </div>
   </main>
@@ -85,6 +169,10 @@
     </div>
   </footer>
   <script>
+    let intentosLogin = 0;
+    const maxIntentos = 3;
+    let tiempoBloqueo = 0;
+    
     function togglePassword(inputId, btn) {
       const input = document.getElementById(inputId);
       if (input.type === 'password') {
@@ -93,6 +181,132 @@
       } else {
         input.type = 'password';
         btn.querySelector('.icon-eye').textContent = '👁️';
+      }
+    }
+
+    // Función para manejar intentos de login fallidos
+    function manejarIntentoFallido() {
+      intentosLogin++;
+      
+      if (intentosLogin >= maxIntentos) {
+        bloquearFormulario();
+      } else {
+        mostrarAdvertencia();
+      }
+    }
+
+    function mostrarAdvertencia() {
+      const intentosRestantes = maxIntentos - intentosLogin;
+      const mensaje = `Credenciales incorrectas. Te quedan ${intentosRestantes} intento(s) antes del bloqueo temporal.`;
+      
+      mostrarNotificacion(mensaje, 'warning');
+    }
+
+    function bloquearFormulario() {
+      tiempoBloqueo = 300; // 5 minutos en segundos
+      const form = document.querySelector('form');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      
+      form.style.pointerEvents = 'none';
+      form.style.opacity = '0.6';
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = `Bloqueado (${Math.floor(tiempoBloqueo / 60)}:${(tiempoBloqueo % 60).toString().padStart(2, '0')})`;
+      
+      mostrarNotificacion('Demasiados intentos fallidos. El formulario ha sido bloqueado por 5 minutos por seguridad.', 'error');
+      
+      const countdown = setInterval(() => {
+        tiempoBloqueo--;
+        
+        if (tiempoBloqueo <= 0) {
+          clearInterval(countdown);
+          desbloquearFormulario();
+        } else {
+          submitBtn.textContent = `Bloqueado (${Math.floor(tiempoBloqueo / 60)}:${(tiempoBloqueo % 60).toString().padStart(2, '0')})`;
+        }
+      }, 1000);
+    }
+
+    function desbloquearFormulario() {
+      const form = document.querySelector('form');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      
+      form.style.pointerEvents = 'auto';
+      form.style.opacity = '1';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Iniciar Sesión';
+      
+      intentosLogin = 0;
+      mostrarNotificacion('El formulario ha sido desbloqueado. Puedes intentar de nuevo.', 'success');
+    }
+
+    function mostrarNotificacion(mensaje, tipo) {
+      // Remover notificación anterior si existe
+      const notificacionAnterior = document.querySelector('.notification-security');
+      if (notificacionAnterior) {
+        notificacionAnterior.remove();
+      }
+
+      const notificacion = document.createElement('div');
+      notificacion.className = `notification ${tipo} notification-security`;
+      notificacion.innerHTML = `<p>${mensaje}</p>`;
+      
+      const form = document.querySelector('form');
+      form.parentNode.insertBefore(notificacion, form);
+      
+      // Auto-ocultar después de 5 segundos para mensajes no críticos
+      if (tipo !== 'error') {
+        setTimeout(() => {
+          if (notificacion.parentNode) {
+            notificacion.remove();
+          }
+        }, 5000);
+      }
+    }
+
+    // Simular intento fallido para demostración (esto normalmente vendría del servidor)
+    document.querySelector('form').addEventListener('submit', function(e) {
+      // Solo para demostración - en realidad esto se manejaría en el servidor
+      if (tiempoBloqueo > 0) {
+        e.preventDefault();
+        return;
+      }
+      
+      // Simulación de verificación (reemplazar con lógica real)
+      const usuario = document.getElementById('usuario').value;
+      const clave = document.getElementById('clave').value;
+      
+      if (usuario === 'demo' && clave === 'demo123') {
+        // Login exitoso - resetear intentos
+        intentosLogin = 0;
+      } else {
+        // Para demostración solamente
+        e.preventDefault();
+        manejarIntentoFallido();
+      }
+    });
+
+    // Validación en tiempo real
+    document.getElementById('usuario').addEventListener('input', function() {
+      validarCampo('usuario', this.value.length >= 3, 'El usuario debe tener al menos 3 caracteres');
+    });
+
+    document.getElementById('clave').addEventListener('input', function() {
+      validarCampo('clave', this.value.length >= 6, 'La contraseña debe tener al menos 6 caracteres');
+    });
+
+    function validarCampo(campo, esValido, mensajeError) {
+      const input = document.getElementById(campo);
+      const errorDiv = document.getElementById(campo + '-error');
+      
+      if (!esValido) {
+        input.style.borderColor = '#ef4444';
+        errorDiv.textContent = mensajeError;
+        errorDiv.style.display = 'block';
+      } else {
+        input.style.borderColor = '#22c55e';
+        errorDiv.textContent = '';
+        errorDiv.style.display = 'none';
       }
     }
   </script>

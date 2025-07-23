@@ -28,68 +28,160 @@
   </header>
 
   <main id="main-content" role="main">
-    <div class="form-container fade-in">
-      <h1 class="form-title">Contáctanos</h1>
-      <p class="text-center mb-3">¿Tienes preguntas sobre nuestros destinos? ¡Escríbenos!</p>
-      
-      {% if mensaje %}
-        <div class="notification {% if 'error' in mensaje.lower() %}error{% else %}success{% endif %} mb-3">
-          <p>{{ mensaje }}</p>
-        </div>
-      {% endif %}
-      
-      <form method="POST" role="form" aria-describedby="contacto-descripcion">
-        <p id="contacto-descripcion" class="sr-only">Formulario de contacto para consultas sobre destinos turísticos</p>
-        
-        <div class="form-group">
-          <label for="nombre">Nombre completo:</label>
-          <input type="text" id="nombre" name="nombre" class="form-control" 
-                 placeholder="Ingrese su nombre completo" required 
-                 aria-describedby="nombre-error" />
-          <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Correo electrónico:</label>
-          <input type="email" id="email" name="email" class="form-control" 
-                 placeholder="ejemplo@correo.com" required 
-                 aria-describedby="email-error" />
-          <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-group">
-          <label for="asunto">Asunto:</label>
-          <input type="text" id="asunto" name="asunto" class="form-control" 
-                 placeholder="¿En qué podemos ayudarte?" required 
-                 aria-describedby="asunto-error" />
-          <div id="asunto-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-group">
-          <label for="mensaje">Mensaje:</label>
-          <textarea id="mensaje" name="mensaje" class="form-control" 
-                    placeholder="Escribe tu mensaje aquí..." rows="5" required 
-                    aria-describedby="mensaje-error"></textarea>
-          <div id="mensaje-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-group">
-          <label for="captcha">Verificación: ¿Cuál es la capital de Ecuador?</label>
-          <input type="text" id="captcha" name="captcha" class="form-control" 
-                 placeholder="Respuesta" required 
-                 aria-describedby="captcha-error" />
-          <div id="captcha-error" class="error-message" role="alert" aria-live="polite"></div>
-        </div>
-        
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
-        </div>
-      </form>
-      
-      <div class="text-center mt-3">
-        <p><a href="/" class="btn btn-outline">Volver al inicio</a></p>
+    <!-- Background decorativo -->
+    <div class="registro-bg">
+      <div class="bg-pattern"></div>
+      <div class="floating-elements">
+        <div class="float-elem elem-1"></div>
+        <div class="float-elem elem-2"></div>
+        <div class="float-elem elem-3"></div>
       </div>
     </div>
+    
+    <div class="registro-layout">
+      <!-- Panel informativo lateral -->
+      <div class="info-panel slide-in-left">
+        <div class="panel-content">
+          <div class="panel-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h2 class="panel-title">¡Estamos aquí para ayudarte!</h2>
+          <p class="panel-subtitle">Tu consulta es importante para nosotros</p>
+          <ul class="benefits-list">
+            <li class="benefit-item">
+              <div class="benefit-icon">⚡</div>
+              <span>Respuesta en menos de 24h</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">🎯</div>
+              <span>Atención personalizada</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">🌟</div>
+              <span>Recomendaciones expertas</span>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-icon">📞</div>
+              <span>Soporte multicanal</span>
+            </li>
+          </ul>
+          <div class="contact-info">
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <span>info@ecuadorturismo.com</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">📱</span>
+              <span>+593 2 123-4567</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-icon">🕒</span>
+              <span>Lun-Vie 8:00-18:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario principal -->
+      <div class="form-wrapper slide-in-right">
+        <div class="form-container-modern">
+          <div class="form-header">
+            <h1 class="form-title-modern">Contáctanos</h1>
+            <p class="form-subtitle">¿Tienes preguntas sobre nuestros destinos? ¡Escríbenos!</p>
+          </div>
+          
+          {% if mensaje %}
+            <div class="notification {% if 'error' in mensaje.lower() %}error{% else %}success{% endif %} mb-3">
+              <p>{{ mensaje }}</p>
+            </div>
+          {% endif %}
+          
+          <form method="POST" class="form-steps" role="form" aria-describedby="contacto-descripcion">
+            <p id="contacto-descripcion" class="sr-only">Formulario de contacto para consultas sobre destinos turísticos</p>
+            
+            <div class="step-panel active" data-step="1">
+              <div class="form-group-modern">
+                <label for="nombre" class="form-label-modern">
+                  <span class="label-icon">👤</span>
+                  Nombre completo
+                </label>
+                <input type="text" id="nombre" name="nombre" class="form-input-modern" 
+                       placeholder="Ingrese su nombre completo" required 
+                       aria-describedby="nombre-error" autofocus />
+                <div id="nombre-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-group-modern">
+                <label for="email" class="form-label-modern">
+                  <span class="label-icon">📧</span>
+                  Correo electrónico
+                </label>
+                <input type="email" id="email" name="email" class="form-input-modern" 
+                       placeholder="ejemplo@correo.com" required 
+                       aria-describedby="email-error" />
+                <div id="email-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-group-modern">
+                <label for="asunto" class="form-label-modern">
+                  <span class="label-icon">📝</span>
+                  Asunto
+                </label>
+                <select id="asunto" name="asunto" class="form-input-modern" required 
+                        aria-describedby="asunto-error">
+                  <option value="">Seleccione el tipo de consulta</option>
+                  <option value="informacion">Información general</option>
+                  <option value="reservas">Reservas y disponibilidad</option>
+                  <option value="rutas">Consultas sobre rutas</option>
+                  <option value="accesibilidad">Accesibilidad</option>
+                  <option value="sugerencias">Sugerencias</option>
+                  <option value="otros">Otros</option>
+                </select>
+                <div id="asunto-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-group-modern">
+                <label for="mensaje" class="form-label-modern">
+                  <span class="label-icon">💬</span>
+                  Mensaje
+                </label>
+                <textarea id="mensaje" name="mensaje" class="form-input-modern textarea-modern" 
+                          placeholder="Escribe tu mensaje aquí... (mínimo 10 caracteres)" rows="4" required 
+                          aria-describedby="mensaje-error"></textarea>
+                <div class="char-counter">
+                  <span id="char-count">0</span>/500 caracteres
+                </div>
+                <div id="mensaje-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+              
+              <div class="form-group-modern">
+                <label for="captcha" class="form-label-modern">
+                  <span class="label-icon">🔒</span>
+                  Verificación: ¿Cuál es la capital de Ecuador?
+                </label>
+                <input type="text" id="captcha" name="captcha" class="form-input-modern" 
+                       placeholder="Respuesta" required 
+                       aria-describedby="captcha-error" />
+                <div id="captcha-error" class="error-message" role="alert" aria-live="polite"></div>
+              </div>
+            </div>
+            
+            <div class="form-actions-modern">
+              <button type="submit" class="btn-primary-modern" id="submit-btn">
+                <span class="btn-icon">📤</span>
+                <span class="btn-text">Enviar Mensaje</span>
+                <div class="btn-loader" style="display: none;"></div>
+              </button>
+              <button type="button" class="btn-secondary-modern" onclick="limpiarFormulario()">
+                <span class="btn-icon">🔄</span>
+                <span class="btn-text">Limpiar</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
   </main>
 
   <footer>
@@ -112,32 +204,176 @@
   </footer>
 
   <script>
-    // Validación del captcha
-    document.getElementById('captcha').addEventListener('input', function() {
-      const respuesta = this.value.toLowerCase().trim();
-      const errorDiv = document.getElementById('captcha-error');
+    // Validación en tiempo real
+    const validaciones = {
+      nombre: {
+        regex: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/,
+        mensaje: 'El nombre debe tener entre 2 y 50 caracteres (solo letras)'
+      },
+      email: {
+        regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        mensaje: 'Ingrese un correo electrónico válido'
+      },
+      asunto: {
+        validar: (valor) => valor !== '',
+        mensaje: 'Seleccione un tipo de consulta'
+      },
+      mensaje: {
+        validar: (valor) => valor.length >= 10 && valor.length <= 500,
+        mensaje: 'El mensaje debe tener entre 10 y 500 caracteres'
+      },
+      captcha: {
+        validar: (valor) => valor.toLowerCase().trim() === 'quito',
+        mensaje: 'Respuesta incorrecta. La capital de Ecuador es Quito'
+      }
+    };
+
+    // Contador de caracteres para mensaje
+    const mensajeTextarea = document.getElementById('mensaje');
+    const charCount = document.getElementById('char-count');
+    
+    mensajeTextarea.addEventListener('input', function() {
+      const length = this.value.length;
+      charCount.textContent = length;
       
-      if (respuesta && respuesta !== 'quito') {
-        errorDiv.textContent = 'Respuesta incorrecta. La capital de Ecuador es Quito.';
-        this.setCustomValidity('Respuesta incorrecta');
-      } else {
-        errorDiv.textContent = '';
-        this.setCustomValidity('');
+      if (length > 500) {
+        this.value = this.value.substring(0, 500);
+        charCount.textContent = 500;
+      }
+      
+      // Validar en tiempo real
+      validarCampo('mensaje', this.value);
+    });
+
+    // Validación en tiempo real para todos los campos
+    Object.keys(validaciones).forEach(campo => {
+      const elemento = document.getElementById(campo);
+      if (elemento) {
+        elemento.addEventListener('input', function() {
+          validarCampo(campo, this.value);
+        });
+        
+        elemento.addEventListener('blur', function() {
+          validarCampo(campo, this.value);
+        });
       }
     });
-    
-    // Validación de longitud del mensaje
-    document.getElementById('mensaje').addEventListener('input', function() {
-      const mensaje = this.value;
-      const errorDiv = document.getElementById('mensaje-error');
-      
-      if (mensaje.length < 10) {
-        errorDiv.textContent = 'El mensaje debe tener al menos 10 caracteres';
-        this.setCustomValidity('El mensaje debe tener al menos 10 caracteres');
-      } else {
-        errorDiv.textContent = '';
-        this.setCustomValidity('');
+
+    function validarCampo(campo, valor) {
+      const config = validaciones[campo];
+      const elemento = document.getElementById(campo);
+      const errorDiv = document.getElementById(campo + '-error');
+      let esValido = false;
+
+      if (config.regex) {
+        esValido = config.regex.test(valor);
+      } else if (config.validar) {
+        esValido = config.validar(valor);
       }
+
+      if (!esValido && valor.length > 0) {
+        elemento.classList.add('error');
+        elemento.classList.remove('success');
+        errorDiv.textContent = config.mensaje;
+        elemento.setAttribute('aria-invalid', 'true');
+      } else if (valor.length > 0) {
+        elemento.classList.remove('error');
+        elemento.classList.add('success');
+        errorDiv.textContent = '';
+        elemento.setAttribute('aria-invalid', 'false');
+      } else {
+        elemento.classList.remove('error', 'success');
+        errorDiv.textContent = '';
+        elemento.removeAttribute('aria-invalid');
+      }
+
+      return esValido;
+    }
+
+    // Validación del formulario completo
+    function validarFormulario() {
+      let formularioValido = true;
+      
+      Object.keys(validaciones).forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento && !validarCampo(campo, elemento.value)) {
+          formularioValido = false;
+        }
+      });
+      
+      return formularioValido;
+    }
+
+    // Limpiar formulario
+    function limpiarFormulario() {
+      const form = document.querySelector('form');
+      form.reset();
+      charCount.textContent = '0';
+      
+      // Limpiar clases de validación
+      Object.keys(validaciones).forEach(campo => {
+        const elemento = document.getElementById(campo);
+        const errorDiv = document.getElementById(campo + '-error');
+        if (elemento && errorDiv) {
+          elemento.classList.remove('error', 'success');
+          errorDiv.textContent = '';
+          elemento.removeAttribute('aria-invalid');
+        }
+      });
+      
+      document.getElementById('nombre').focus();
+    }
+
+    // Manejar envío del formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const submitBtn = document.getElementById('submit-btn');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const btnLoader = submitBtn.querySelector('.btn-loader');
+      
+      if (!validarFormulario()) {
+        e.preventDefault();
+        mostrarNotificacion('Por favor, corrija los errores antes de enviar', 'error');
+        return;
+      }
+      
+      // Mostrar cargador
+      submitBtn.disabled = true;
+      btnText.textContent = 'Enviando...';
+      btnLoader.style.display = 'inline-block';
+      
+      // Simular envío (en producción esto se manejaría por el servidor)
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Enviar Mensaje';
+        btnLoader.style.display = 'none';
+      }, 2000);
+    });
+
+    // Función para mostrar notificaciones
+    function mostrarNotificacion(mensaje, tipo = 'info') {
+      const notificacion = document.createElement('div');
+      notificacion.className = `notification ${tipo}`;
+      notificacion.innerHTML = `<p>${mensaje}</p>`;
+      
+      const formHeader = document.querySelector('.form-header');
+      formHeader.appendChild(notificacion);
+      
+      setTimeout(() => {
+        if (notificacion.parentNode) {
+          notificacion.remove();
+        }
+      }, 5000);
+    }
+
+    // Animaciones de entrada
+    document.addEventListener('DOMContentLoaded', function() {
+      const infoPanel = document.querySelector('.info-panel');
+      const formWrapper = document.querySelector('.form-wrapper');
+      
+      setTimeout(() => {
+        infoPanel.classList.add('slide-in-left');
+        formWrapper.classList.add('slide-in-right');
+      }, 100);
     });
   </script>
 </body>
