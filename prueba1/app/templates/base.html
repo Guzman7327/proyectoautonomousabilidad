@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="{% block meta_description %}Portal de turismo inclusivo de Ecuador - Descubre destinos accesibles para todos{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}turismo inclusivo, Ecuador, accesibilidad, turismo accesible, destinos turísticos, WCAG 2.1{% endblock %}">
+    <meta name="author" content="Portal de Turismo Inclusivo Ecuador">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#007bff">
+    
+    <!-- Accesibilidad y Estándares -->
+    <meta name="color-scheme" content="light dark">
+    <meta name="prefers-reduced-motion" content="reduce">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{% block og_title %}Portal de Turismo Inclusivo - Ecuador{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Descubre los destinos turísticos más accesibles e inclusivos de Ecuador con tecnología de vanguardia{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='images/og-image.jpg') }}{% endblock %}">
+    <meta property="og:locale" content="es_EC">
+    <meta property="og:site_name" content="Portal Turismo Inclusivo Ecuador">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.url }}">
+    <meta property="twitter:title" content="{% block twitter_title %}Portal de Turismo Inclusivo - Ecuador{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Descubre los destinos turísticos más accesibles e inclusivos de Ecuador{% endblock %}">
+    <meta property="twitter:image" content="{{ url_for('static', filename='images/twitter-image.jpg') }}">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Turismo Inclusivo EC">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="{{ url_for('static', filename='css/main.css') }}" as="style">
+    <link rel="preload" href="{{ url_for('static', filename='js/advanced-accessibility.js') }}" as="script">
+    
+    <!-- CSS - Orden optimizado para accesibilidad -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/green-theme.css') }}">
+    
+    <!-- Configuraciones dinámicas del usuario -->
+    {% if current_user.is_authenticated %}
+        {% if current_user.high_contrast %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/high-contrast.css') }}">
+        {% endif %}
+        {% if current_user.large_text %}
+        <style>body { font-size: 120% !important; }</style>
+        {% endif %}
+    {% endif %}
+    
+    {% block additional_css %}{% endblock %}
+    
+    <!-- Leaflet CSS para mapas accesibles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin="">
+    
+    <!-- Favicons optimizados -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="mask-icon" href="{{ url_for('static', filename='images/safari-pinned-tab.svg') }}" color="#007bff">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Portal de Turismo Inclusivo Ecuador",
+        "description": "Portal especializado en turismo accesible e inclusivo en Ecuador",
+        "url": "{{ request.url_root }}",
+        "telephone": "+593-2-123-4567",
+        "email": "info@turismoinclusivo.ec",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "EC",
+            "addressRegion": "Pichincha",
+            "addressLocality": "Quito"
+        },
+        "accessibilityAPI": "ARIA",
+        "accessibilityControl": ["fullKeyboardControl", "fullMouseControl", "fullTouchControl"],
+        "accessibilityFeature": ["alternativeText", "audioDescription", "captions", "highContrast", "largePrint", "signLanguage"],
+        "accessibilityHazard": "none"
+    }
+    </script>
+    
+    <title>{% block title %}Portal de Turismo Inclusivo - Ecuador{% endblock %}</title>
+</head>
+<body class="{% if current_user.is_authenticated %}{% if current_user.high_contrast %}high-contrast{% endif %} {% if current_user.large_text %}large-text{% endif %} {% if current_user.keyboard_navigation %}enhanced-focus{% endif %}{% endif %}" 
+      data-user-preferences='{% if current_user.is_authenticated %}{{ current_user.get_accessibility_preferences() | tojson }}{% else %}{}{% endif %}'>
+
+    <!-- Skip Links para navegación por teclado -->
+    <a href="#main-content" class="skip-link" accesskey="1">Saltar al contenido principal (Alt+1)</a>
+    <a href="#search-form" class="skip-link" accesskey="s">Saltar a la búsqueda (Alt+S)</a>
+    <a href="#accessibility-menu" class="skip-link" accesskey="a">Saltar al menú de accesibilidad (Alt+A)</a>
+    <a href="#main-navigation" class="skip-link" accesskey="n">Saltar a la navegación principal (Alt+N)</a>
+
+    <!-- Header -->
+    <header role="banner" class="site-header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <!-- Menú de Accesibilidad Mejorado -->
+                    <!-- Menú de accesibilidad integrado en header -->
+                    <div class="accessibility-menu" id="accessibility-menu" role="region" aria-label="Configuración de accesibilidad">
+                        <button class="accessibility-toggle" 
+                                aria-expanded="false" 
+                                aria-controls="accessibility-panel"
+                                accesskey="a"
+                                title="Configuración de accesibilidad">
+                            <span class="icon" aria-hidden="true">♿</span>
+                            <span class="sr-only">Accesibilidad</span>
+                        </button>
+                        
+                        <div class="accessibility-panel" id="accessibility-panel" aria-hidden="true">
+                            <div class="accessibility-grid">
+                                <div class="accessibility-section">
+                                    <h4>Visual</h4>
+                                    <div class="accessibility-controls">
+                                        <button class="accessibility-btn" data-setting="high_contrast" aria-pressed="false" title="Alto Contraste">
+                                            <span class="icon" aria-hidden="true">🌓</span>
+                                        </button>
+                                        <button class="accessibility-btn" data-setting="large_text" aria-pressed="false" title="Texto Grande">
+                                            <span class="icon" aria-hidden="true">🔍</span>
+                                        </button>
+                                        <button class="accessibility-btn" data-setting="monochrome" aria-pressed="false" title="Monocromático">
+                                            <span class="icon" aria-hidden="true">⚫</span>
+                                        </button>
+                                        <button class="accessibility-btn" data-setting="dyslexia_friendly" aria-pressed="false" title="Dislexia">
+                                            <span class="icon" aria-hidden="true">📖</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="accessibility-section">
+                                    <h4>Navegación</h4>
+                                    <div class="accessibility-controls">
+                                        <button class="accessibility-btn" data-setting="keyboard_navigation" aria-pressed="false" title="Teclado">
+                                            <span class="icon" aria-hidden="true">⌨️</span>
+                                        </button>
+                                        <button class="accessibility-btn" data-setting="focus_highlight" aria-pressed="false" title="Foco">
+                                            <span class="icon" aria-hidden="true">✨</span>
+                                        </button>
+                                        <button class="accessibility-btn" data-setting="reduced_motion" aria-pressed="false" title="Sin Animación">
+                                            <span class="icon" aria-hidden="true">⏸️</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="accessibility-section">
+                                    <h4>Idioma</h4>
+                                    <div class="language-controls">
+                                        <button class="language-btn active" data-lang="es" title="Español">ES</button>
+                                        <button class="language-btn" data-lang="en" title="English">EN</button>
+                                        <button class="language-btn" data-lang="qu" title="Kichwa">QU</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accessibility-actions">
+                                <button class="btn btn-primary btn-sm" id="reset-accessibility" title="Restablecer">
+                                    🔄
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm" id="save-accessibility" title="Guardar">
+                                    💾
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Información de contacto rápida -->
+                    <div class="header-contact">
+                        <a href="tel:+593-2-123-4567" class="contact-link">
+                            <span class="icon" aria-hidden="true">📞</span>
+                            <span class="sr-only">Llamar al</span>
+                            +593 2 123-4567
+                        </a>
+                        <a href="mailto:info@turismoinclusivo.ec" class="contact-link">
+                            <span class="icon" aria-hidden="true">✉️</span>
+                            <span class="sr-only">Enviar email a</span>
+                            info@turismoinclusivo.ec
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navegación principal mejorada -->
+        <div class="header-main">
+            <div class="container">
+                <div class="header-content">
+                    <!-- Logo -->
+                    <div class="header-logo">
+                        <a href="{{ url_for('main.index') }}" class="logo-link" aria-label="Ir al inicio - Portal de Turismo Inclusivo Ecuador">
+                            <img src="{{ url_for('static', filename='images/logo.png') }}" 
+                                 alt="Logo Portal de Turismo Inclusivo Ecuador"
+                                 class="logo-img">
+                            <span class="logo-text">Turismo Inclusivo Ecuador</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Navegación principal -->
+                    <nav role="navigation" aria-label="Navegación principal" class="main-navigation" id="main-navigation">
+                        <button class="nav-toggle" 
+                                aria-expanded="false" 
+                                aria-controls="nav-menu"
+                                aria-label="Abrir menú de navegación">
+                            <span class="hamburger" aria-hidden="true"></span>
+                        </button>
+                        
+                        <ul class="nav-menu" id="nav-menu" role="menubar">
+                            <li class="nav-item" role="none">
+                                <a href="{{ url_for('main.index') }}" 
+                                   class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}"
+                                   role="menuitem"
+                                   aria-current="{% if request.endpoint == 'main.index' %}page{% endif %}">
+                                    <span class="icon" aria-hidden="true">🏠</span>
+                                    Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item" role="none">
+                                <a href="{{ url_for('destinations.destinations_list') }}" 
+                                   class="nav-link {% if 'destinations' in request.endpoint %}active{% endif %}"
+                                   role="menuitem"
+                                   aria-current="{% if 'destinations' in request.endpoint %}page{% endif %}">
+                                    <span class="icon" aria-hidden="true">🗺️</span>
+                                    Destinos
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown" role="none">
+                                <button class="nav-link dropdown-toggle" 
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        role="menuitem">
+                                    <span class="icon" aria-hidden="true">🔍</span>
+                                    Explorar
+                                    <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="none">
+                                        <a href="{{ url_for('destinations.accessible_destinations') }}" 
+                                           class="dropdown-item"
+                                           role="menuitem">
+                                            <span class="icon" aria-hidden="true">♿</span>
+                                            Solo Accesibles
+                                        </a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="{{ url_for('main.search') }}" 
+                                           class="dropdown-item"
+                                           role="menuitem">
+                                            <span class="icon" aria-hidden="true">🔎</span>
+                                            Búsqueda Avanzada
+                                        </a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="{{ url_for('main.map_view') }}" 
+                                           class="dropdown-item"
+                                           role="menuitem">
+                                            <span class="icon" aria-hidden="true">🗺️</span>
+                                            Mapa Interactivo
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" role="none">
+                                <a href="{{ url_for('accessibility.accessibility_info') }}" 
+                                   class="nav-link"
+                                   role="menuitem">
+                                    <span class="icon" aria-hidden="true">♿</span>
+                                    Accesibilidad
+                                </a>
+                            </li>
+                            <li class="nav-item" role="none">
+                                <a href="{{ url_for('main.contact') }}" 
+                                   class="nav-link"
+                                   role="menuitem">
+                                    <span class="icon" aria-hidden="true">📞</span>
+                                    Contacto
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <!-- Búsqueda mejorada -->
+                    <div class="header-search">
+                        <form id="search-form" role="search" action="{{ url_for('main.search') }}" method="GET" class="search-form">
+                            <label for="search-input" class="sr-only">Buscar destinos turísticos</label>
+                            <div class="search-input-group">
+                                <input type="search" 
+                                       id="search-input" 
+                                       name="q" 
+                                       placeholder="Buscar destinos..." 
+                                       value="{{ request.args.get('q', '') }}"
+                                       aria-describedby="search-help"
+                                       autocomplete="off"
+                                       aria-expanded="false"
+                                       aria-controls="search-suggestions">
+                                <div id="search-suggestions" class="search-suggestions" role="listbox" aria-hidden="true"></div>
+                                <button type="submit" 
+                                        aria-label="Buscar destinos"
+                                        class="search-btn">
+                                    <span class="icon" aria-hidden="true">🔍</span>
+                                </button>
+                            </div>
+                            <div id="search-help" class="sr-only">
+                                Escriba el nombre de un destino, ciudad o provincia para buscar
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Acciones de usuario -->
+                    <div class="user-actions">
+                        {% if current_user.is_authenticated %}
+                        <div class="user-menu dropdown">
+                            <button class="user-toggle" 
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    aria-label="Menú de usuario">
+                                <span class="user-avatar">
+                                    <span class="icon" aria-hidden="true">👤</span>
+                                </span>
+                                <span class="user-name">{{ current_user.get_full_name() }}</span>
+                                <span class="dropdown-arrow" aria-hidden="true">▼</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="none">
+                                    <a href="{{ url_for('auth.profile') }}" 
+                                       class="dropdown-item"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">👤</span>
+                                        Mi Perfil
+                                    </a>
+                                </li>
+                                <li role="none">
+                                    <a href="#" class="dropdown-item" role="menuitem">
+                                        <span class="icon" aria-hidden="true">❤️</span>
+                                        Mis Favoritos
+                                    </a>
+                                </li>
+                                <li role="none">
+                                    <a href="#" class="dropdown-item" role="menuitem">
+                                        <span class="icon" aria-hidden="true">📝</span>
+                                        Mis Reseñas
+                                    </a>
+                                </li>
+                                <li role="none">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li role="none">
+                                    <a href="{{ url_for('auth.logout') }}" 
+                                       class="dropdown-item"
+                                       role="menuitem">
+                                        <span class="icon" aria-hidden="true">🚪</span>
+                                        Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% else %}
+                        <div class="auth-buttons">
+                            <a href="{{ url_for('auth.login') }}" 
+                               class="btn btn-outline-primary btn-sm"
+                               aria-label="Iniciar sesión">
+                                <span class="icon" aria-hidden="true">🔑</span>
+                                Iniciar Sesión
+                            </a>
+                            <a href="{{ url_for('auth.register') }}" 
+                               class="btn btn-primary btn-sm"
+                               aria-label="Registrarse">
+                                <span class="icon" aria-hidden="true">📝</span>
+                                Registrarse
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Contenido Principal -->
+    <main id="main-content" role="main" class="main-content">
+        
+        <!-- Breadcrumb -->
+        {% block breadcrumb %}
+        {% if request.endpoint != 'main.index' %}
+        <nav aria-label="Navegación de migas de pan" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('main.index') }}" aria-label="Ir al inicio">Inicio</a>
+                    </li>
+                    {% block breadcrumb_items %}{% endblock %}
+                </ol>
+            </div>
+        </nav>
+        {% endif %}
+        {% endblock %}
+        
+        <!-- Mensajes Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages" role="region" aria-label="Mensajes del sistema">
+                <div class="container">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}" 
+                         role="alert" 
+                         aria-live="polite">
+                        <button type="button" class="close" aria-label="Cerrar mensaje">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Contenido de la página -->
+        {% block content %}{% endblock %}
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer role="contentinfo" class="site-footer">
+        <div class="footer-main">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Turismo Inclusivo Ecuador</h3>
+                        <p>Promoviendo el turismo accesible e inclusivo en Ecuador para que todos puedan disfrutar de nuestras maravillas naturales y culturales.</p>
+                        
+                        <div class="social-links">
+                            <a href="#" aria-label="Seguir en Facebook">
+                                <span class="icon" aria-hidden="true">📘</span>
+                                Facebook
+                            </a>
+                            <a href="#" aria-label="Seguir en Twitter">
+                                <span class="icon" aria-hidden="true">🐦</span>
+                                Twitter
+                            </a>
+                            <a href="#" aria-label="Seguir en Instagram">
+                                <span class="icon" aria-hidden="true">📷</span>
+                                Instagram
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Enlaces Rápidos</h4>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('destinations.destinations_list') }}">Todos los Destinos</a></li>
+                            <li><a href="{{ url_for('destinations.accessible_destinations') }}">Destinos Accesibles</a></li>
+                            <li><a href="{{ url_for('main.search') }}">Búsqueda Avanzada</a></li>
+                            <li><a href="{{ url_for('main.map_view') }}">Mapa Interactivo</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Accesibilidad</h4>
+                        <ul class="footer-links">
+                            <li><a href="{{ url_for('accessibility.accessibility_info') }}">Información de Accesibilidad</a></li>
+                            <li><a href="#">Guía de Uso</a></li>
+                            <li><a href="#">Reportar Problema</a></li>
+                            <li><a href="#">Solicitar Característica</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Contacto</h4>
+                        <div class="contact-info">
+                            <p>
+                                <span class="icon" aria-hidden="true">📞</span>
+                                +593 2 123-4567
+                            </p>
+                            <p>
+                                <span class="icon" aria-hidden="true">✉️</span>
+                                info@turismoinclusivo.ec
+                            </p>
+                            <p>
+                                <span class="icon" aria-hidden="true">📍</span>
+                                Quito, Ecuador
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Portal de Turismo Inclusivo Ecuador. Todos los derechos reservados.</p>
+                    <div class="footer-legal">
+                        <a href="#">Política de Privacidad</a>
+                        <a href="#">Términos de Uso</a>
+                        <a href="#">Política de Accesibilidad</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/advanced-accessibility.js') }}"></script>
+    
+    <!-- Inicialización del sistema de accesibilidad -->
+    <script>
+    // Función para obtener CSRF token
+    function getCSRFToken() {
+        const metaTag = document.querySelector('meta[name="csrf-token"]');
+        return metaTag ? metaTag.getAttribute('content') : null;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el sistema de accesibilidad avanzado
+        if (typeof AdvancedAccessibilityManager !== 'undefined') {
+            window.accessibility = new AdvancedAccessibilityManager();
+            window.accessibility.init();
+            
+            // Cargar configuraciones del usuario si está autenticado
+            {% if current_user.is_authenticated %}
+                window.accessibility.loadUserSettings({{ current_user.get_accessibility_preferences() | tojson }});
+            {% endif %}
+        }
+        
+        // Detectar preferencias del sistema
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.body.classList.add('pause-animations');
+        }
+        
+        if (window.matchMedia && window.matchMedia('(prefers-contrast: high)').matches) {
+            document.body.classList.add('high-contrast');
+        }
+        
+        // Configurar atajos de teclado globales
+        document.addEventListener('keydown', function(e) {
+            // Alt + 1: Ir al contenido principal
+            if (e.altKey && e.key === '1') {
+                e.preventDefault();
+                const mainContent = document.getElementById('main-content');
+                if (mainContent) {
+                    mainContent.focus();
+                    mainContent.scrollIntoView();
+                }
+            }
+            
+            // Alt + 2: Ir al menú de navegación
+            if (e.altKey && e.key === '2') {
+                e.preventDefault();
+                const nav = document.querySelector('nav[role="navigation"]');
+                if (nav) {
+                    const firstLink = nav.querySelector('a, button');
+                    if (firstLink) firstLink.focus();
+                }
+            }
+            
+            // Alt + A: Abrir configuración de accesibilidad
+            if (e.altKey && e.key === 'a') {
+                e.preventDefault();
+                if (window.accessibility) {
+                    window.accessibility.showSettings();
+                }
+            }
+            
+            // Escape: Cerrar modales o menús abiertos
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('[role="dialog"][aria-hidden="false"]');
+                if (openModal && window.accessibility) {
+                    window.accessibility.closeModal(openModal);
+                }
+            }
+        });
+        
+        // Manejar cambios en las preferencias de accesibilidad
+        document.addEventListener('accessibilityChange', function(e) {
+            const { setting, value } = e.detail;
+            
+            // Guardar configuración si el usuario está autenticado
+            {% if current_user.is_authenticated %}
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                
+                const csrfToken = getCSRFToken();
+                if (csrfToken) {
+                    headers['X-CSRFToken'] = csrfToken;
+                }
+                
+                fetch('/api/user/accessibility', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        [setting]: value
+                    })
+                }).catch(error => {
+                    console.error('Error saving accessibility setting:', error);
+                });
+            {% endif %}
+            
+            // Anunciar cambio a lectores de pantalla
+            const message = `Configuración de accesibilidad actualizada: ${setting} ${value ? 'activado' : 'desactivado'}`;
+            if (window.accessibility) {
+                window.accessibility.announceToScreenReader(message);
+            }
+        });
+        
+        // Mejorar el manejo de formularios
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            // Validación en tiempo real si está habilitada
+            if (window.accessibility && window.accessibility.settings.real_time_validation) {
+                window.accessibility.enableRealTimeValidation(form);
+            }
+            
+            // Mejorar accesibilidad de campos de contraseña
+            const passwordFields = form.querySelectorAll('input[type="password"]');
+            passwordFields.forEach(field => {
+                if (window.accessibility && window.accessibility.settings.password_toggle) {
+                    window.accessibility.addPasswordToggle(field);
+                }
+            });
+        });
+        
+        // Configurar indicadores de carga
+        const loadingElements = document.querySelectorAll('.loading, [data-loading]');
+        loadingElements.forEach(element => {
+            element.setAttribute('aria-live', 'polite');
+            element.setAttribute('aria-atomic', 'true');
+        });
+        
+        // Mejorar navegación por enlaces de salto
+        const skipLinks = document.querySelectorAll('.skip-link');
+        skipLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.setAttribute('tabindex', '-1');
+                    target.focus();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    });
+    
+    // Función global para manejar errores de accesibilidad
+    window.handleAccessibilityError = function(error, context) {
+        console.error('Accessibility Error:', error, 'Context:', context);
+        
+        if (window.accessibility) {
+            window.accessibility.announceToScreenReader('Se ha producido un error. Por favor, intente nuevamente o contacte al soporte.');
+        }
+    };
+    
+    // Monitoreo de rendimiento de accesibilidad
+    if ('PerformanceObserver' in window) {
+        const perfObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                if (entry.entryType === 'largest-contentful-paint' && entry.startTime > 4000) {
+                    console.warn('LCP performance issue detected - may affect accessibility');
+                }
+            }
+        });
+        
+        perfObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+    }
+    </script>
+</body>
+</html>

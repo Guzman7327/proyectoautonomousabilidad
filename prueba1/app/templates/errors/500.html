@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Error del servidor - Portal de Turismo Inclusivo{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="container">
+        <div class="error-content">
+            <div class="error-icon">
+                <span aria-hidden="true">⚠️</span>
+            </div>
+            
+            <h1 class="error-title">Error del servidor</h1>
+            <p class="error-description">
+                Lo sentimos, ha ocurrido un error interno. Nuestro equipo ha sido notificado y estamos trabajando para solucionarlo.
+            </p>
+            
+            <div class="error-actions">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                    Volver al inicio
+                </a>
+                <button onclick="window.location.reload()" class="btn btn-outline-primary">
+                    Intentar nuevamente
+                </button>
+            </div>
+            
+            <div class="error-help">
+                <h3>¿Qué puedes hacer?</h3>
+                <ul>
+                    <li>Espera unos minutos y vuelve a intentar</li>
+                    <li>Verifica tu conexión a internet</li>
+                    <li>Si el problema persiste, contacta nuestro soporte</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

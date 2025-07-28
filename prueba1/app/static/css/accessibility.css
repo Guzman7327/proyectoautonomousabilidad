@@ -1,0 +1,865 @@
+/* ========================================
+   ACCESIBILIDAD AVANZADA
+   Basado en WCAG 2.1 AA y mejores prácticas
+   ======================================== */
+
+/* ========================================
+   1. CONFIGURACIONES DE ALTO CONTRASTE
+   ======================================== */
+
+.high-contrast {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #ffff00;
+    --text-color: #000000;
+    --bg-color: #ffffff;
+    --border-color: #000000;
+    --link-color: #0000ff;
+    --visited-color: #800080;
+    --focus-color: #ffff00;
+    --error-color: #ff0000;
+    --success-color: #008000;
+    --warning-color: #ffa500;
+}
+
+.high-contrast * {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+.high-contrast a {
+    color: var(--link-color) !important;
+    text-decoration: underline !important;
+}
+
+.high-contrast a:visited {
+    color: var(--visited-color) !important;
+}
+
+.high-contrast *:focus {
+    outline: 3px solid var(--focus-color) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5) !important;
+}
+
+/* ========================================
+   2. CONFIGURACIONES DE TEXTO GRANDE
+   ======================================== */
+
+.large-text {
+    font-size: 120% !important;
+    line-height: 1.6 !important;
+}
+
+.large-text h1 { font-size: 2.5rem !important; }
+.large-text h2 { font-size: 2rem !important; }
+.large-text h3 { font-size: 1.75rem !important; }
+.large-text h4 { font-size: 1.5rem !important; }
+.large-text h5 { font-size: 1.25rem !important; }
+.large-text h6 { font-size: 1.1rem !important; }
+
+.large-text .btn {
+    padding: 1rem 2rem !important;
+    font-size: 1.1rem !important;
+}
+
+.large-text .form-control {
+    padding: 1rem !important;
+    font-size: 1.1rem !important;
+}
+
+/* ========================================
+   3. CONFIGURACIONES MONOCROMÁTICAS
+   ======================================== */
+
+.monochrome {
+    filter: grayscale(100%) !important;
+}
+
+.monochrome * {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #666666;
+}
+
+/* ========================================
+   4. TIPOGRAFÍA PARA DISLEXIA
+   ======================================== */
+
+.dyslexia-friendly {
+    font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.1em !important;
+    word-spacing: 0.2em !important;
+}
+
+.dyslexia-friendly p {
+    max-width: 65ch !important;
+}
+
+.dyslexia-friendly h1,
+.dyslexia-friendly h2,
+.dyslexia-friendly h3,
+.dyslexia-friendly h4,
+.dyslexia-friendly h5,
+.dyslexia-friendly h6 {
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+}
+
+/* ========================================
+   5. REDUCCIÓN DE MOVIMIENTO
+   ======================================== */
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+.reduced-motion .spinner {
+    animation: none !important;
+}
+
+.reduced-motion .btn:hover {
+    transform: none !important;
+}
+
+.reduced-motion .card:hover {
+    transform: none !important;
+}
+
+/* ========================================
+   6. NAVEGACIÓN POR TECLADO MEJORADA
+   ======================================== */
+
+.enhanced-focus *:focus {
+    outline: 3px solid var(--focus-color, #ffff00) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5) !important;
+}
+
+.enhanced-focus .btn:focus {
+    outline: 3px solid var(--focus-color, #ffff00) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5) !important;
+}
+
+.enhanced-focus .nav-link:focus {
+    outline: 3px solid var(--focus-color, #ffff00) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.5) !important;
+}
+
+/* ========================================
+   7. SKIP LINKS
+   ======================================== */
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-color, #007bff);
+    color: var(--secondary-color, #ffffff);
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 10000;
+    transition: top 0.3s ease;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.skip-link:focus {
+    top: 6px;
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   8. ELEMENTOS OCULTOS PARA LECTORES DE PANTALLA
+   ======================================== */
+
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* ========================================
+   9. ANUNCIOS PARA LECTORES DE PANTALLA
+   ======================================== */
+
+[aria-live="polite"] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+[aria-live="assertive"] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* ========================================
+   10. MEJORAS EN FORMULARIOS
+   ======================================== */
+
+.form-label.required::after {
+    content: " *";
+    color: var(--error-color, #dc3545);
+    font-weight: bold;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color, #007bff);
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-control.is-invalid {
+    border-color: var(--error-color, #dc3545);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4M7.2 4.6l-1.4 1.4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control.is-valid {
+    border-color: var(--success-color, #28a745);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+/* ========================================
+   11. MEJORAS EN BOTONES
+   ======================================== */
+
+.btn:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn:disabled:focus {
+    outline: none;
+}
+
+/* ========================================
+   12. MEJORAS EN NAVEGACIÓN
+   ======================================== */
+
+.nav-link:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.dropdown-toggle:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.dropdown-item:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   13. MEJORAS EN TABLAS
+   ======================================== */
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid var(--border-color, #dee2e6);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--bg-secondary, #f8f9fa);
+    font-weight: 600;
+}
+
+th:focus,
+td:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   14. MEJORAS EN LISTAS
+   ======================================== */
+
+ul, ol {
+    padding-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+li:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   15. MEJORAS EN ENLACES
+   ======================================== */
+
+a:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+a[href^="mailto:"]::before {
+    content: "📧 ";
+}
+
+a[href^="tel:"]::before {
+    content: "📞 ";
+}
+
+a[target="_blank"]::after {
+    content: " (se abre en nueva ventana)";
+    font-size: 0.8em;
+    color: var(--text-muted, #6c757d);
+}
+
+/* ========================================
+   16. MEJORAS EN IMÁGENES
+   ======================================== */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+img[alt=""] {
+    border: 2px dashed var(--border-color, #dee2e6);
+}
+
+/* ========================================
+   17. MEJORAS EN VIDEOS
+   ======================================== */
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+video:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   18. MEJORAS EN AUDIO
+   ======================================== */
+
+audio {
+    width: 100%;
+}
+
+audio:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   19. MEJORAS EN MAPAS
+   ======================================== */
+
+.map-container {
+    position: relative;
+}
+
+.map-container:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.map-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.map-controls button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.map-controls button:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   20. MEJORAS EN MODALES
+   ======================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal:focus {
+    outline: none;
+}
+
+.modal-content {
+    background: var(--bg-primary, #ffffff);
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+}
+
+.modal-content:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color, #dee2e6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.modal-close:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.modal-body {
+    padding: 1rem;
+}
+
+/* ========================================
+   21. MEJORAS EN TOOLTIPS
+   ======================================== */
+
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.tooltip:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   22. MEJORAS EN PROGRESS BARS
+   ======================================== */
+
+.progress {
+    width: 100%;
+    height: 20px;
+    background: var(--bg-secondary, #f8f9fa);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary-color, #007bff);
+    transition: width 0.3s ease;
+}
+
+.progress:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   23. MEJORAS EN SLIDERS
+   ======================================== */
+
+input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bg-secondary, #f8f9fa);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color, #007bff);
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color, #007bff);
+    cursor: pointer;
+    border: none;
+}
+
+input[type="range"]:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   24. MEJORAS EN CHECKBOXES Y RADIOS
+   ======================================== */
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   25. MEJORAS EN SELECTS
+   ======================================== */
+
+select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    background: var(--bg-primary, #ffffff);
+}
+
+select:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+    border-color: var(--primary-color, #007bff);
+}
+
+/* ========================================
+   26. MEJORAS EN TEXTAREAS
+   ======================================== */
+
+textarea {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    background: var(--bg-primary, #ffffff);
+    resize: vertical;
+    min-height: 100px;
+}
+
+textarea:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+    border-color: var(--primary-color, #007bff);
+}
+
+/* ========================================
+   27. MEJORAS EN ALERTAS
+   ======================================== */
+
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.alert:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.alert-success {
+    background: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+/* ========================================
+   28. MEJORAS EN BREADCRUMBS
+   ======================================== */
+
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: ">";
+    margin: 0 8px;
+    color: var(--text-muted, #6c757d);
+}
+
+.breadcrumb-item a:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   29. MEJORAS EN PAGINACIÓN
+   ======================================== */
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 4px;
+}
+
+.pagination-item {
+    display: flex;
+}
+
+.pagination-link {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color, #dee2e6);
+    text-decoration: none;
+    color: var(--text-color, #333);
+    border-radius: 4px;
+}
+
+.pagination-link:hover {
+    background: var(--bg-secondary, #f8f9fa);
+}
+
+.pagination-link:focus {
+    outline: 2px solid var(--focus-color, #ffff00);
+    outline-offset: 2px;
+}
+
+.pagination-link.active {
+    background: var(--primary-color, #007bff);
+    color: var(--text-inverse, #ffffff);
+    border-color: var(--primary-color, #007bff);
+}
+
+/* ========================================
+   30. MEJORAS EN RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .skip-link {
+        top: -50px;
+    }
+    
+    .skip-link:focus {
+        top: 10px;
+    }
+    
+    .large-text {
+        font-size: 110% !important;
+    }
+    
+    .dyslexia-friendly {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .large-text {
+        font-size: 105% !important;
+    }
+    
+    .dyslexia-friendly {
+        font-size: 14px !important;
+    }
+}
+
+/* ========================================
+   31. MEJORAS PARA IMPRESIÓN
+   ======================================== */
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-only {
+        display: block !important;
+    }
+    
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    a {
+        text-decoration: underline !important;
+    }
+    
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+    
+    .site-header,
+    .site-footer {
+        display: none !important;
+    }
+    
+    .skip-link {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   32. MEJORAS PARA ALTO CONTRASTE FORZADO
+   ======================================== */
+
+@media (prefers-contrast: high) {
+    :root {
+        --primary-color: #000000;
+        --secondary-color: #ffffff;
+        --accent-color: #ffff00;
+        --text-color: #000000;
+        --bg-color: #ffffff;
+        --border-color: #000000;
+        --focus-color: #ffff00;
+    }
+    
+    * {
+        border-width: 2px !important;
+    }
+    
+    .btn,
+    .nav-link,
+    .form-control {
+        border-width: 2px !important;
+    }
+}
+
+/* ========================================
+   33. MEJORAS PARA REDUCCIÓN DE MOVIMIENTO
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .spinner {
+        animation: none !important;
+    }
+    
+    .btn:hover {
+        transform: none !important;
+    }
+    
+    .card:hover {
+        transform: none !important;
+    }
+}

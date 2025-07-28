@@ -1,0 +1,884 @@
+{% extends "base.html" %}
+
+{% block title %}Destinos Turísticos Accesibles de Ecuador{% endblock %}
+
+{% block content %}
+<div class="destinations-page">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="Navegación de ruta" class="breadcrumb-nav">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('main.index') }}">Inicio</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Destinos Turísticos
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="destinations-header">
+        <div class="container">
+            <h1 id="page-title">Destinos Turísticos Accesibles de Ecuador</h1>
+            <p class="page-description">
+                Descubre la belleza natural y cultural de Ecuador con destinos completamente accesibles para todas las personas.
+            </p>
+        </div>
+    </header>
+
+    <!-- Search and Filters Section -->
+    <section class="search-filters-section" aria-label="Búsqueda y filtros">
+        <div class="container">
+            <div class="search-filters-container">
+                <!-- Search Bar -->
+                <div class="search-section">
+                    <label for="search-input" class="search-label">
+                        Buscar destinos turísticos
+                    </label>
+                    <div class="search-input-group">
+                        <input 
+                            type="search" 
+                            id="search-input" 
+                            class="search-input"
+                            placeholder="Ingrese nombre, región o tipo de destino..."
+                            aria-describedby="search-help"
+                            autocomplete="off"
+                        >
+                        <button 
+                            type="button" 
+                            id="search-btn" 
+                            class="search-btn"
+                            aria-label="Buscar destinos"
+                        >
+                            <span class="search-icon" aria-hidden="true">🔍</span>
+                            <span class="btn-text">Buscar</span>
+                        </button>
+                    </div>
+                    <div id="search-help" class="search-help">
+                        Busque por nombre, región, tipo de destino o características específicas
+                    </div>
+                </div>
+
+                <!-- Quick Filters -->
+                <div class="quick-filters">
+                    <fieldset class="filter-group">
+                        <legend class="filter-legend">Filtros rápidos</legend>
+                        <div class="filter-buttons">
+                            <button type="button" class="filter-btn" data-filter="accessible">
+                                <span class="filter-icon" aria-hidden="true">♿</span>
+                                Accesibles
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="nature">
+                                <span class="filter-icon" aria-hidden="true">🌿</span>
+                                Naturaleza
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="culture">
+                                <span class="filter-icon" aria-hidden="true">🏛️</span>
+                                Cultura
+                            </button>
+                            <button type="button" class="filter-btn" data-filter="adventure">
+                                <span class="filter-icon" aria-hidden="true">🏔️</span>
+                                Aventura
+                            </button>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Advanced Filters Toggle -->
+                <div class="advanced-filters-toggle">
+                    <button 
+                        type="button" 
+                        id="advanced-filters-toggle"
+                        class="toggle-btn"
+                        aria-expanded="false"
+                        aria-controls="advanced-filters"
+                    >
+                        <span class="toggle-text">Filtros avanzados</span>
+                        <span class="toggle-icon" aria-hidden="true">▼</span>
+                    </button>
+                </div>
+
+                <!-- Advanced Filters Panel -->
+                <div id="advanced-filters" class="advanced-filters" aria-hidden="true">
+                    <form id="filter-form" class="filter-form">
+                        <div class="filter-grid">
+                            <!-- Region Filter -->
+                            <div class="filter-item">
+                                <label for="region-filter" class="filter-label">Región</label>
+                                <select id="region-filter" name="region" class="filter-select">
+                                    <option value="">Todas las regiones</option>
+                                    <option value="costa">Costa</option>
+                                    <option value="sierra">Sierra</option>
+                                    <option value="amazonia">Amazonía</option>
+                                    <option value="galapagos">Galápagos</option>
+                                </select>
+                            </div>
+
+                            <!-- Type Filter -->
+                            <div class="filter-item">
+                                <label for="type-filter" class="filter-label">Tipo de destino</label>
+                                <select id="type-filter" name="type" class="filter-select">
+                                    <option value="">Todos los tipos</option>
+                                    <option value="playa">Playa</option>
+                                    <option value="montaña">Montaña</option>
+                                    <option value="ciudad">Ciudad</option>
+                                    <option value="naturaleza">Naturaleza</option>
+                                    <option value="cultura">Cultura</option>
+                                    <option value="aventura">Aventura</option>
+                                </select>
+                            </div>
+
+                            <!-- Accessibility Filter -->
+                            <div class="filter-item">
+                                <label for="accessibility-filter" class="filter-label">Accesibilidad</label>
+                                <select id="accessibility-filter" name="accessibility" class="filter-select">
+                                    <option value="">Cualquier nivel</option>
+                                    <option value="wheelchair">Acceso en silla de ruedas</option>
+                                    <option value="visual">Apoyo para discapacidad visual</option>
+                                    <option value="hearing">Apoyo para discapacidad auditiva</option>
+                                    <option value="cognitive">Apoyo para discapacidad cognitiva</option>
+                                </select>
+                            </div>
+
+                            <!-- Price Range Filter -->
+                            <div class="filter-item">
+                                <label for="price-filter" class="filter-label">Rango de precio</label>
+                                <select id="price-filter" name="price" class="filter-select">
+                                    <option value="">Cualquier precio</option>
+                                    <option value="free">Gratuito</option>
+                                    <option value="low">Bajo (menos de $20)</option>
+                                    <option value="medium">Medio ($20 - $50)</option>
+                                    <option value="high">Alto (más de $50)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="button" id="apply-filters" class="btn btn-primary">
+                                Aplicar filtros
+                            </button>
+                            <button type="button" id="clear-filters" class="btn btn-secondary">
+                                Limpiar filtros
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Header -->
+    <section class="results-header" aria-label="Información de resultados">
+        <div class="container">
+            <div class="results-info">
+                <h2 class="results-title">
+                    <span id="destination-count">0 destinos</span> encontrados
+                </h2>
+                <div class="view-options">
+                    <fieldset class="view-toggle">
+                        <legend class="sr-only">Opciones de vista</legend>
+                        <label class="view-option">
+                            <input type="radio" name="view" value="grid" checked>
+                            <span class="view-icon" aria-hidden="true">⊞</span>
+                            <span class="view-text">Cuadrícula</span>
+                        </label>
+                        <label class="view-option">
+                            <input type="radio" name="view" value="list">
+                            <span class="view-icon" aria-hidden="true">☰</span>
+                            <span class="view-text">Lista</span>
+                        </label>
+                        <label class="view-option">
+                            <input type="radio" name="view" value="map">
+                            <span class="view-icon" aria-hidden="true">🗺️</span>
+                            <span class="view-text">Mapa</span>
+                        </label>
+                    </fieldset>
+                    
+                    <div class="sort-options">
+                        <label for="sort-select" class="sort-label">Ordenar por:</label>
+                        <select id="sort-select" class="sort-select">
+                            <option value="name">Nombre A-Z</option>
+                            <option value="name-desc">Nombre Z-A</option>
+                            <option value="rating">Mejor valorado</option>
+                            <option value="distance">Más cercano</option>
+                            <option value="accessibility">Más accesible</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="destinations-main">
+        <div class="container">
+            <div class="destinations-layout">
+                <!-- Destinations Grid/List -->
+                <section id="destinations-container" class="destinations-container" aria-label="Lista de destinos">
+                    <div id="destinations-grid" class="destinations-grid">
+                        <!-- Destinations will be loaded here by JavaScript -->
+                        <div class="loading-state" id="loading-state">
+                            <div class="loading-spinner" aria-hidden="true"></div>
+                            <p class="loading-text">Cargando destinos...</p>
+                        </div>
+                    </div>
+
+                    <!-- No Results State -->
+                    <div id="no-results" class="no-results" style="display: none;">
+                        <div class="no-results-content">
+                            <h3>No se encontraron destinos</h3>
+                            <p>Intente ajustar sus criterios de búsqueda o filtros.</p>
+                            <button type="button" class="btn btn-primary" onclick="tourismPortal.clearFilters()">
+                                Mostrar todos los destinos
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Map -->
+                <section id="map-container" class="map-container" aria-label="Mapa interactivo" style="display: none;">
+                    <div id="map" class="map"></div>
+                    <div class="map-controls">
+                        <button type="button" id="get-location" class="map-control-btn" title="Obtener mi ubicación">
+                            <span class="control-icon" aria-hidden="true">📍</span>
+                            <span class="sr-only">Obtener mi ubicación</span>
+                        </button>
+                        <div class="map-info">
+                            <span id="visible-count">0 visibles</span> en el mapa
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Accessible Destinations List -->
+                <section id="accessible-destinations-list" class="accessible-destinations-list sr-only" aria-label="Lista accesible de destinos">
+                    <!-- Alternative accessible list will be populated by JavaScript -->
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pagination -->
+    <nav class="pagination-nav" aria-label="Navegación de páginas">
+        <div class="container">
+            <div id="pagination-container" class="pagination-container">
+                <!-- Pagination will be generated by JavaScript -->
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Destination Details Modal -->
+<div id="destination-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <!-- Modal content will be populated by JavaScript -->
+    </div>
+</div>
+
+<!-- Keyboard Shortcuts Modal -->
+<div id="shortcuts-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="shortcuts-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="shortcuts-title">Atajos de Teclado</h2>
+            <button class="close" aria-label="Cerrar modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="shortcuts-grid">
+                <div class="shortcut-group">
+                    <h3>Navegación</h3>
+                    <dl class="shortcuts-list">
+                        <dt><kbd>Alt + H</kbd></dt>
+                        <dd>Ir al inicio</dd>
+                        <dt><kbd>Alt + M</kbd></dt>
+                        <dd>Ir al menú principal</dd>
+                        <dt><kbd>Alt + C</kbd></dt>
+                        <dd>Ir al contenido principal</dd>
+                        <dt><kbd>Alt + S</kbd></dt>
+                        <dd>Ir a la búsqueda</dd>
+                    </dl>
+                </div>
+                
+                <div class="shortcut-group">
+                    <h3>Accesibilidad</h3>
+                    <dl class="shortcuts-list">
+                        <dt><kbd>Alt + 1</kbd></dt>
+                        <dd>Alternar alto contraste</dd>
+                        <dt><kbd>Alt + 2</kbd></dt>
+                        <dd>Alternar texto grande</dd>
+                        <dt><kbd>Alt + 3</kbd></dt>
+                        <dd>Alternar síntesis de voz</dd>
+                        <dt><kbd>Alt + 0</kbd></dt>
+                        <dd>Restablecer configuraciones</dd>
+                    </dl>
+                </div>
+                
+                <div class="shortcut-group">
+                    <h3>Mapa</h3>
+                    <dl class="shortcuts-list">
+                        <dt><kbd>←→↑↓</kbd></dt>
+                        <dd>Navegar por el mapa</dd>
+                        <dt><kbd>+ / -</kbd></dt>
+                        <dd>Acercar / Alejar</dd>
+                        <dt><kbd>Tab</kbd></dt>
+                        <dd>Navegar entre marcadores</dd>
+                        <dt><kbd>Enter</kbd></dt>
+                        <dd>Activar marcador</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Container for Notifications -->
+<div id="message-container" class="message-container" aria-live="polite"></div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Leaflet.js for maps -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Custom Scripts -->
+<script src="{{ url_for('static', filename='js/accessibility.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<script>
+// Initialize page-specific functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup view switching
+    const viewOptions = document.querySelectorAll('input[name="view"]');
+    viewOptions.forEach(option => {
+        option.addEventListener('change', function() {
+            switchView(this.value);
+        });
+    });
+    
+    // Setup sorting
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            tourismPortal.sortDestinations(this.value);
+        });
+    }
+    
+    // Setup quick filters
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            toggleQuickFilter(this);
+        });
+    });
+});
+
+function switchView(view) {
+    const gridContainer = document.getElementById('destinations-grid');
+    const mapContainer = document.getElementById('map-container');
+    const accessibleList = document.getElementById('accessible-destinations-list');
+    
+    // Hide all views
+    gridContainer.style.display = 'none';
+    mapContainer.style.display = 'none';
+    accessibleList.classList.add('sr-only');
+    
+    switch (view) {
+        case 'grid':
+        case 'list':
+            gridContainer.style.display = 'block';
+            gridContainer.className = view === 'grid' ? 'destinations-grid' : 'destinations-list';
+            break;
+        case 'map':
+            mapContainer.style.display = 'block';
+            // Refresh map size after showing
+            if (window.tourismPortal && window.tourismPortal.map) {
+                setTimeout(() => {
+                    window.tourismPortal.map.invalidateSize();
+                }, 100);
+            }
+            // Show accessible list for screen readers
+            accessibleList.classList.remove('sr-only');
+            break;
+    }
+    
+    // Announce view change
+    if (window.accessibilityManager) {
+        const viewNames = { grid: 'cuadrícula', list: 'lista', map: 'mapa' };
+        window.accessibilityManager.announce(`Vista cambiada a ${viewNames[view]}`);
+    }
+}
+
+function toggleQuickFilter(button) {
+    const isActive = button.classList.contains('active');
+    
+    // Toggle active state
+    if (isActive) {
+        button.classList.remove('active');
+        button.setAttribute('aria-pressed', 'false');
+    } else {
+        button.classList.add('active');
+        button.setAttribute('aria-pressed', 'true');
+    }
+    
+    // Apply filter
+    const filterType = button.getAttribute('data-filter');
+    if (window.tourismPortal) {
+        window.tourismPortal.applyQuickFilter(filterType, !isActive);
+    }
+}
+</script>
+{% endblock %}
+
+{% block styles %}
+<!-- Leaflet.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+/* Page-specific styles */
+.destinations-page {
+    min-height: 100vh;
+    background-color: var(--background-color);
+}
+
+.destinations-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.destinations-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.page-description {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+.search-filters-section {
+    background-color: var(--surface-color);
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-filters-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.search-section {
+    flex: 1;
+}
+
+.search-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.search-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--focus-ring-color);
+}
+
+.search-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover,
+.search-btn:focus {
+    background-color: var(--primary-dark);
+}
+
+.search-help {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.quick-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-group {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.filter-legend {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn:focus {
+    border-color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.advanced-filters {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.advanced-filters[aria-hidden="true"] {
+    display: none;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.filter-select {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.results-header {
+    padding: 1.5rem 0;
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.results-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.view-options {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.view-toggle {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.view-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--surface-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-option input {
+    display: none;
+}
+
+.view-option input:checked + .view-icon + .view-text,
+.view-option:has(input:checked) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 0;
+}
+
+.destinations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 0;
+}
+
+.map-container {
+    position: relative;
+}
+
+.map {
+    height: 600px;
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+
+.map-controls {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.map-control-btn {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.map-info {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem;
+}
+
+.no-results-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.shortcut-group h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.shortcuts-list {
+    margin: 0;
+}
+
+.shortcuts-list dt {
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.shortcuts-list dd {
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+kbd {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+/* Current location marker styles */
+.current-location-marker {
+    background: transparent;
+    border: none;
+}
+
+.location-pulse {
+    width: 20px;
+    height: 20px;
+    background-color: #007bff;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .destinations-header h1 {
+        font-size: 2rem;
+    }
+    
+    .search-input-group {
+        flex-direction: column;
+    }
+    
+    .search-btn {
+        justify-content: center;
+    }
+    
+    .results-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .view-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem 0;
+    }
+    
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+    }
+    
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* High contrast mode adjustments */
+.high-contrast .filter-btn {
+    border-width: 3px;
+}
+
+.high-contrast .search-input:focus {
+    box-shadow: 0 0 0 4px var(--focus-ring-color);
+}
+
+/* Large text mode adjustments */
+.large-text .destinations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.large-text .filter-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+</style>
+{% endblock %}

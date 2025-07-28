@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Portal de Turismo Inclusivo{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1 class="auth-title">Iniciar Sesión</h1>
+                    <p class="auth-subtitle">
+                        Accede a tu cuenta para guardar destinos favoritos y escribir reseñas
+                    </p>
+                </div>
+                
+                <form method="POST" class="auth-form" id="login-form" novalidate>
+                    <!-- Campo de usuario/email con validación en tiempo real -->
+                    <div class="form-group">
+                        <label for="email_or_username" class="form-label required">
+                            Email o Nombre de Usuario
+                            <span class="required-indicator" aria-label="Campo obligatorio">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-icon" aria-hidden="true">👤</span>
+                            <input type="text" 
+                                   id="email_or_username" 
+                                   name="email_or_username" 
+                                   class="form-control"
+                                   required 
+                                   autocomplete="username"
+                                   aria-describedby="email-help email-error"
+                                   placeholder="Ingresa tu email o nombre de usuario"
+                                   autofocus>
+                        </div>
+                        <div id="email-help" class="form-help">
+                            Puedes usar tu email o nombre de usuario
+                        </div>
+                        <div id="email-error" class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <!-- Campo de contraseña con toggle -->
+                    <div class="form-group">
+                        <label for="password" class="form-label required">
+                            Contraseña
+                            <span class="required-indicator" aria-label="Campo obligatorio">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-icon" aria-hidden="true">🔒</span>
+                            <input type="password" 
+                                   id="password" 
+                                   name="password" 
+                                   class="form-control"
+                                   required 
+                                   autocomplete="current-password"
+                                   aria-describedby="password-help password-error"
+                                   placeholder="Ingresa tu contraseña">
+                            <button type="button" 
+                                    class="password-toggle" 
+                                    aria-label="Mostrar contraseña"
+                                    aria-pressed="false">
+                                <span class="toggle-icon" aria-hidden="true">👁️</span>
+                            </button>
+                        </div>
+                        <div id="password-help" class="form-help">
+                            Mínimo 8 caracteres
+                        </div>
+                        <div id="password-error" class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                    
+                    <!-- Opciones adicionales -->
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                   name="remember_me" 
+                                   id="remember_me"
+                                   aria-describedby="remember-help">
+                            <span class="checkmark"></span>
+                            Recordarme en este dispositivo
+                        </label>
+                        <div id="remember-help" class="form-help">
+                            Mantendrá tu sesión activa por 30 días
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="form-actions">
+                        <button type="submit" 
+                                class="btn btn-primary btn-block btn-lg"
+                                id="login-submit"
+                                aria-describedby="submit-help">
+                            <span class="btn-icon" aria-hidden="true">🔑</span>
+                            Iniciar Sesión
+                            <span class="btn-loading" aria-hidden="true" style="display: none;">
+                                <span class="spinner"></span>
+                            </span>
+                        </button>
+                        <div id="submit-help" class="form-help">
+                            Presiona Enter o haz clic en el botón para continuar
+                        </div>
+                    </div>
+                    
+                    <!-- Mensajes de estado -->
+                    <div id="form-messages" class="form-messages" role="region" aria-live="polite"></div>
+                </form>
+                
+                <!-- Enlaces adicionales -->
+                <div class="auth-footer">
+                    <div class="auth-links">
+                        <p>
+                            ¿No tienes cuenta? 
+                            <a href="{{ url_for('auth.register') }}" class="auth-link">
+                                Regístrate aquí
+                            </a>
+                        </p>
+                        <p>
+                            <a href="#" class="auth-link" id="forgot-password">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </p>
+                    </div>
+                    
+                    <!-- Información de seguridad -->
+                    <div class="security-info">
+                        <p class="security-text">
+                            <span class="icon" aria-hidden="true">🔒</span>
+                            Tu información está protegida con encriptación SSL
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de recuperación de contraseña -->
+<div id="forgot-password-modal" class="modal" role="dialog" aria-labelledby="forgot-password-title" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="forgot-password-title">🔑 Recuperar Contraseña</h5>
+                <button type="button" class="close" aria-label="Cerrar modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small mb-3">Ingresa tu email para recibir instrucciones.</p>
+                <form id="forgot-password-form" class="forgot-password-form">
+                    <div class="form-group">
+                        <label for="recovery-email" class="form-label required">
+                            Email
+                            <span class="required-indicator" aria-label="Campo obligatorio">*</span>
+                        </label>
+                        <input type="email" 
+                               id="recovery-email" 
+                               name="email" 
+                               class="form-control form-control-sm"
+                               required
+                               autocomplete="email"
+                               placeholder="tu@email.com">
+                    </div>
+                    <div class="form-actions mt-3">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            📤 Enviar
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+    const emailField = document.getElementById('email_or_username');
+    const passwordField = document.getElementById('password');
+    const submitBtn = document.getElementById('login-submit');
+    const passwordToggle = document.querySelector('.password-toggle');
+    
+    // Validación en tiempo real
+    function validateField(field, type) {
+        const value = field.value.trim();
+        const errorElement = document.getElementById(field.id + '-error');
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Remover clases de error previas
+        field.classList.remove('is-invalid', 'is-valid');
+        errorElement.textContent = '';
+        
+        // Validaciones específicas
+        if (type === 'email_or_username') {
+            if (!value) {
+                isValid = false;
+                errorMessage = 'Por favor, ingresa tu email o nombre de usuario';
+            } else if (value.includes('@')) {
+                // Validar formato de email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    isValid = false;
+                    errorMessage = 'Por favor, ingresa un email válido';
+                }
+            } else if (value.length < 3) {
+                isValid = false;
+                errorMessage = 'El nombre de usuario debe tener al menos 3 caracteres';
+            }
+        } else if (type === 'password') {
+            if (!value) {
+                isValid = false;
+                errorMessage = 'Por favor, ingresa tu contraseña';
+            } else if (value.length < 8) {
+                isValid = false;
+                errorMessage = 'La contraseña debe tener al menos 8 caracteres';
+            }
+        }
+        
+        // Aplicar resultado de validación
+        if (isValid) {
+            field.classList.add('is-valid');
+        } else {
+            field.classList.add('is-invalid');
+            errorElement.textContent = errorMessage;
+        }
+        
+        return isValid;
+    }
+    
+    // Eventos de validación en tiempo real
+    emailField.addEventListener('blur', () => validateField(emailField, 'email_or_username'));
+    emailField.addEventListener('input', () => {
+        if (emailField.classList.contains('is-invalid')) {
+            validateField(emailField, 'email_or_username');
+        }
+    });
+    
+    passwordField.addEventListener('blur', () => validateField(passwordField, 'password'));
+    passwordField.addEventListener('input', () => {
+        if (passwordField.classList.contains('is-invalid')) {
+            validateField(passwordField, 'password');
+        }
+    });
+    
+    // Toggle de contraseña
+    passwordToggle.addEventListener('click', function() {
+        const isVisible = passwordField.type === 'text';
+        passwordField.type = isVisible ? 'password' : 'text';
+        this.setAttribute('aria-pressed', !isVisible);
+        this.querySelector('.toggle-icon').textContent = isVisible ? '👁️' : '🙈';
+    });
+    
+    // Validación del formulario
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const isEmailValid = validateField(emailField, 'email_or_username');
+        const isPasswordValid = validateField(passwordField, 'password');
+        
+        if (isEmailValid && isPasswordValid) {
+            // Mostrar estado de carga
+            submitBtn.disabled = true;
+            submitBtn.querySelector('.btn-loading').style.display = 'inline-block';
+            submitBtn.querySelector('.btn-icon').style.display = 'none';
+            
+            // Enviar formulario
+            form.submit();
+        } else {
+            // Enfocar el primer campo con error
+            const firstError = form.querySelector('.is-invalid');
+            if (firstError) {
+                firstError.focus();
+            }
+        }
+    });
+    
+    // Modal de recuperación de contraseña
+    const forgotPasswordLink = document.getElementById('forgot-password');
+    const forgotPasswordModal = document.getElementById('forgot-password-modal');
+    
+    forgotPasswordLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        forgotPasswordModal.setAttribute('aria-hidden', 'false');
+        forgotPasswordModal.style.display = 'block';
+        document.getElementById('recovery-email').focus();
+    });
+    
+    // Cerrar modal
+    const closeButtons = forgotPasswordModal.querySelectorAll('.close, [data-dismiss="modal"]');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            forgotPasswordModal.setAttribute('aria-hidden', 'true');
+            forgotPasswordModal.style.display = 'none';
+        });
+    });
+    
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && forgotPasswordModal.getAttribute('aria-hidden') === 'false') {
+            forgotPasswordModal.setAttribute('aria-hidden', 'true');
+            forgotPasswordModal.style.display = 'none';
+        }
+    });
+    
+    // Formulario de recuperación
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    forgotPasswordForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Aquí iría la lógica de recuperación de contraseña
+        alert('Funcionalidad de recuperación de contraseña en desarrollo');
+    });
+    
+    // Anunciar a lectores de pantalla
+    if (window.accessibility) {
+        window.accessibility.announceToScreenReader('Página de inicio de sesión cargada. Usa Tab para navegar entre los campos.');
+    }
+});
+</script>
+{% endblock %} 

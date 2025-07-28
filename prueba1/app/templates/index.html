@@ -1,0 +1,540 @@
+{% extends "base.html" %}
+
+{% block title %}Portal de Turismo Inclusivo - Descubre Ecuador de forma accesible{% endblock %}
+
+{% block meta_description %}Descubre los destinos turísticos más accesibles e inclusivos de Ecuador. Portal especializado en turismo accesible con información detallada sobre accesibilidad.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section" role="banner" aria-labelledby="hero-title">
+    <div class="hero-background">
+        <img src="{{ url_for('static', filename='images/hero-ecuador.jpg') }}" 
+             alt="Paisaje espectacular de Ecuador mostrando montañas, naturaleza y diversidad"
+             class="hero-image">
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+        <div class="container">
+            <div class="hero-text">
+                <h1 id="hero-title" class="hero-title">
+                    Descubre Ecuador de Forma <span class="highlight">Inclusiva</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Explora destinos turísticos accesibles donde todos pueden vivir experiencias inolvidables. 
+                    Información detallada de accesibilidad para cada destino.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.total_destinations }}</span>
+                        <span class="stat-label">Destinos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.accessible_destinations }}</span>
+                        <span class="stat-label">Accesibles</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">{{ stats.total_reviews }}</span>
+                        <span class="stat-label">Reseñas</span>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="{{ url_for('destinations.destinations_list') }}" 
+                       class="btn btn-primary btn-lg"
+                       aria-describedby="explore-description">
+                        Explorar Destinos
+                    </a>
+                    <div id="explore-description" class="sr-only">
+                        Ver todos los destinos turísticos accesibles disponibles
+                    </div>
+                    
+                    <a href="{{ url_for('destinations.accessible_destinations') }}" 
+                       class="btn btn-outline-light btn-lg"
+                       aria-describedby="accessible-description">
+                        <span class="icon" aria-hidden="true">♿</span>
+                        Solo Accesibles
+                    </a>
+                    <div id="accessible-description" class="sr-only">
+                        Ver únicamente destinos con características de accesibilidad
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Búsqueda Avanzada -->
+<section class="search-section" role="search" aria-labelledby="search-title">
+    <div class="container">
+        <div class="search-card">
+            <h2 id="search-title" class="search-title">¿A dónde quieres ir?</h2>
+            <form action="{{ url_for('main.search') }}" method="GET" class="advanced-search-form">
+                <div class="search-fields">
+                    <div class="search-field">
+                        <label for="destination-search">Destino o Ciudad</label>
+                        <input type="search" 
+                               id="destination-search" 
+                               name="q" 
+                               placeholder="Ej: Galápagos, Quito..."
+                               autocomplete="off">
+                        <div class="search-suggestions" role="listbox" aria-hidden="true"></div>
+                    </div>
+                    
+                    <div class="search-field">
+                        <label for="province-select">Provincia</label>
+                        <select id="province-select" name="province">
+                            <option value="">Todas las provincias</option>
+                            <option value="Galápagos">Galápagos</option>
+                            <option value="Pichincha">Pichincha</option>
+                            <option value="Guayas">Guayas</option>
+                            <option value="Azuay">Azuay</option>
+                            <option value="Manabí">Manabí</option>
+                            <option value="Tungurahua">Tungurahua</option>
+                            <option value="Cotopaxi">Cotopaxi</option>
+                            <option value="Imbabura">Imbabura</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-field">
+                        <label for="category-select">Categoría</label>
+                        <select id="category-select" name="category">
+                            <option value="">Todas las categorías</option>
+                            <option value="natural">Naturaleza y Paisajes</option>
+                            <option value="cultural">Patrimonio Cultural</option>
+                            <option value="adventure">Aventura y Deportes</option>
+                            <option value="urban">Turismo Urbano</option>
+                            <option value="wellness">Bienestar y Relax</option>
+                        </select>
+                    </div>
+                    
+                    <div class="search-field">
+                        <label for="accessibility-select">Accesibilidad</label>
+                        <select id="accessibility-select" name="accessibility">
+                            <option value="">Cualquier nivel</option>
+                            <option value="wheelchair">Accesible en silla de ruedas</option>
+                            <option value="audio">Con audioguías</option>
+                            <option value="visual">Información en braille</option>
+                            <option value="high_score">Alta puntuación accesible</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-search">
+                    <span class="icon" aria-hidden="true">🔍</span>
+                    Buscar Destinos
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Destinos Destacados -->
+<section class="featured-destinations" role="region" aria-labelledby="featured-title">
+    <div class="container">
+        <div class="section-header">
+            <h2 id="featured-title" class="section-title">Destinos Destacados</h2>
+            <p class="section-description">
+                Los destinos más populares y accesibles de Ecuador, seleccionados por su calidad 
+                en servicios de turismo inclusivo.
+            </p>
+        </div>
+        
+        {% if featured_destinations %}
+        <div class="destinations-grid" role="list">
+            {% for destination in featured_destinations %}
+            <article class="destination-card" role="listitem">
+                <div class="destination-image">
+                    <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}"
+                       aria-labelledby="dest-{{ destination.id }}-title">
+                        <img src="{{ destination.main_image or url_for('static', filename='images/placeholder-destination.jpg') }}" 
+                             alt="{{ destination.image_alt_text or destination.name }}"
+                             loading="lazy">
+                    </a>
+                    
+                    {% if destination.is_featured %}
+                    <span class="featured-badge" aria-label="Destino destacado">
+                        <span class="icon" aria-hidden="true">⭐</span>
+                        Destacado
+                    </span>
+                    {% endif %}
+                    
+                    <div class="accessibility-indicators">
+                        {% if destination.wheelchair_accessible %}
+                        <span class="accessibility-icon" aria-label="Accesible en silla de ruedas" title="Accesible en silla de ruedas">
+                            <span aria-hidden="true">♿</span>
+                        </span>
+                        {% endif %}
+                        
+                        {% if destination.audio_guide_available %}
+                        <span class="accessibility-icon" aria-label="Audioguía disponible" title="Audioguía disponible">
+                            <span aria-hidden="true">🎧</span>
+                        </span>
+                        {% endif %}
+                        
+                        {% if destination.braille_info_available %}
+                        <span class="accessibility-icon" aria-label="Información en braille" title="Información en braille">
+                            <span aria-hidden="true">⠃</span>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="destination-content">
+                    <header class="destination-header">
+                        <h3 id="dest-{{ destination.id }}-title" class="destination-title">
+                            <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}">
+                                {{ destination.name }}
+                            </a>
+                        </h3>
+                        <p class="destination-location">
+                            <span class="icon" aria-hidden="true">📍</span>
+                            {{ destination.city }}, {{ destination.province }}
+                        </p>
+                    </header>
+                    
+                    <p class="destination-description">
+                        {{ destination.short_description or destination.description[:150] + '...' }}
+                    </p>
+                    
+                    <div class="destination-meta">
+                        <div class="category-tag">
+                            {{ destination.category | title }}
+                        </div>
+                        
+                        {% if destination.accessibility_rating %}
+                        <div class="accessibility-rating" aria-label="Puntuación de accesibilidad: {{ destination.accessibility_rating }} de 5 estrellas">
+                            {% for i in range(1, 6) %}
+                                {% if i <= destination.accessibility_rating %}
+                                <span class="star filled" aria-hidden="true">★</span>
+                                {% else %}
+                                <span class="star" aria-hidden="true">☆</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="destination-actions">
+                        <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}" 
+                           class="btn btn-outline-primary">
+                            Ver Detalles
+                        </a>
+                        
+                        {% if destination.admission_fee > 0 %}
+                        <span class="price-info" aria-label="Precio de entrada: {{ destination.admission_fee }} dólares">
+                            ${{ destination.admission_fee }}
+                        </span>
+                        {% else %}
+                        <span class="price-info free" aria-label="Entrada gratuita">
+                            Gratis
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <div class="section-footer">
+            <a href="{{ url_for('destinations.destinations_list') }}" 
+               class="btn btn-outline-primary btn-lg">
+                Ver Todos los Destinos
+            </a>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No hay destinos destacados disponibles en este momento.</p>
+            <a href="{{ url_for('destinations.destinations_list') }}" class="btn btn-primary">
+                Explorar Todos los Destinos
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Categorías Populares -->
+<section class="categories-section" role="region" aria-labelledby="categories-title">
+    <div class="container">
+        <div class="section-header">
+            <h2 id="categories-title" class="section-title">Explora por Categorías</h2>
+            <p class="section-description">
+                Encuentra destinos según tus intereses y tipo de experiencia deseada.
+            </p>
+        </div>
+        
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <span aria-hidden="true">🌿</span>
+                </div>
+                <h3 class="category-title">Naturaleza y Paisajes</h3>
+                <p class="category-description">
+                    Parques nacionales, reservas naturales y maravillas del paisaje ecuatoriano.
+                </p>
+                <div class="category-stats">
+                    {% set nature_count = nature_destinations | length %}
+                    <span>{{ nature_count }} destinos</span>
+                </div>
+                <a href="{{ url_for('destinations.destinations_by_category', category='natural') }}" 
+                   class="btn btn-outline-primary">
+                    Explorar
+                </a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <span aria-hidden="true">🏛️</span>
+                </div>
+                <h3 class="category-title">Patrimonio Cultural</h3>
+                <p class="category-description">
+                    Sitios históricos, museos y tradiciones culturales del Ecuador.
+                </p>
+                <div class="category-stats">
+                    {% set cultural_count = cultural_destinations | length %}
+                    <span>{{ cultural_count }} destinos</span>
+                </div>
+                <a href="{{ url_for('destinations.destinations_by_category', category='cultural') }}" 
+                   class="btn btn-outline-primary">
+                    Explorar
+                </a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <span aria-hidden="true">🏔️</span>
+                </div>
+                <h3 class="category-title">Aventura y Deportes</h3>
+                <p class="category-description">
+                    Experiencias emocionantes y actividades al aire libre adaptadas.
+                </p>
+                <div class="category-stats">
+                    <span>Próximamente</span>
+                </div>
+                <a href="{{ url_for('destinations.destinations_by_category', category='adventure') }}" 
+                   class="btn btn-outline-primary">
+                    Explorar
+                </a>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-icon">
+                    <span aria-hidden="true">🏙️</span>
+                </div>
+                <h3 class="category-title">Turismo Urbano</h3>
+                <p class="category-description">
+                    Ciudades, gastronomía y experiencias urbanas accesibles.
+                </p>
+                <div class="category-stats">
+                    <span>Próximamente</span>
+                </div>
+                <a href="{{ url_for('destinations.destinations_by_category', category='urban') }}" 
+                   class="btn btn-outline-primary">
+                    Explorar
+                </a>
+            </div>
+        </div>
+        
+        <div class="section-footer">
+            <a href="{{ url_for('main.categories') }}" 
+               class="btn btn-outline-primary btn-lg">
+                Ver Todas las Categorías
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Características de Accesibilidad -->
+<section class="accessibility-features" role="region" aria-labelledby="accessibility-title">
+    <div class="container">
+        <div class="section-header">
+            <h2 id="accessibility-title" class="section-title">Turismo Verdaderamente Inclusivo</h2>
+            <p class="section-description">
+                Comprometidos con la accesibilidad universal para que todos puedan disfrutar del turismo.
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <span aria-hidden="true">♿</span>
+                </div>
+                <h3 class="feature-title">Accesibilidad Física</h3>
+                <p class="feature-description">
+                    Destinos con infraestructura adaptada para usuarios de sillas de ruedas y personas con movilidad reducida.
+                </p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <span aria-hidden="true">👁️</span>
+                </div>
+                <h3 class="feature-title">Accesibilidad Visual</h3>
+                <p class="feature-description">
+                    Información en braille, audioguías descriptivas y señalización con alto contraste.
+                </p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <span aria-hidden="true">👂</span>
+                </div>
+                <h3 class="feature-title">Accesibilidad Auditiva</h3>
+                <p class="feature-description">
+                    Intérpretes de lengua de señas, información visual y tecnologías de asistencia auditiva.
+                </p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <span aria-hidden="true">🧠</span>
+                </div>
+                <h3 class="feature-title">Accesibilidad Cognitiva</h3>
+                <p class="feature-description">
+                    Información clara y simple, señalización intuitiva y personal capacitado en atención inclusiva.
+                </p>
+            </div>
+        </div>
+        
+        <div class="section-footer">
+            <a href="{{ url_for('accessibility.accessibility_info') }}" 
+               class="btn btn-primary btn-lg">
+                Conoce Más sobre Accesibilidad
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section" role="region" aria-labelledby="cta-title">
+    <div class="container">
+        <div class="cta-content">
+            <h2 id="cta-title" class="cta-title">¿Listo para tu próxima aventura inclusiva?</h2>
+            <p class="cta-description">
+                Únete a nuestra comunidad y descubre Ecuador de una manera completamente nueva y accesible.
+            </p>
+            
+            <div class="cta-actions">
+                {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.register') }}" 
+                   class="btn btn-primary btn-lg">
+                    Regístrate Gratis
+                </a>
+                <a href="{{ url_for('destinations.destinations_list') }}" 
+                   class="btn btn-outline-light btn-lg">
+                    Explorar como Invitado
+                </a>
+                {% else %}
+                <a href="{{ url_for('destinations.destinations_list') }}" 
+                   class="btn btn-primary btn-lg">
+                    Continuar Explorando
+                </a>
+                <a href="{{ url_for('auth.profile') }}" 
+                   class="btn btn-outline-light btn-lg">
+                    Ver Mi Perfil
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+// Inicializar funcionalidades específicas de la página de inicio
+document.addEventListener('DOMContentLoaded', function() {
+    // Búsqueda con autocompletado en la página principal
+    const searchInput = document.getElementById('destination-search');
+    if (searchInput) {
+        initializeAdvancedSearch(searchInput);
+    }
+    
+    // Animaciones suaves para las cards
+    const cards = document.querySelectorAll('.destination-card, .category-card, .feature-item');
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    cards.forEach(card => {
+        observer.observe(card);
+    });
+});
+
+function initializeAdvancedSearch(input) {
+    let searchTimeout;
+    
+    input.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+        
+        if (query.length >= 2) {
+            searchTimeout = setTimeout(() => {
+                fetchSearchSuggestions(query, this);
+            }, 300);
+        } else {
+            hideSuggestions(this);
+        }
+    });
+}
+
+function fetchSearchSuggestions(query, inputElement) {
+    fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.length > 0) {
+                showSuggestions(data.data, inputElement);
+            } else {
+                hideSuggestions(inputElement);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching suggestions:', error);
+            hideSuggestions(inputElement);
+        });
+}
+
+function showSuggestions(suggestions, inputElement) {
+    const suggestionsContainer = inputElement.nextElementSibling;
+    if (!suggestionsContainer || !suggestionsContainer.classList.contains('search-suggestions')) {
+        return;
+    }
+    
+    const html = suggestions.map(suggestion => `
+        <div class="suggestion-item" role="option" data-value="${suggestion.text}">
+            <span class="suggestion-text">${suggestion.text}</span>
+            <span class="suggestion-meta">${suggestion.province || suggestion.city || ''}</span>
+        </div>
+    `).join('');
+    
+    suggestionsContainer.innerHTML = html;
+    suggestionsContainer.setAttribute('aria-hidden', 'false');
+    
+    // Agregar eventos de clic
+    suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', function() {
+            inputElement.value = this.dataset.value;
+            hideSuggestions(inputElement);
+        });
+    });
+}
+
+function hideSuggestions(inputElement) {
+    const suggestionsContainer = inputElement.nextElementSibling;
+    if (suggestionsContainer && suggestionsContainer.classList.contains('search-suggestions')) {
+        suggestionsContainer.innerHTML = '';
+        suggestionsContainer.setAttribute('aria-hidden', 'true');
+    }
+}
+</script>
+{% endblock %}

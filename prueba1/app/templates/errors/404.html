@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Página no encontrada - Portal de Turismo Inclusivo{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="container">
+        <div class="error-content">
+            <div class="error-icon">
+                <span aria-hidden="true">🔍</span>
+            </div>
+            
+            <h1 class="error-title">Página no encontrada</h1>
+            <p class="error-description">
+                Lo sentimos, la página que buscas no existe o ha sido movida.
+            </p>
+            
+            <div class="error-actions">
+                <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                    Volver al inicio
+                </a>
+                <a href="{{ url_for('main.search') }}" class="btn btn-outline-primary">
+                    Buscar destinos
+                </a>
+            </div>
+            
+            <div class="error-help">
+                <h3>¿Necesitas ayuda?</h3>
+                <ul>
+                    <li>Verifica que la URL esté escrita correctamente</li>
+                    <li>Usa nuestro <a href="{{ url_for('main.search') }}">buscador</a> para encontrar destinos</li>
+                    <li>Navega por las <a href="{{ url_for('destinations.destinations_list') }}">categorías</a> disponibles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

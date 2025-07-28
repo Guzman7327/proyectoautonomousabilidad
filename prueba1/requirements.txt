@@ -1,0 +1,72 @@
+# Portal de Turismo Inclusivo de Ecuador
+# Dependencias de Python
+
+# Framework web
+flask==2.3.3
+werkzeug==2.3.7
+
+# Base de datos
+flask-sqlalchemy==3.0.5
+flask-migrate==4.0.5
+psycopg2-binary==2.9.7
+sqlalchemy==2.0.21
+
+# Autenticación y seguridad
+flask-login==0.6.3
+flask-wtf==1.1.1
+wtforms==3.0.1
+flask-jwt-extended==4.5.2
+bcrypt==4.0.1
+email-validator==2.0.0
+
+# CORS y API
+flask-cors==4.0.0
+flask-restful==0.3.10
+marshmallow==3.20.1
+flask-marshmallow==0.15.0
+
+# Email y cache
+flask-mail==0.9.1
+redis==4.6.0
+flask-caching==2.1.0
+
+# Utilidades
+python-dotenv==1.0.0
+click==8.1.7
+requests==2.31.0
+pillow==10.0.0
+
+# Servidor de producción
+gunicorn==21.2.0
+
+# Desarrollo y testing
+pytest==7.4.2
+pytest-flask==1.2.0
+coverage==7.3.2
+pytest-cov==4.1.0
+
+# Background tasks
+celery==5.3.2
+
+# Geolocalización
+geopy==2.4.0
+
+# Rate limiting
+flask-limiter==3.5.0
+
+# Secure headers
+flask-talisman==1.1.0
+
+# JSON handling
+orjson==3.9.7
+
+# Timezone handling
+pytz==2023.3
+python-dateutil==2.8.2
+
+# Monitoring
+python-json-logger==2.0.7
+
+# Linting (development)
+flake8==6.1.0
+black==23.9.1

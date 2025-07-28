@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  db:
+    image: postgres:15
+    container_name: turismo_inclusivo_db
+    environment:
+      POSTGRES_DB: turismo_inclusivo_ecuador
+      POSTGRES_USER: turismo_user
+      POSTGRES_PASSWORD: turismo_password_2024
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - turismo_network
+    restart: unless-stopped
+
+  # pgAdmin para administración de base de datos
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: turismo_inclusivo_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@turismoinclusivo.ec
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - turismo_network
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # Redis para cache y sesiones
+  redis:
+    image: redis:7-alpine
+    container_name: turismo_inclusivo_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - turismo_network
+    restart: unless-stopped
+
+  # Aplicación Flask
+  web:
+    build: .
+    container_name: turismo_inclusivo_web
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://turismo_user:turismo_password_2024@db:5432/turismo_inclusivo_ecuador
+      - REDIS_URL=redis://redis:6379/0
+      - SECRET_KEY=your-secret-key-change-in-production
+      - JWT_SECRET_KEY=your-jwt-secret-change-in-production
+    volumes:
+      - ./app/static/uploads:/app/app/static/uploads
+      - ./logs:/app/logs
+    ports:
+      - "5000:5000"
+    networks:
+      - turismo_network
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+    command: >
+      sh -c "flask db upgrade &&
+             gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 app:app"
+
+  # Nginx como proxy reverso
+  nginx:
+    image: nginx:alpine
+    container_name: turismo_inclusivo_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    networks:
+      - turismo_network
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
+
+networks:
+  turismo_network:
+    driver: bridge

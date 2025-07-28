@@ -1,0 +1,552 @@
+/* ========================================
+   TEMA VERDE - PORTAL DE TURISMO INCLUSIVO
+   Colores y estilos específicos del tema verde
+   ======================================== */
+
+/* ========================================
+   1. VARIABLES DE COLOR VERDE
+   ======================================== */
+
+:root {
+    /* Paleta de verdes */
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-300: #86efac;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-800: #166534;
+    --green-900: #14532d;
+    --green-950: #052e16;
+    
+    /* Colores principales del tema */
+    --primary-color: var(--green-600);
+    --primary-dark: var(--green-700);
+    --primary-light: var(--green-500);
+    --primary-lighter: var(--green-400);
+    --primary-lightest: var(--green-100);
+    
+    /* Colores de acento */
+    --accent-color: #f59e0b;
+    --accent-dark: #d97706;
+    --accent-light: #fbbf24;
+    
+    /* Colores de estado */
+    --success-color: var(--green-600);
+    --warning-color: var(--accent-color);
+    --error-color: #ef4444;
+    --info-color: #3b82f6;
+    
+    /* Gradientes verdes */
+    --gradient-primary: linear-gradient(135deg, var(--green-600) 0%, var(--green-700) 100%);
+    --gradient-secondary: linear-gradient(135deg, var(--green-500) 0%, var(--green-600) 100%);
+    --gradient-light: linear-gradient(135deg, var(--green-100) 0%, var(--green-200) 100%);
+    --gradient-dark: linear-gradient(135deg, var(--green-800) 0%, var(--green-900) 100%);
+}
+
+/* ========================================
+   2. HEADER CON TEMA VERDE
+   ======================================== */
+
+.site-header {
+    background: var(--gradient-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-top {
+    background: rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-text {
+    color: var(--green-100);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--green-100);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--green-100);
+}
+
+/* ========================================
+   3. BÚSQUEDA CON TEMA VERDE
+   ======================================== */
+
+#search-input {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-inverse);
+}
+
+#search-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.search-btn {
+    background: var(--accent-color);
+}
+
+.search-btn:hover,
+.search-btn:focus {
+    background: var(--accent-dark);
+}
+
+/* ========================================
+   4. BOTONES CON TEMA VERDE
+   ======================================== */
+
+.btn-primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: var(--text-inverse);
+}
+
+.btn-success {
+    background: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-warning {
+    background: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+/* ========================================
+   5. FORMULARIOS CON TEMA VERDE
+   ======================================== */
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.form-control.is-valid {
+    border-color: var(--success-color);
+}
+
+.form-control.is-invalid {
+    border-color: var(--error-color);
+}
+
+/* ========================================
+   6. HERO SECTION CON TEMA VERDE
+   ======================================== */
+
+.hero-section {
+    background: var(--gradient-primary);
+}
+
+.hero-section::before {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+}
+
+/* ========================================
+   7. TARJETAS CON TEMA VERDE
+   ======================================== */
+
+.card {
+    border-color: var(--green-200);
+    box-shadow: 0 1px 3px rgba(22, 163, 74, 0.1);
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+    border-color: var(--green-300);
+}
+
+.card-header {
+    background: var(--green-50);
+    border-bottom-color: var(--green-200);
+}
+
+.card-footer {
+    background: var(--green-50);
+    border-top-color: var(--green-200);
+}
+
+/* ========================================
+   8. DESTINOS CON TEMA VERDE
+   ======================================== */
+
+.destination-card {
+    border-color: var(--green-200);
+}
+
+.destination-card:hover {
+    border-color: var(--green-300);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.15);
+}
+
+.destination-title a {
+    color: var(--primary-color);
+}
+
+.destination-title a:hover {
+    color: var(--primary-dark);
+}
+
+.destination-rating {
+    color: var(--accent-color);
+}
+
+/* ========================================
+   9. FOOTER CON TEMA VERDE
+   ======================================== */
+
+.site-footer {
+    background: var(--gradient-dark);
+    color: var(--green-100);
+}
+
+.footer-bottom {
+    background: rgba(0, 0, 0, 0.2);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer-links a {
+    color: var(--green-200);
+}
+
+.footer-links a:hover {
+    color: var(--green-100);
+}
+
+/* ========================================
+   10. MENÚ DE ACCESIBILIDAD LATERAL
+   ======================================== */
+
+.accessibility-sidebar {
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-lg);
+}
+
+.accessibility-toggle {
+    background: var(--primary-dark);
+    color: var(--text-inverse);
+}
+
+.accessibility-toggle:hover,
+.accessibility-toggle:focus {
+    background: var(--primary-light);
+}
+
+.accessibility-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-inverse);
+}
+
+.accessibility-btn:hover,
+.accessibility-btn:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.accessibility-btn[aria-pressed="true"] {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.language-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-inverse);
+}
+
+.language-btn:hover,
+.language-btn:focus {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.language-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* ========================================
+   11. ALERTAS CON TEMA VERDE
+   ======================================== */
+
+.alert-success {
+    background: var(--green-50);
+    border-color: var(--green-200);
+    color: var(--green-800);
+}
+
+.alert-warning {
+    background: #fffbeb;
+    border-color: #fed7aa;
+    color: #92400e;
+}
+
+.alert-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+.alert-info {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1e40af;
+}
+
+/* ========================================
+   12. PAGINACIÓN CON TEMA VERDE
+   ======================================== */
+
+.pagination-link {
+    border-color: var(--green-200);
+    color: var(--text-primary);
+}
+
+.pagination-link:hover {
+    background: var(--green-50);
+    border-color: var(--green-300);
+}
+
+.pagination-link.active {
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    border-color: var(--primary-color);
+}
+
+/* ========================================
+   13. BREADCRUMBS CON TEMA VERDE
+   ======================================== */
+
+.breadcrumb-item a {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-dark);
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    color: var(--green-400);
+}
+
+/* ========================================
+   14. MODALES CON TEMA VERDE
+   ======================================== */
+
+.modal-content {
+    border-color: var(--green-200);
+}
+
+.modal-header {
+    border-bottom-color: var(--green-200);
+    background: var(--green-50);
+}
+
+.modal-close:hover {
+    background: var(--green-100);
+    color: var(--primary-color);
+}
+
+/* ========================================
+   15. TOOLTIPS CON TEMA VERDE
+   ======================================== */
+
+.tooltip {
+    background: var(--primary-dark);
+    color: var(--text-inverse);
+}
+
+/* ========================================
+   16. PROGRESS BARS CON TEMA VERDE
+   ======================================== */
+
+.progress {
+    background: var(--green-100);
+}
+
+.progress-bar {
+    background: var(--primary-color);
+}
+
+/* ========================================
+   17. SLIDERS CON TEMA VERDE
+   ======================================== */
+
+input[type="range"] {
+    background: var(--green-100);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    background: var(--primary-color);
+}
+
+input[type="range"]::-moz-range-thumb {
+    background: var(--primary-color);
+}
+
+/* ========================================
+   18. CHECKBOXES Y RADIOS CON TEMA VERDE
+   ======================================== */
+
+input[type="checkbox"]:checked + .checkmark {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+input[type="radio"]:checked + .radio-mark {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* ========================================
+   19. SELECTS CON TEMA VERDE
+   ======================================== */
+
+select:focus {
+    border-color: var(--primary-color);
+}
+
+/* ========================================
+   20. TEXTAREAS CON TEMA VERDE
+   ======================================== */
+
+textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* ========================================
+   21. NOTIFICACIONES CON TEMA VERDE
+   ======================================== */
+
+.notification-success {
+    background: var(--success-color);
+    color: var(--text-inverse);
+}
+
+.notification-error {
+    background: var(--error-color);
+    color: var(--text-inverse);
+}
+
+.notification-warning {
+    background: var(--warning-color);
+    color: var(--text-inverse);
+}
+
+.notification-info {
+    background: var(--info-color);
+    color: var(--text-inverse);
+}
+
+/* ========================================
+   22. ANIMACIONES CON TEMA VERDE
+   ======================================== */
+
+@keyframes greenPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(22, 163, 74, 0);
+    }
+}
+
+.green-pulse {
+    animation: greenPulse 2s infinite;
+}
+
+@keyframes greenGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(22, 163, 74, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(22, 163, 74, 0.8);
+    }
+}
+
+.green-glow {
+    animation: greenGlow 2s ease-in-out infinite alternate;
+}
+
+/* ========================================
+   23. EFECTOS HOVER CON TEMA VERDE
+   ======================================== */
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.15);
+}
+
+.destination-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(22, 163, 74, 0.2);
+}
+
+/* ========================================
+   24. RESPONSIVE CON TEMA VERDE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .accessibility-sidebar {
+        right: -60px;
+    }
+    
+    .accessibility-sidebar:hover,
+    .accessibility-sidebar.expanded {
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        background: var(--gradient-secondary);
+    }
+}
+
+/* ========================================
+   25. IMPRESIÓN CON TEMA VERDE
+   ======================================== */
+
+@media print {
+    .site-header {
+        background: var(--green-100) !important;
+        color: var(--green-900) !important;
+    }
+    
+    .btn-primary {
+        background: var(--green-100) !important;
+        color: var(--green-900) !important;
+        border-color: var(--green-300) !important;
+    }
+} 

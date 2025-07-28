@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block title %}{{ destination.name }} - Portal de Turismo Inclusivo{% endblock %}
+
+{% block meta_description %}{{ destination.short_description or destination.description[:160] }}{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav aria-label="Navegación de migas de pan" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('main.index') }}">Inicio</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('destinations.destinations_list') }}">Destinos</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ destination.name }}
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Hero del destino -->
+<section class="destination-hero" role="banner">
+    <div class="hero-image">
+        <img src="{{ destination.main_image or url_for('static', filename='images/placeholder-destination.jpg') }}" 
+             alt="{{ destination.image_alt_text or destination.name }}"
+             class="hero-img">
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <div class="hero-content">
+        <div class="container">
+            <div class="hero-text">
+                <h1 class="hero-title">{{ destination.name }}</h1>
+                <p class="hero-subtitle">{{ destination.short_description }}</p>
+                
+                <div class="hero-meta">
+                    <span class="location">
+                        <span class="icon" aria-hidden="true">📍</span>
+                        {{ destination.city }}, {{ destination.province }}
+                    </span>
+                    
+                    <span class="category">
+                        <span class="icon" aria-hidden="true">🏷️</span>
+                        {{ destination.category|title }}
+                    </span>
+                    
+                    <span class="rating">
+                        <span class="icon" aria-hidden="true">⭐</span>
+                        {{ "%.1f"|format(destination.rating) }}/5
+                    </span>
+                </div>
+                
+                <div class="hero-actions">
+                    {% if current_user.is_authenticated %}
+                    <button class="btn btn-primary favorite-btn" 
+                            data-destination-id="{{ destination.id }}"
+                            data-is-favorite="{{ 'true' if is_favorite else 'false' }}">
+                        <span class="icon" aria-hidden="true">
+                            {% if is_favorite %}❤️{% else %}🤍{% endif %}
+                        </span>
+                        {% if is_favorite %}Quitar de Favoritos{% else %}Agregar a Favoritos{% endif %}
+                    </button>
+                    {% endif %}
+                    
+                    <a href="#reviews" class="btn btn-outline-light">
+                        Ver Reseñas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Información principal -->
+<section class="destination-info" role="main">
+    <div class="container">
+        <div class="info-grid">
+            <!-- Información básica -->
+            <div class="info-main">
+                <div class="info-card">
+                    <h2>Descripción</h2>
+                    <p>{{ destination.description }}</p>
+                </div>
+                
+                <!-- Características de accesibilidad -->
+                <div class="info-card">
+                    <h2>Características de Accesibilidad</h2>
+                    <div class="accessibility-features">
+                        <div class="feature-item {% if destination.wheelchair_accessible %}available{% else %}unavailable{% endif %}">
+                            <span class="feature-icon" aria-hidden="true">♿</span>
+                            <div class="feature-text">
+                                <strong>Accesible en silla de ruedas</strong>
+                                <span class="feature-status">
+                                    {% if destination.wheelchair_accessible %}Disponible{% else %}No disponible{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item {% if destination.audio_guide_available %}available{% else %}unavailable{% endif %}">
+                            <span class="feature-icon" aria-hidden="true">🎧</span>
+                            <div class="feature-text">
+                                <strong>Audioguías</strong>
+                                <span class="feature-status">
+                                    {% if destination.audio_guide_available %}Disponible{% else %}No disponible{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item {% if destination.braille_info_available %}available{% else %}unavailable{% endif %}">
+                            <span class="feature-icon" aria-hidden="true">👆</span>
+                            <div class="feature-text">
+                                <strong>Información en braille</strong>
+                                <span class="feature-status">
+                                    {% if destination.braille_info_available %}Disponible{% else %}No disponible{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item {% if destination.sign_language_guide %}available{% else %}unavailable{% endif %}">
+                            <span class="feature-icon" aria-hidden="true">🤟</span>
+                            <div class="feature-text">
+                                <strong>Intérprete de lengua de señas</strong>
+                                <span class="feature-status">
+                                    {% if destination.sign_language_guide %}Disponible{% else %}No disponible{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if destination.accessibility_notes %}
+                    <div class="accessibility-notes">
+                        <h3>Notas de Accesibilidad</h3>
+                        <p>{{ destination.accessibility_notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Información práctica -->
+                <div class="info-card">
+                    <h2>Información Práctica</h2>
+                    <div class="practical-info">
+                        {% if destination.address %}
+                        <div class="info-item">
+                            <span class="info-label">Dirección:</span>
+                            <span class="info-value">{{ destination.address }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if destination.opening_hours %}
+                        <div class="info-item">
+                            <span class="info-label">Horarios:</span>
+                            <span class="info-value">{{ destination.opening_hours }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if destination.admission_fee %}
+                        <div class="info-item">
+                            <span class="info-label">Entrada:</span>
+                            <span class="info-value">{{ destination.admission_fee }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if destination.contact_phone %}
+                        <div class="info-item">
+                            <span class="info-label">Teléfono:</span>
+                            <span class="info-value">
+                                <a href="tel:{{ destination.contact_phone }}">{{ destination.contact_phone }}</a>
+                            </span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if destination.contact_email %}
+                        <div class="info-item">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">
+                                <a href="mailto:{{ destination.contact_email }}">{{ destination.contact_email }}</a>
+                            </span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if destination.website %}
+                        <div class="info-item">
+                            <span class="info-label">Sitio web:</span>
+                            <span class="info-value">
+                                <a href="{{ destination.website }}" target="_blank" rel="noopener">Visitar sitio web</a>
+                            </span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="info-sidebar">
+                <!-- Puntuaciones -->
+                <div class="sidebar-card">
+                    <h3>Puntuaciones</h3>
+                    <div class="ratings-summary">
+                        <div class="rating-item">
+                            <span class="rating-label">General</span>
+                            <div class="stars" aria-label="Puntuación general: {{ destination.rating }}/5">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < destination.rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                            <span class="rating-value">{{ "%.1f"|format(destination.rating) }}</span>
+                        </div>
+                        
+                        <div class="rating-item">
+                            <span class="rating-label">Accesibilidad</span>
+                            <div class="stars" aria-label="Puntuación de accesibilidad: {{ destination.accessibility_rating }}/5">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < destination.accessibility_rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                            <span class="rating-value">{{ "%.1f"|format(destination.accessibility_rating) }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mapa -->
+                {% if destination.latitude and destination.longitude %}
+                <div class="sidebar-card">
+                    <h3>Ubicación</h3>
+                    <div id="map" class="destination-map" 
+                         data-lat="{{ destination.latitude }}" 
+                         data-lng="{{ destination.longitude }}"
+                         data-name="{{ destination.name }}">
+                        <p>Cargando mapa...</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Acciones -->
+                <div class="sidebar-card">
+                    <h3>Acciones</h3>
+                    <div class="action-buttons">
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('destinations.create_review', slug=destination.slug) }}" 
+                           class="btn btn-primary btn-block">
+                            Escribir Reseña
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('auth.login', next=request.url) }}" 
+                           class="btn btn-primary btn-block">
+                            Iniciar Sesión para Reseñar
+                        </a>
+                        {% endif %}
+                        
+                        <a href="#reviews" class="btn btn-outline-primary btn-block">
+                            Ver Todas las Reseñas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reseñas -->
+<section id="reviews" class="reviews-section" role="region" aria-labelledby="reviews-title">
+    <div class="container">
+        <div class="reviews-header">
+            <h2 id="reviews-title" class="section-title">Reseñas de Visitantes</h2>
+            
+            {% if reviews_summary %}
+            <div class="reviews-summary">
+                <div class="summary-item">
+                    <span class="summary-number">{{ reviews_summary.total_reviews }}</span>
+                    <span class="summary-label">Reseñas</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-number">{{ "%.1f"|format(reviews_summary.average_rating) }}</span>
+                    <span class="summary-label">Puntuación promedio</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if reviews %}
+        <div class="reviews-list">
+            {% for review in reviews %}
+            <article class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <h3 class="reviewer-name">{{ review.user.get_full_name() }}</h3>
+                        <span class="review-date">{{ review.created_at.strftime('%d/%m/%Y') }}</span>
+                    </div>
+                    
+                    <div class="review-ratings">
+                        <div class="rating-item">
+                            <span class="rating-label">General:</span>
+                            <div class="stars">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < review.rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="rating-item">
+                            <span class="rating-label">Accesibilidad:</span>
+                            <div class="stars">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < review.accessibility_rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-content">
+                    <h4 class="review-title">{{ review.title }}</h4>
+                    <p class="review-text">{{ review.content }}</p>
+                    
+                    {% if review.accessibility_notes %}
+                    <div class="accessibility-notes">
+                        <strong>Notas de accesibilidad:</strong>
+                        <p>{{ review.accessibility_notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if reviews_summary.total_reviews > 10 %}
+        <div class="reviews-more">
+            <a href="#" class="btn btn-outline-primary">
+                Ver Todas las Reseñas ({{ reviews_summary.total_reviews }})
+            </a>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="no-reviews">
+            <div class="no-reviews-icon">
+                <span aria-hidden="true">📝</span>
+            </div>
+            <h3>No hay reseñas aún</h3>
+            <p>¡Sé el primero en compartir tu experiencia en este destino!</p>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('destinations.create_review', slug=destination.slug) }}" 
+               class="btn btn-primary">
+                Escribir Primera Reseña
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login', next=request.url) }}" 
+               class="btn btn-primary">
+                Iniciar Sesión para Reseñar
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Destinos similares -->
+{% if similar_destinations %}
+<section class="similar-destinations" role="region" aria-labelledby="similar-title">
+    <div class="container">
+        <h2 id="similar-title" class="section-title">Destinos Similares</h2>
+        
+        <div class="destinations-grid">
+            {% for similar in similar_destinations %}
+            <article class="destination-card">
+                <div class="destination-image">
+                    <a href="{{ url_for('destinations.destination_detail', slug=similar.slug) }}">
+                        <img src="{{ similar.main_image or url_for('static', filename='images/placeholder-destination.jpg') }}" 
+                             alt="{{ similar.name }}"
+                             loading="lazy">
+                    </a>
+                </div>
+                
+                <div class="destination-content">
+                    <h3 class="destination-title">
+                        <a href="{{ url_for('destinations.destination_detail', slug=similar.slug) }}">
+                            {{ similar.name }}
+                        </a>
+                    </h3>
+                    
+                    <div class="destination-meta">
+                        <span class="destination-location">{{ similar.city }}, {{ similar.province }}</span>
+                        <span class="destination-rating">{{ "%.1f"|format(similar.rating) }}/5</span>
+                    </div>
+                    
+                    <p class="destination-description">
+                        {{ similar.short_description or similar.description[:100] + '...' }}
+                    </p>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %} 

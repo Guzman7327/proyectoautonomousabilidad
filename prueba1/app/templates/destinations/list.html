@@ -1,0 +1,485 @@
+{% extends "base.html" %}
+
+{% block title %}Destinos Turísticos - Portal de Turismo Inclusivo{% endblock %}
+
+{% block meta_description %}Explora los mejores destinos turísticos accesibles de Ecuador. Filtra por provincia, categoría y características de accesibilidad.{% endblock %}
+
+{% block content %}
+<!-- Header de la página -->
+<section class="page-header" role="banner">
+    <div class="container">
+        <div class="header-content">
+            <h1 class="page-title">Destinos Turísticos</h1>
+            <p class="page-description">
+                Descubre los destinos más accesibles e inclusivos de Ecuador. 
+                Filtra por ubicación, categoría y características de accesibilidad.
+            </p>
+            
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ destinations.total }}</span>
+                    <span class="stat-label">Destinos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ destinations.items|selectattr('wheelchair_accessible', 'equalto', true)|list|length }}</span>
+                    <span class="stat-label">Accesibles</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ provinces|length }}</span>
+                    <span class="stat-label">Provincias</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filtros de búsqueda mejorados -->
+<section class="filters-section" role="search" aria-labelledby="filters-title">
+    <div class="container">
+        <div class="filters-card">
+            <div class="filters-header">
+                <h2 id="filters-title" class="filters-title">
+                    <span class="icon" aria-hidden="true">🔍</span>
+                    Filtrar Destinos
+                </h2>
+                <button class="filters-toggle" 
+                        aria-expanded="true" 
+                        aria-controls="filters-form"
+                        aria-label="Mostrar u ocultar filtros">
+                    <span class="toggle-text">Ocultar Filtros</span>
+                    <span class="toggle-icon" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            
+            <form method="GET" class="filters-form" id="filters-form">
+                <div class="filters-grid">
+                    <!-- Búsqueda por texto con autocompletado -->
+                    <div class="filter-group">
+                        <label for="search" class="filter-label">
+                            <span class="icon" aria-hidden="true">🔎</span>
+                            Buscar
+                        </label>
+                        <div class="search-input-wrapper">
+                            <input type="search" 
+                                   id="search" 
+                                   name="search" 
+                                   value="{{ current_filters.search or '' }}"
+                                   placeholder="Nombre del destino, ciudad o provincia..."
+                                   aria-describedby="search-help"
+                                   autocomplete="off"
+                                   aria-expanded="false"
+                                   aria-controls="search-suggestions">
+                            <div id="search-suggestions" class="search-suggestions" role="listbox" aria-hidden="true"></div>
+                        </div>
+                        <div id="search-help" class="filter-help">
+                            Escribe para buscar por nombre, ciudad o provincia
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro por provincia con búsqueda -->
+                    <div class="filter-group">
+                        <label for="province" class="filter-label">
+                            <span class="icon" aria-hidden="true">📍</span>
+                            Provincia
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="province" name="province" aria-describedby="province-help">
+                                <option value="">Todas las provincias</option>
+                                {% for province in provinces %}
+                                <option value="{{ province }}" 
+                                        {% if current_filters.province == province %}selected{% endif %}>
+                                    {{ province }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <span class="select-arrow" aria-hidden="true">▼</span>
+                        </div>
+                        <div id="province-help" class="filter-help">
+                            Selecciona una provincia para filtrar
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro por categoría con iconos -->
+                    <div class="filter-group">
+                        <label for="category" class="filter-label">
+                            <span class="icon" aria-hidden="true">🏷️</span>
+                            Categoría
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="category" name="category" aria-describedby="category-help">
+                                <option value="">Todas las categorías</option>
+                                {% for key, name in categories.items() %}
+                                <option value="{{ key }}" 
+                                        {% if current_filters.category == key %}selected{% endif %}>
+                                    {{ name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <span class="select-arrow" aria-hidden="true">▼</span>
+                        </div>
+                        <div id="category-help" class="filter-help">
+                            Filtra por tipo de destino turístico
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro por accesibilidad con indicadores visuales -->
+                    <div class="filter-group">
+                        <label for="accessibility" class="filter-label">
+                            <span class="icon" aria-hidden="true">♿</span>
+                            Accesibilidad
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="accessibility" name="accessibility" aria-describedby="accessibility-help">
+                                <option value="">Cualquier nivel</option>
+                                <option value="wheelchair" {% if current_filters.accessibility == 'wheelchair' %}selected{% endif %}>
+                                    ♿ Accesible en silla de ruedas
+                                </option>
+                                <option value="audio" {% if current_filters.accessibility == 'audio' %}selected{% endif %}>
+                                    🎧 Con audioguías
+                                </option>
+                                <option value="visual" {% if current_filters.accessibility == 'visual' %}selected{% endif %}>
+                                    👆 Información en braille
+                                </option>
+                                <option value="high_score" {% if current_filters.accessibility == 'high_score' %}selected{% endif %}>
+                                    ⭐ Alta puntuación accesible
+                                </option>
+                            </select>
+                            <span class="select-arrow" aria-hidden="true">▼</span>
+                        </div>
+                        <div id="accessibility-help" class="filter-help">
+                            Filtra por características de accesibilidad
+                        </div>
+                    </div>
+                    
+                    <!-- Filtro por ordenamiento -->
+                    <div class="filter-group">
+                        <label for="sort_by" class="filter-label">
+                            <span class="icon" aria-hidden="true">📊</span>
+                            Ordenar por
+                        </label>
+                        <div class="select-wrapper">
+                            <select id="sort_by" name="sort_by" aria-describedby="sort-help">
+                                <option value="name" {% if current_filters.sort_by == 'name' %}selected{% endif %}>
+                                    📝 Nombre A-Z
+                                </option>
+                                <option value="rating" {% if current_filters.sort_by == 'rating' %}selected{% endif %}>
+                                    ⭐ Mejor puntuación
+                                </option>
+                                <option value="accessibility" {% if current_filters.sort_by == 'accessibility' %}selected{% endif %}>
+                                    ♿ Mejor accesibilidad
+                                </option>
+                                <option value="recent" {% if current_filters.sort_by == 'recent' %}selected{% endif %}>
+                                    🆕 Más recientes
+                                </option>
+                            </select>
+                            <span class="select-arrow" aria-hidden="true">▼</span>
+                        </div>
+                        <div id="sort-help" class="filter-help">
+                            Define cómo ordenar los resultados
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros adicionales expandibles -->
+                    <div class="filter-group filter-expandable">
+                        <button type="button" 
+                                class="filter-expand-toggle"
+                                aria-expanded="false"
+                                aria-controls="advanced-filters">
+                            <span class="icon" aria-hidden="true">⚙️</span>
+                            Filtros Avanzados
+                            <span class="expand-icon" aria-hidden="true">▶</span>
+                        </button>
+                        
+                        <div id="advanced-filters" class="advanced-filters" aria-hidden="true">
+                            <div class="advanced-filters-grid">
+                                <!-- Filtro por rango de precios -->
+                                <div class="filter-subgroup">
+                                    <label class="filter-label">Rango de Precios</label>
+                                    <div class="range-inputs">
+                                        <input type="number" 
+                                               name="price_min" 
+                                               placeholder="Mín"
+                                               min="0"
+                                               aria-label="Precio mínimo">
+                                        <span class="range-separator">-</span>
+                                        <input type="number" 
+                                               name="price_max" 
+                                               placeholder="Máx"
+                                               min="0"
+                                               aria-label="Precio máximo">
+                                    </div>
+                                </div>
+                                
+                                <!-- Filtro por distancia -->
+                                <div class="filter-subgroup">
+                                    <label class="filter-label">Distancia Máxima</label>
+                                    <div class="range-slider">
+                                        <input type="range" 
+                                               name="distance" 
+                                               min="0" 
+                                               max="500" 
+                                               value="100"
+                                               aria-label="Distancia máxima en kilómetros">
+                                        <span class="range-value">100 km</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Filtros de accesibilidad específicos -->
+                                <div class="filter-subgroup">
+                                    <label class="filter-label">Características Específicas</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="features[]" value="parking">
+                                            <span class="checkmark"></span>
+                                            🅿️ Estacionamiento accesible
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="features[]" value="bathroom">
+                                            <span class="checkmark"></span>
+                                            🚻 Baños adaptados
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="features[]" value="ramp">
+                                            <span class="checkmark"></span>
+                                            📐 Rampas de acceso
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="features[]" value="elevator">
+                                            <span class="checkmark"></span>
+                                            🛗 Ascensores
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Acciones de filtros -->
+                <div class="filters-actions">
+                    <div class="filters-buttons">
+                        <button type="submit" 
+                                class="btn btn-primary"
+                                id="apply-filters"
+                                aria-describedby="apply-help">
+                            <span class="btn-icon" aria-hidden="true">🔍</span>
+                            Aplicar Filtros
+                            <span class="btn-loading" aria-hidden="true" style="display: none;">
+                                <span class="spinner"></span>
+                            </span>
+                        </button>
+                        
+                        <a href="{{ url_for('destinations.destinations_list') }}" 
+                           class="btn btn-outline-secondary"
+                           id="clear-filters"
+                           aria-describedby="clear-help">
+                            <span class="btn-icon" aria-hidden="true">🔄</span>
+                            Limpiar Filtros
+                        </a>
+                        
+                        <button type="button" 
+                                class="btn btn-outline-primary"
+                                id="save-filters"
+                                aria-describedby="save-help">
+                            <span class="btn-icon" aria-hidden="true">💾</span>
+                            Guardar Filtros
+                        </button>
+                    </div>
+                    
+                    <div class="filters-help">
+                        <div id="apply-help" class="help-text">
+                            Aplica los filtros seleccionados y actualiza los resultados
+                        </div>
+                        <div id="clear-help" class="help-text">
+                            Restablece todos los filtros a sus valores por defecto
+                        </div>
+                        <div id="save-help" class="help-text">
+                            Guarda esta combinación de filtros para uso futuro
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Filtros guardados -->
+                <div class="saved-filters" id="saved-filters" style="display: none;">
+                    <h3>Filtros Guardados</h3>
+                    <div class="saved-filters-list" id="saved-filters-list">
+                        <!-- Los filtros guardados se cargarán dinámicamente -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Lista de destinos -->
+<section class="destinations-section" role="main" aria-labelledby="destinations-title">
+    <div class="container">
+        <div class="destinations-header">
+            <h2 id="destinations-title" class="section-title">
+                {% if current_filters.search %}
+                    Resultados para "{{ current_filters.search }}"
+                {% elif current_filters.province %}
+                    Destinos en {{ current_filters.province }}
+                {% elif current_filters.category %}
+                    {{ categories[current_filters.category] }}
+                {% else %}
+                    Todos los Destinos
+                {% endif %}
+            </h2>
+            
+            {% if destinations.items %}
+            <p class="results-count">
+                Mostrando {{ destinations.items|length }} de {{ destinations.total }} destinos
+            </p>
+            {% endif %}
+        </div>
+        
+        {% if destinations.items %}
+        <div class="destinations-grid" role="list">
+            {% for destination in destinations.items %}
+            <article class="destination-card" role="listitem">
+                <div class="destination-image">
+                    <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}"
+                       aria-labelledby="dest-{{ destination.id }}-title">
+                        <img src="{{ destination.main_image or url_for('static', filename='images/placeholder-destination.jpg') }}" 
+                             alt="{{ destination.image_alt_text or destination.name }}"
+                             loading="lazy">
+                    </a>
+                    
+                    {% if destination.is_featured %}
+                    <span class="featured-badge" aria-label="Destino destacado">
+                        <span class="icon" aria-hidden="true">⭐</span>
+                        Destacado
+                    </span>
+                    {% endif %}
+                    
+                    <div class="accessibility-indicators">
+                        {% if destination.wheelchair_accessible %}
+                        <span class="accessibility-icon" aria-label="Accesible en silla de ruedas" title="Accesible en silla de ruedas">
+                            <span aria-hidden="true">♿</span>
+                        </span>
+                        {% endif %}
+                        
+                        {% if destination.audio_guide_available %}
+                        <span class="accessibility-icon" aria-label="Audioguías disponibles" title="Audioguías disponibles">
+                            <span aria-hidden="true">🎧</span>
+                        </span>
+                        {% endif %}
+                        
+                        {% if destination.braille_info_available %}
+                        <span class="accessibility-icon" aria-label="Información en braille" title="Información en braille">
+                            <span aria-hidden="true">👆</span>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="destination-content">
+                    <h3 id="dest-{{ destination.id }}-title" class="destination-title">
+                        <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}">
+                            {{ destination.name }}
+                        </a>
+                    </h3>
+                    
+                    <div class="destination-meta">
+                        <span class="destination-location">
+                            <span class="icon" aria-hidden="true">📍</span>
+                            {{ destination.city }}, {{ destination.province }}
+                        </span>
+                        
+                        <span class="destination-category">
+                            <span class="icon" aria-hidden="true">🏷️</span>
+                            {{ categories[destination.category] }}
+                        </span>
+                    </div>
+                    
+                    <p class="destination-description">
+                        {{ destination.short_description or destination.description[:150] + '...' if destination.description|length > 150 else destination.description }}
+                    </p>
+                    
+                    <div class="destination-ratings">
+                        <div class="rating-item">
+                            <span class="rating-label">General:</span>
+                            <div class="stars" aria-label="Puntuación general: {{ destination.rating }}/5">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < destination.rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                            <span class="rating-value">{{ "%.1f"|format(destination.rating) }}</span>
+                        </div>
+                        
+                        <div class="rating-item">
+                            <span class="rating-label">Accesibilidad:</span>
+                            <div class="stars" aria-label="Puntuación de accesibilidad: {{ destination.accessibility_rating }}/5">
+                                {% for i in range(5) %}
+                                <span class="star {% if i < destination.accessibility_rating %}filled{% endif %}" aria-hidden="true">★</span>
+                                {% endfor %}
+                            </div>
+                            <span class="rating-value">{{ "%.1f"|format(destination.accessibility_rating) }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="destination-actions">
+                        <a href="{{ url_for('destinations.destination_detail', slug=destination.slug) }}" 
+                           class="btn btn-primary btn-sm">
+                            Ver Detalles
+                        </a>
+                        
+                        {% if current_user.is_authenticated %}
+                        <button class="btn btn-outline-secondary btn-sm favorite-btn" 
+                                data-destination-id="{{ destination.id }}"
+                                aria-label="Agregar a favoritos">
+                            <span class="icon" aria-hidden="true">❤️</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        <!-- Paginación -->
+        {% if destinations.pages > 1 %}
+        <nav class="pagination-nav" aria-label="Navegación de páginas">
+            <div class="pagination">
+                {% if destinations.has_prev %}
+                <a href="{{ url_for('destinations.destinations_list', page=destinations.prev_num, **request.args) }}" 
+                   class="page-link" aria-label="Página anterior">
+                    <span aria-hidden="true">←</span>
+                    Anterior
+                </a>
+                {% endif %}
+                
+                <span class="page-info">
+                    Página {{ destinations.page }} de {{ destinations.pages }}
+                </span>
+                
+                {% if destinations.has_next %}
+                <a href="{{ url_for('destinations.destinations_list', page=destinations.next_num, **request.args) }}" 
+                   class="page-link" aria-label="Página siguiente">
+                    Siguiente
+                    <span aria-hidden="true">→</span>
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="no-results">
+            <div class="no-results-icon">
+                <span aria-hidden="true">🔍</span>
+            </div>
+            <h3>No se encontraron destinos</h3>
+            <p>
+                No hay destinos que coincidan con los filtros seleccionados. 
+                Intenta ajustar los criterios de búsqueda.
+            </p>
+            <a href="{{ url_for('destinations.destinations_list') }}" class="btn btn-primary">
+                Ver Todos los Destinos
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %} 
