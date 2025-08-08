@@ -1,0 +1,73 @@
+# Portal Turístico Ecuador - Configuración Apache
+# Página principal del proyecto
+
+# Página de inicio por defecto
+DirectoryIndex index.html index.php
+
+# Redirecciones amigables
+RewriteEngine On
+
+# Redirigir raíz a index.html
+RewriteRule ^$ index.html [L]
+
+# URLs amigables para el sistema
+RewriteRule ^reservas/?$ formulario_rf7.php [L]
+RewriteRule ^analisis/?$ formulario_rf8.php [L]
+RewriteRule ^notificaciones/?$ formulario_rf9.php [L]
+RewriteRule ^contenido/?$ formulario_rf10.php [L]
+RewriteRule ^dashboard/?$ dashboard.php [L]
+RewriteRule ^sistema/?$ sistema_integrado.php [L]
+RewriteRule ^login/?$ login.php [L]
+RewriteRule ^register/?$ register.php [L]
+
+# Configuración de seguridad
+<Files "connect.php">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "*.sql">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Configuración de caché para recursos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+</IfModule>
+
+# Compresión GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Headers de seguridad
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+</IfModule>
+
+# Configuración de PHP
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_vars 3000
+</IfModule>

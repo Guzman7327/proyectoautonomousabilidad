@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación RF6 - Gestión de Contenido y Multimedia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .score {
+            display: inline-block;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .criteria-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .criteria-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .criteria-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+        }
+
+        .strengths, .improvements {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .strengths h4, .improvements h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .strengths {
+            border-left: 4px solid #28a745;
+        }
+
+        .improvements {
+            border-left: 4px solid #ffc107;
+        }
+
+        .nielsen-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nielsen-table th {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .nielsen-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nielsen-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .nielsen-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-cell {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .summary-score {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .recommendations {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .recommendations h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .priority-high {
+            border-left: 4px solid #dc3545;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #ffc107;
+        }
+
+        .priority-low {
+            border-left: 4px solid #28a745;
+        }
+
+        .prototype-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .prototype-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .conclusion h3 {
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> Evaluación RF6</h1>
+            <p>Gestión de Contenido y Multimedia - Portal Turístico Ecuador</p>
+        </div>
+
+        <div class="content">
+            <!-- ISO 9241-11 EVALUATION -->
+            <div class="section">
+                <h2><i class="fas fa-clipboard-check"></i> 1. EVALUACIÓN ISO 9241-11</h2>
+
+                <h3>1.1 EFICACIA (Effectiveness)</h3>
+                <div class="score">Puntuación: 8.5/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Completitud de tareas:</strong> El sistema permite completar todas las tareas de gestión de contenido (crear, editar, eliminar, organizar)</li>
+                    <li><strong>Precisión:</strong> Los formularios capturan correctamente la información requerida</li>
+                    <li><strong>Calidad del resultado:</strong> El contenido se organiza y presenta de manera estructurada</li>
+                    <li><strong>Gestión de errores:</strong> Validación adecuada de campos obligatorios y formatos</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Interfaz intuitiva con pestañas bien organizadas</li>
+                        <li>Formularios completos con validación</li>
+                        <li>Sistema de etiquetas y categorización</li>
+                        <li>Opciones de procesamiento automático de archivos</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Falta validación en tiempo real</li>
+                        <li>No hay preview de contenido antes de guardar</li>
+                        <li>Limitaciones en el tamaño de archivos</li>
+                    </ul>
+                </div>
+
+                <h3>1.2 EFICIENCIA (Efficiency)</h3>
+                <div class="score">Puntuación: 8.0/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Tiempo de aprendizaje:</strong> Interfaz familiar que reduce la curva de aprendizaje</li>
+                    <li><strong>Velocidad de ejecución:</strong> Navegación rápida entre pestañas</li>
+                    <li><strong>Productividad:</strong> Múltiples funciones accesibles desde un solo panel</li>
+                    <li><strong>Optimización de flujo:</strong> Proceso lógico de creación y gestión</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Dashboard con estadísticas en tiempo real</li>
+                        <li>Búsqueda y filtros rápidos</li>
+                        <li>Acciones en lote disponibles</li>
+                        <li>Interfaz responsive</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Falta atajos de teclado</li>
+                        <li>No hay drag & drop para archivos</li>
+                        <li>Proceso de subida podría ser más eficiente</li>
+                    </ul>
+                </div>
+
+                <h3>1.3 SATISFACCIÓN (Satisfaction)</h3>
+                <div class="score">Puntuación: 8.8/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Aspecto visual:</strong> Diseño moderno y atractivo</li>
+                    <li><strong>Facilidad de uso:</strong> Interfaz intuitiva y amigable</li>
+                    <li><strong>Confianza del usuario:</strong> Feedback claro y confirmaciones</li>
+                    <li><strong>Motivación:</strong> Estadísticas y métricas que motivan el uso</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Diseño visual atractivo con gradientes</li>
+                        <li>Iconografía clara y consistente</li>
+                        <li>Feedback inmediato en acciones</li>
+                        <li>Estadísticas motivadoras en dashboard</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Podría incluir más personalización</li>
+                        <li>Falta modo oscuro</li>
+                        <li>Animaciones podrían ser más fluidas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- NIELSEN HEURISTICS EVALUATION -->
+            <div class="section">
+                <h2><i class="fas fa-search"></i> 2. EVALUACIÓN HEURÍSTICA DE NIELSEN</h2>
+
+                <table class="nielsen-table">
+                    <thead>
+                        <tr>
+                            <th>Heurística</th>
+                            <th>Aplicación al Formulario</th>
+                            <th>Puntuación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Visibilidad del estado del sistema</strong></td>
+                            <td>Dashboard con estadísticas, alertas informativas, indicadores de carga, estado de archivos</td>
+                            <td class="score-cell">9.0/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Correspondencia entre el sistema y el mundo real</strong></td>
+                            <td>Terminología familiar, iconografía intuitiva, organización lógica, metáforas visuales</td>
+                            <td class="score-cell">8.5/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Control y libertad del usuario</strong></td>
+                            <td>Acciones reversibles, navegación libre, cancelación de operaciones, salida de emergencia</td>
+                            <td class="score-cell">8.0/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Consistencia y estándares</strong></td>
+                            <td>Diseño consistente, patrones de interacción, terminología uniforme, iconografía coherente</td>
+                            <td class="score-cell">9.0/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. Prevención de errores</strong></td>
+                            <td>Validación de campos, confirmaciones, formatos soportados, límites de tamaño</td>
+                            <td class="score-cell">8.5/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6. Reconocer mejor que recordar</strong></td>
+                            <td>Opciones visibles, menús contextuales, historial de acciones, ayuda contextual</td>
+                            <td class="score-cell">8.8/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7. Flexibilidad y eficiencia</strong></td>
+                            <td>Múltiples formas de acceso, acciones en lote, filtros avanzados, personalización</td>
+                            <td class="score-cell">8.2/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8. Estética y diseño minimalista</strong></td>
+                            <td>Diseño limpio, espaciado adecuado, tipografía clara, colores armoniosos</td>
+                            <td class="score-cell">9.2/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9. Ayuda para reconocer y corregir errores</strong></td>
+                            <td>Mensajes de error claros, sugerencias de corrección, validación en tiempo real</td>
+                            <td class="score-cell">7.5/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10. Ayuda y documentación</strong></td>
+                            <td>Información contextual, tooltips, ejemplos de uso, guías visuales</td>
+                            <td class="score-cell">8.0/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="section">
+                <h2><i class="fas fa-chart-bar"></i> 3. RESUMEN DE PUNTUACIONES</h2>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>ISO 9241-11</h3>
+                        <div class="summary-score">8.4/10</div>
+                        <p>Promedio General</p>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Eficacia: 8.5/10</li>
+                            <li>Eficiencia: 8.0/10</li>
+                            <li>Satisfacción: 8.8/10</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>Nielsen Heuristics</h3>
+                        <div class="summary-score">8.5/10</div>
+                        <p>Promedio General</p>
+                        <p style="margin-top: 15px;">Mejor puntuación: Estética (9.2/10)</p>
+                        <p>Menor puntuación: Ayuda con errores (7.5/10)</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>Puntuación Global</h3>
+                        <div class="summary-score">8.45/10</div>
+                        <p>Excelente</p>
+                        <p style="margin-top: 15px;">Cumple efectivamente con los estándares de usabilidad</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECOMMENDATIONS -->
+            <div class="section">
+                <h2><i class="fas fa-lightbulb"></i> 4. RECOMENDACIONES DE MEJORA</h2>
+
+                <div class="recommendations priority-high">
+                    <h3><i class="fas fa-exclamation-circle"></i> Prioridad Alta</h3>
+                    <ul>
+                        <li>Implementar drag & drop para subida de archivos</li>
+                        <li>Agregar preview en tiempo real del contenido antes de guardar</li>
+                        <li>Mejorar validación en tiempo real con feedback inmediato</li>
+                        <li>Implementar atajos de teclado para acciones frecuentes</li>
+                    </ul>
+                </div>
+
+                <div class="recommendations priority-medium">
+                    <h3><i class="fas fa-clock"></i> Prioridad Media</h3>
+                    <ul>
+                        <li>Agregar modo oscuro como opción de personalización</li>
+                        <li>Mejorar animaciones para transiciones más fluidas</li>
+                        <li>Expandir opciones de exportación de galería</li>
+                        <li>Implementar búsqueda avanzada con filtros múltiples</li>
+                    </ul>
+                </div>
+
+                <div class="recommendations priority-low">
+                    <h3><i class="fas fa-check-circle"></i> Prioridad Baja</h3>
+                    <ul>
+                        <li>Agregar más opciones de personalización del dashboard</li>
+                        <li>Implementar sistema de favoritos para contenido frecuente</li>
+                        <li>Agregar métricas más detalladas de uso</li>
+                        <li>Implementar sistema de versionado de contenido</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PROTOTYPE INFO -->
+            <div class="section">
+                <h2><i class="fas fa-cube"></i> 5. REQUISITO: RF6</h2>
+
+                <div class="prototype-info">
+                    <h3><i class="fas fa-info-circle"></i> Información del Prototipo</h3>
+                    <p><strong>Título:</strong> Gestión de Contenido y Multimedia</p>
+                    <p><strong>Descripción:</strong> Sistema integral para la gestión, organización y administración de todo el contenido multimedia del portal turístico, incluyendo artículos, imágenes, videos y documentos.</p>
+                    <p><strong>URL:</strong> <a href="formulario_rf6.php" class="btn">Ver Formulario RF6</a></p>
+                    
+                    <h4 style="margin-top: 20px;">Funcionalidades principales:</h4>
+                    <ul class="criteria-list">
+                        <li>Dashboard con métricas en tiempo real</li>
+                        <li>Gestión de contenido editorial</li>
+                        <li>Subida y organización de archivos multimedia</li>
+                        <li>Galería visual de contenido</li>
+                        <li>Sistema de etiquetas y categorización</li>
+                        <li>Opciones de procesamiento automático</li>
+                    </ul>
+
+                    <h4 style="margin-top: 20px;">Características del prototipo:</h4>
+                    <ul class="criteria-list">
+                        <li>Interfaz con 4 pestañas principales (Dashboard, Contenido, Multimedia, Galería)</li>
+                        <li>Formularios completos para gestión de contenido</li>
+                        <li>Sistema de subida de archivos multimedia</li>
+                        <li>Galería visual con acciones de gestión</li>
+                        <li>Dashboard con estadísticas en tiempo real</li>
+                        <li>Diseño responsive y moderno</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CONCLUSION -->
+            <div class="conclusion">
+                <h3><i class="fas fa-star"></i> CONCLUSIÓN</h3>
+                <p>El formulario RF6 "Gestión de Contenido y Multimedia" presenta una excelente implementación de las mejores prácticas de usabilidad, obteniendo una puntuación global de <strong>8.45/10</strong>. El sistema demuestra fortalezas significativas en estética, consistencia y visibilidad del estado, mientras que las áreas de mejora se centran principalmente en la eficiencia operativa y la experiencia de usuario avanzada.</p>
+                <p style="margin-top: 15px;">La evaluación confirma que el prototipo cumple efectivamente con los estándares de ISO 9241-11 y las heurísticas de Nielsen, proporcionando una base sólida para el desarrollo final del sistema de gestión de contenido del portal turístico.</p>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div style="text-align: center; margin-top: 40px;">
+                <h3><i class="fas fa-link"></i> Navegación</h3>
+                <a href="formulario_rf2.php" class="btn">RF2</a>
+                <a href="formulario_rf3.php" class="btn">RF3</a>
+                <a href="formulario_rf4.php" class="btn">RF4</a>
+                <a href="formulario_rf5.php" class="btn">RF5</a>
+                <a href="formulario_rf6.php" class="btn">RF6</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

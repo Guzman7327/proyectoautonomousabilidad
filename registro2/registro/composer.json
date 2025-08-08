@@ -1,0 +1,42 @@
+{
+    "name": "registro/portal-login",
+    "description": "Sistema completo de registro y autenticación de usuarios con panel de administración",
+    "type": "project",
+    "keywords": ["php", "login", "registration", "authentication", "admin-panel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Desarrollador",
+            "email": "desarrollador@ejemplo.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-mysqli": "*",
+        "ext-json": "*",
+        "ext-session": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Registro\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Registro\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "setup-db": "php scripts/setup-database.php"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+} 

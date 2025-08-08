@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación RF7 - Sistema de Reservas y Pagos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .score {
+            display: inline-block;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .criteria-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .criteria-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .criteria-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+        }
+
+        .strengths, .improvements {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .strengths h4, .improvements h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .strengths {
+            border-left: 4px solid #28a745;
+        }
+
+        .improvements {
+            border-left: 4px solid #ffc107;
+        }
+
+        .nielsen-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .nielsen-table th {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .nielsen-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nielsen-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .nielsen-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-cell {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .summary-score {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .recommendations {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .recommendations h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .priority-high {
+            border-left: 4px solid #dc3545;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #ffc107;
+        }
+
+        .priority-low {
+            border-left: 4px solid #28a745;
+        }
+
+        .prototype-info {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .prototype-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .conclusion h3 {
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-credit-card"></i> Evaluación RF7</h1>
+            <p>Sistema de Reservas y Pagos - Portal Turístico Ecuador</p>
+        </div>
+
+        <div class="content">
+            <!-- ISO 9241-11 EVALUATION -->
+            <div class="section">
+                <h2><i class="fas fa-clipboard-check"></i> 1. EVALUACIÓN ISO 9241-11</h2>
+
+                <h3>1.1 EFICACIA (Effectiveness)</h3>
+                <div class="score">Puntuación: 9.0/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Completitud de tareas:</strong> El sistema permite completar todo el proceso de reserva desde búsqueda hasta confirmación de pago</li>
+                    <li><strong>Precisión:</strong> Los formularios capturan correctamente toda la información necesaria para reservas y pagos</li>
+                    <li><strong>Calidad del resultado:</strong> Proceso de reserva completo con confirmación automática y comprobantes</li>
+                    <li><strong>Gestión de errores:</strong> Validación robusta de campos de pago y fechas de reserva</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Proceso completo de reserva en múltiples pasos</li>
+                        <li>Validación de fechas y disponibilidad en tiempo real</li>
+                        <li>Múltiples métodos de pago con seguridad SSL</li>
+                        <li>Confirmación automática con números de reserva únicos</li>
+                        <li>Historial completo de reservas con estados</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Falta integración con calendarios externos</li>
+                        <li>No hay validación de tarjetas en tiempo real</li>
+                        <li>Limitaciones en la personalización de reservas</li>
+                    </ul>
+                </div>
+
+                <h3>1.2 EFICIENCIA (Efficiency)</h3>
+                <div class="score">Puntuación: 8.7/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Tiempo de aprendizaje:</strong> Interfaz intuitiva con pestañas bien organizadas</li>
+                    <li><strong>Velocidad de ejecución:</strong> Proceso de reserva optimizado en pasos lógicos</li>
+                    <li><strong>Productividad:</strong> Múltiples servicios gestionables desde un solo sistema</li>
+                    <li><strong>Optimización de flujo:</strong> Navegación fluida entre reserva, pago e historial</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Interfaz con pestañas que organizan funcionalidades</li>
+                        <li>Formularios pre-rellenados para usuarios registrados</li>
+                        <li>Búsqueda rápida de disponibilidad</li>
+                        <li>Proceso de pago simplificado con métodos múltiples</li>
+                        <li>Acceso directo al historial de reservas</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Falta autocompletado inteligente</li>
+                        <li>No hay atajos de teclado para acciones frecuentes</li>
+                        <li>Proceso de cancelación podría ser más directo</li>
+                    </ul>
+                </div>
+
+                <h3>1.3 SATISFACCIÓN (Satisfaction)</h3>
+                <div class="score">Puntuación: 9.2/10</div>
+                
+                <h4>Criterios evaluados:</h4>
+                <ul class="criteria-list">
+                    <li><strong>Aspecto visual:</strong> Diseño moderno y profesional que inspira confianza</li>
+                    <li><strong>Facilidad de uso:</strong> Proceso claro y transparente de reserva y pago</li>
+                    <li><strong>Confianza del usuario:</strong> Indicadores de seguridad y confirmaciones claras</li>
+                    <li><strong>Motivación:</strong> Feedback positivo y confirmaciones que generan confianza</li>
+                </ul>
+
+                <div class="strengths">
+                    <h4><i class="fas fa-thumbs-up"></i> Fortalezas:</h4>
+                    <ul class="criteria-list">
+                        <li>Diseño visual atractivo con gradientes profesionales</li>
+                        <li>Iconografía clara que representa cada función</li>
+                        <li>Confirmaciones visuales en cada paso del proceso</li>
+                        <li>Indicadores de seguridad SSL visibles</li>
+                        <li>Estados de reserva claramente diferenciados</li>
+                    </ul>
+                </div>
+
+                <div class="improvements">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Áreas de mejora:</h4>
+                    <ul class="criteria-list">
+                        <li>Podría incluir más opciones de personalización visual</li>
+                        <li>Falta modo oscuro para uso nocturno</li>
+                        <li>Animaciones podrían ser más fluidas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- NIELSEN HEURISTICS EVALUATION -->
+            <div class="section">
+                <h2><i class="fas fa-search"></i> 2. EVALUACIÓN HEURÍSTICA DE NIELSEN</h2>
+
+                <table class="nielsen-table">
+                    <thead>
+                        <tr>
+                            <th>Heurística</th>
+                            <th>Aplicación al Formulario</th>
+                            <th>Puntuación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Visibilidad del estado del sistema</strong></td>
+                            <td>Estados de reserva, progreso de pago, confirmaciones, información de seguridad</td>
+                            <td class="score-cell">9.5/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Correspondencia entre el sistema y el mundo real</strong></td>
+                            <td>Terminología familiar, iconografía intuitiva, proceso lógico, metáforas visuales</td>
+                            <td class="score-cell">9.0/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Control y libertad del usuario</strong></td>
+                            <td>Acciones reversibles, navegación libre, cancelación de operaciones, salida de emergencia</td>
+                            <td class="score-cell">8.8/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Consistencia y estándares</strong></td>
+                            <td>Diseño consistente, patrones de interacción, terminología uniforme, iconografía coherente</td>
+                            <td class="score-cell">9.2/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. Prevención de errores</strong></td>
+                            <td>Validación de fechas, confirmaciones, validación de tarjetas, campos obligatorios</td>
+                            <td class="score-cell">9.0/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6. Reconocer mejor que recordar</strong></td>
+                            <td>Opciones visibles, historial visible, métodos de pago, ayuda contextual</td>
+                            <td class="score-cell">9.3/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7. Flexibilidad y eficiencia</strong></td>
+                            <td>Múltiples métodos de pago, configuración personalizable, acceso rápido, opciones de notificación</td>
+                            <td class="score-cell">8.9/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>8. Estética y diseño minimalista</strong></td>
+                            <td>Diseño limpio, espaciado adecuado, tipografía clara, colores profesionales</td>
+                            <td class="score-cell">9.4/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9. Ayuda para reconocer y corregir errores</strong></td>
+                            <td>Mensajes de error claros, sugerencias de corrección, validación en tiempo real</td>
+                            <td class="score-cell">8.5/10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10. Ayuda y documentación</strong></td>
+                            <td>Información contextual, tooltips, ejemplos de uso, guías visuales</td>
+                            <td class="score-cell">8.7/10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="section">
+                <h2><i class="fas fa-chart-bar"></i> 3. RESUMEN DE PUNTUACIONES</h2>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>ISO 9241-11</h3>
+                        <div class="summary-score">9.0/10</div>
+                        <p>Promedio General</p>
+                        <ul style="text-align: left; margin-top: 15px;">
+                            <li>Eficacia: 9.0/10</li>
+                            <li>Eficiencia: 8.7/10</li>
+                            <li>Satisfacción: 9.2/10</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>Nielsen Heuristics</h3>
+                        <div class="summary-score">9.0/10</div>
+                        <p>Promedio General</p>
+                        <p style="margin-top: 15px;">Mejor puntuación: Visibilidad del estado (9.5/10)</p>
+                        <p>Menor puntuación: Ayuda con errores (8.5/10)</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>Puntuación Global</h3>
+                        <div class="summary-score">9.0/10</div>
+                        <p>Excelente</p>
+                        <p style="margin-top: 15px;">Cumple efectivamente con los estándares de usabilidad</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECOMMENDATIONS -->
+            <div class="section">
+                <h2><i class="fas fa-lightbulb"></i> 4. RECOMENDACIONES DE MEJORA</h2>
+
+                <div class="recommendations priority-high">
+                    <h3><i class="fas fa-exclamation-circle"></i> Prioridad Alta</h3>
+                    <ul>
+                        <li>Implementar validación de tarjetas en tiempo real para mayor seguridad</li>
+                        <li>Agregar integración con calendarios externos para mejor planificación</li>
+                        <li>Mejorar autocompletado inteligente en formularios de reserva</li>
+                        <li>Implementar atajos de teclado para acciones frecuentes</li>
+                    </ul>
+                </div>
+
+                <div class="recommendations priority-medium">
+                    <h3><i class="fas fa-clock"></i> Prioridad Media</h3>
+                    <ul>
+                        <li>Agregar modo oscuro como opción de personalización</li>
+                        <li>Mejorar animaciones para transiciones más fluidas</li>
+                        <li>Expandir opciones de pago con más métodos internacionales</li>
+                        <li>Implementar búsqueda avanzada con filtros múltiples</li>
+                    </ul>
+                </div>
+
+                <div class="recommendations priority-low">
+                    <h3><i class="fas fa-check-circle"></i> Prioridad Baja</h3>
+                    <ul>
+                        <li>Agregar más opciones de personalización del dashboard</li>
+                        <li>Implementar sistema de favoritos para destinos frecuentes</li>
+                        <li>Agregar métricas más detalladas de uso y preferencias</li>
+                        <li>Implementar sistema de recompensas por reservas frecuentes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- PROTOTYPE INFO -->
+            <div class="section">
+                <h2><i class="fas fa-cube"></i> 5. REQUISITO: RF7</h2>
+
+                <div class="prototype-info">
+                    <h3><i class="fas fa-info-circle"></i> Información del Prototipo</h3>
+                    <p><strong>Título:</strong> Sistema de Reservas y Pagos</p>
+                    <p><strong>Descripción:</strong> Sistema integral para la gestión de reservas de alojamientos, tours, transportes y servicios turísticos, incluyendo procesamiento seguro de pagos y gestión completa del historial de reservas.</p>
+                    <p><strong>URL:</strong> <a href="formulario_rf7.php" class="btn">Ver Formulario RF7</a></p>
+                    
+                    <h4 style="margin-top: 20px;">Funcionalidades principales:</h4>
+                    <ul class="criteria-list">
+                        <li>Sistema de reservas con búsqueda de disponibilidad</li>
+                        <li>Procesamiento seguro de pagos con múltiples métodos</li>
+                        <li>Gestión de historial de reservas con estados</li>
+                        <li>Configuración de preferencias de usuario</li>
+                        <li>Confirmación automática con comprobantes</li>
+                        <li>Notificaciones por múltiples canales</li>
+                    </ul>
+
+                    <h4 style="margin-top: 20px;">Características del prototipo:</h4>
+                    <ul class="criteria-list">
+                        <li>Interfaz con 4 pestañas principales (Reservas, Pagos, Historial, Configuración)</li>
+                        <li>Formularios completos para búsqueda y reserva de servicios</li>
+                        <li>Sistema de pago seguro con múltiples métodos</li>
+                        <li>Historial de reservas con estados diferenciados</li>
+                        <li>Configuración de preferencias de usuario</li>
+                        <li>Diseño responsive y profesional</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CONCLUSION -->
+            <div class="conclusion">
+                <h3><i class="fas fa-star"></i> CONCLUSIÓN</h3>
+                <p>El formulario RF7 "Sistema de Reservas y Pagos" presenta una excelente implementación de las mejores prácticas de usabilidad, obteniendo una puntuación global de <strong>9.0/10</strong>. El sistema demuestra fortalezas excepcionales en estética, visibilidad del estado y correspondencia con el mundo real, mientras que las áreas de mejora se centran principalmente en la optimización de procesos avanzados y la experiencia de usuario especializada.</p>
+                <p style="margin-top: 15px;">La evaluación confirma que el prototipo cumple efectivamente con los estándares de ISO 9241-11 y las heurísticas de Nielsen, proporcionando una base sólida para el desarrollo final del sistema de reservas y pagos del portal turístico. El alto nivel de satisfacción del usuario y la eficacia del sistema lo posicionan como una solución robusta para la gestión de reservas turísticas.</p>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div style="text-align: center; margin-top: 40px;">
+                <h3><i class="fas fa-link"></i> Navegación</h3>
+                <a href="formulario_rf2.php" class="btn">RF2</a>
+                <a href="formulario_rf3.php" class="btn">RF3</a>
+                <a href="formulario_rf4.php" class="btn">RF4</a>
+                <a href="formulario_rf5.php" class="btn">RF5</a>
+                <a href="formulario_rf6.php" class="btn">RF6</a>
+                <a href="formulario_rf7.php" class="btn">RF7</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
